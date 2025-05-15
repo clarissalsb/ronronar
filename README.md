@@ -9,10 +9,10 @@
     Sumário:
     <a href="#sobre">Sobre</a> •
     <a href="#equipe">Equipe</a> •
-    <a href="tecnologias">Tecnologias utilizadas</a> •
+    <a href="#tecnologias">Tecnologias utilizadas</a> •
     <a href="#requisitos">Requisitos funcionais</a> •
-    <a href="documento">Relatório </a> •
-    <a href="license"> Licença</a> • 
+    <a href="#documento">Relatório </a> •
+    <a href="#license"> Licença</a> • 
 </h5>
 
 <a name="sobre"></a>

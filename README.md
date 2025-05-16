@@ -1,5 +1,5 @@
 <div align="center" name="inicio">
- <a href="*"><img title="Logo Projeto Ronronar" src="Logo Projeto Ronronar.jpg" style="width:300px;" />
+ <a href="*"><img title="Logo Projeto Ronronar" src="Imagens/Logo Projeto Ronronar.jpg" style="width:300px;" />
  </a>
 </div>
 

@@ -20,7 +20,7 @@
 
  ## Sobre
 
- Seja bem vindo ao repositório do Projeto Ronronar! Um local com o intuito de abrigar e organizar os arquivos para os trabalhos desenvolvidos durante a disciplina de Projeto Integrado I do curso Sistemas e Mídias Digitais da Universidade Federal do Ceará(UFC).Criado com o intuito de auxiliar a ONG com o mesmo nome, o Projeto Ronronar começou a atuar em 10 de Abril de 2025,por meio do nosso primeiro contato com as voluntárias da organização, O grupo Ronronar é uma ONG que realiza o resgate e adoção de animais abandonados, nesse sentido, visamos os auxiliar por meio de uma solução à um dos desafios enfrentados pelo grupo. Dito isso, nossa solução busca, principalmente, dinamizar o processo de apadrinhamento deles, por meio de uma aplicação.
+ Seja bem vindo ao repositório do Projeto Ronronar! Um local com o intuito de abrigar e organizar os arquivos para os trabalhos desenvolvidos durante a disciplina de Projeto Integrado I do curso Sistemas e Mídias Digitais da Universidade Federal do Ceará (UFC). Criado com o intuito de auxiliar a ONG com o mesmo nome, o Projeto Ronronar começou a atuar em 10 de Abril de 2025, por meio do nosso primeiro contato com as voluntárias da organização, o grupo Ronronar é uma ONG que realiza o resgate e adoção de animais abandonados, nesse sentido, visamos os auxiliar por meio de uma solução à um dos desafios enfrentados pelo grupo. Dito isso, nossa solução busca, principalmente, dinamizar o processo de apadrinhamento deles, por meio de uma aplicação.
 
  <div align="center" name="mockups">
   <a href="*"><img title="rascunho da homepage"src="Imagens/Homepage rascunho.jpeg" style="width:200px;"></a>

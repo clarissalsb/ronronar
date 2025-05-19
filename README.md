@@ -7,7 +7,6 @@
 
 <h5>
     Sumário:
-    <a href="#rodar">Como rodar</a> •
     <a href="#sobre">Sobre</a> •
     <a href="#equipe">Equipe</a> •
     <a href="#rodar">Como rodar</a> •
@@ -17,15 +16,6 @@
     <a href="#license"> Licença</a> • 
 </h5>
 
-<a name="rodar"></a>
-
-## Como rodar
-
-#### Clonando o repositório
-```
-git clone https://github.com/clarissalsb/ronronar
-CD ronronar
-```
 <a name="sobre"></a>
 
  ## Sobre o projeto

@@ -55,32 +55,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     errorDiv.style.display = 'none';
-    const dadosUsuario = { nome, email, telefone, senha };
-    return;
+    const dadosUsuario = { nome: nome, email: email, telefone: telefone, senha: senha };
 
 
     // Chamar o back-end (caiaques)
-//    fetch('https://sua-api.com/cadastro', { // mudar o link para o back-end real mais tarde
-//      method: 'POST',
-//      headers: {
-//        'Content-Type': 'application/json',
-//      },
-//      body: JSON.stringify(dadosUsuario),
-//    })
-//      .then((res) => {
-//        if (!res.ok) {
-//          throw new Error(`Erro ${res.status}: ${res.statusText}`);
-//        }
-//        return res.json();
-//      })
-//      .then((data) => {
-//        console.log('Usuário cadastrado:', data);
-//        alert(`Cadastro concluído com sucesso, ${nome}! 🎉`);
-//        form.reset();
-//      })
-//      .catch((err) => {
-//        console.error(err);
-//        alert('Ops! Ocorreu um erro no cadastro. Tente novamente mais tarde. 😟');
-//      });
+    fetch('https://ronronar.onrender.com/register/user', { // tocer pra esse funcionar
+      method: 'POST',
+     headers: {
+        'Content-Type': 'application/json',
+     },
+      body: JSON.stringify(dadosUsuario),
+    })
+      .then(response => response.json())
+      .then((resposta) => {
+        if (resposta.success) {
+          console.log('Usuário cadastrado com sucesso!');
+        }
+        else {
+          errorDiv.innerHTML = resposta.message || 'Erro ao cadastrar usuário. Tente novamente mais tarde.';
+          errorDiv.style.display = 'block';
+        }
+      })
+      .catch((error) => {
+        errorDiv.innerHTML = 'Erro ao enviar dados. Tente novamente mais tarde.';
+        errorDiv.style.display = 'block';
+        console.error('Erro ao enviar dados:', error);
+      });
   });
 });

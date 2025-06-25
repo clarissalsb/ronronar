@@ -1,6 +1,7 @@
 // Esperar o DOM carregar
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('.cadastro-form');
+  const errorDiv = document.getElementById('error-message');
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -12,55 +13,74 @@ document.addEventListener('DOMContentLoaded', () => {
     const senha = document.getElementById('senha').value;
     const confirmarSenha = document.getElementById('confirmar-senha').value;
 
+    errorDiv.style.display = 'none';
+    errorDiv.innerHTML = '';
+
+
+    let erros = [];
+
     // Validações básicas
     if (!nome || !email || !telefone || !senha) {
-      alert('Preencha todos os campos! ⚠️');
-      return;
+      erros.push('Preencha todos os campos! ⚠️');
     }
+
+
     if (senha !== confirmarSenha) {
-      alert('As senhas não coincidem! ❌');
-      return;
+      erros.push('As senhas não coincidem! ❌');
     }
 
     // Validação simples de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      alert('Email inválido! 📧');
-      return;
-    }
-
-    // validação simples de senha
-    // (Depois mete um regex pra deixar mais complexa)
-    if (senha.length < 6) {
-      alert('A senha precisa ter pelo menos 6 caracteres! 🔐');
-      return;
+      erros.push('Email inválido! ❌');
     }
 
 
+   const senhaRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[$*&@#!])(?!.*(.)\1)[A-Za-z\d$*&@#!]{8,}$/;
+   if (!senhaRegex.test(senha)) {
+     erros.push(`
+      <strong>A senha precisa ter:</strong> <br>
+        - Pelo menos 8 caracteres<br>
+        - Pelo menos uma letra maiúscula<br>
+        - Pelo menos um número<br>
+        - Pelo menos um caractere especial ($*&@#!)<br>
+        - Não pode ter caracteres repetidos consecutivos<br>
+    `);
+   }
+
+   if (erros.length > 0) {
+      errorDiv.innerHTML = erros.join('<br><br>');
+      errorDiv.style.display = 'block';
+      return;
+    }
+
+    errorDiv.style.display = 'none';
     const dadosUsuario = { nome, email, telefone, senha };
+    return;
+
 
     // Chamar o back-end (caiaques)
-    fetch('https://sua-api.com/cadastro', { // mudar o link para o back-end real mais tarde
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(dadosUsuario),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Erro ${res.status}: ${res.statusText}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log('Usuário cadastrado:', data);
-        alert(`Cadastro concluído com sucesso, ${nome}! 🎉`);
-        form.reset();
-      })
-      .catch((err) => {
-        console.error(err);
-        alert('Ops! Ocorreu um erro no cadastro. Tente novamente mais tarde. 😟');
-      });
+//    fetch('https://sua-api.com/cadastro', { // mudar o link para o back-end real mais tarde
+//      method: 'POST',
+//      headers: {
+//        'Content-Type': 'application/json',
+//      },
+//      body: JSON.stringify(dadosUsuario),
+//    })
+//      .then((res) => {
+//        if (!res.ok) {
+//          throw new Error(`Erro ${res.status}: ${res.statusText}`);
+//        }
+//        return res.json();
+//      })
+//      .then((data) => {
+//        console.log('Usuário cadastrado:', data);
+//        alert(`Cadastro concluído com sucesso, ${nome}! 🎉`);
+//        form.reset();
+//      })
+//      .catch((err) => {
+//        console.error(err);
+//        alert('Ops! Ocorreu um erro no cadastro. Tente novamente mais tarde. 😟');
+//      });
   });
 });

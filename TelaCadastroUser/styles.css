@@ -138,11 +138,22 @@ main.cadastro-container {
   background: #7c2186;
 }
 
+.error-message {
+  background: #ffe6eb;
+  color: #a60032;
+  border: 1px solid #a60032;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  display: none;
+  font-size: 0.9rem;
+}
+
 /* Rodapé */
 footer.footer {
   padding: 12px;
   text-align: center;
-  color: #9B2AA6;
+  color: black;
   font-family: 'Averia Serif Libre', serif;
   background: white;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);

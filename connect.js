@@ -14,10 +14,10 @@ function connected(err){
 
 let sql= `CREATE TABLE IF NOT EXISTS users(
     user_id INTEGER PRIMARY KEY,
-    user_name TEXT NOT NULL,
+    user_nome TEXT NOT NULL,
     user_email TEXT UNIQUE NOT NULL,
     user_telefone TEXT NOT NULL,
-    user_password TEXT NOT NULL
+    user_senha TEXT NOT NULL
 
 ) `;
 DB.run(sql,[],(err)=>{

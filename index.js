@@ -23,8 +23,8 @@ app.get('/api/:type',(req,res)=>{
             throw err;
         }
         rows.forEach(row=>{
-            data.users.push({id: row.user_id, name:row.user_name, email:row.
-                user_email,telefone:row.user_telefone,password:row.user_password});
+            data.users.push({id: row.user_id, nome:row.user_nome, email:row.
+                user_email,telefone:row.user_telefone,senha:row.user_senha});
         });
         let content= JSON.stringify(data);
         res.send(content);
@@ -42,10 +42,10 @@ app.post('/register/:type',(req,res)=>{
     console.log(req.body);
 
     res.set('content-type','application/json');
-    const { name, email, telefone, password } = req.body;
+    const { nome, email, telefone, senha } = req.body;
 
         
-    if (!name || !email || !telefone || !password) {
+    if (!nome || !email || !telefone || !senha) {
             return res.status(400).send(JSON.stringify({ message: "Dados incompletos" }));
     }
     
@@ -63,10 +63,10 @@ app.post('/register/:type',(req,res)=>{
                 return res.status(409).send(JSON.stringify({ message: "E-mail já cadastrado" }));
             }
 
-    const sql= 'INSERT INTO users(user_name,user_email,user_telefone,user_password) VALUES(?,?,?,?)';
+    const sql= 'INSERT INTO users(user_nome,user_email,user_telefone,user_senha) VALUES(?,?,?,?)';
     let newId;
     try{
-        DB.run(sql,[req.body.name,req.body.email,req.body.telefone,req.body.password], function(err){
+        DB.run(sql,[req.body.nome,req.body.email,req.body.telefone,req.body.senha], function(err){
             if(err) throw err;
             newId=this.lastID;
             res.status(201);

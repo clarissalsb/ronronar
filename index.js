@@ -72,7 +72,7 @@ app.post('/register/:type',(req,res)=>{
             if(err) throw err;
             newId=this.lastID;
             res.status(201);
-            let data={status:201, message: `Usuario ${newId} salvo.`};
+            let data={status:201,success:true,message: `Usuario ${newId} salvo.`};
             let content = JSON.stringify(data);
             res.send(content);
         })

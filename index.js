@@ -38,6 +38,36 @@ app.get('/api/:type',(req,res)=>{
     }
 }
 });
+
+app.post('/login/:type',(req,res=>{
+    const type=  req.params.type
+    if(type ==="user"){
+    console.log(req.body);
+    res.set('content-type','application/json');
+    const {email, senha} = req.body;
+    if(!email || !senha ){
+          return res.status(400).send(JSON.stringify({ message: "Dados incompletos" }));
+    }
+
+    
+    const loginSql = 'SELECT * FROM users WHERE user_email = ?';
+
+    DB.get(loginSql,[email],(err,row)=>{
+        if(err){
+            console.error(err.message);
+            return res.status(500).send({message:"Erro no servidor"});
+        
+        }
+        if(!row){
+            return res.status(401).send({messsage: "Usuario nao encontrado"});
+
+        }
+       
+        
+    })
+    }
+}))
+
 app.post('/register/:type',(req,res)=>{
     const type = req.params.type
     if(type==="user"){
@@ -50,6 +80,7 @@ app.post('/register/:type',(req,res)=>{
     if (!nome || !email || !telefone || !senha) {
             return res.status(400).send(JSON.stringify({ message: "Dados incompletos" }));
     }
+
     
     
    
@@ -110,10 +141,10 @@ app.delete('/api/:type',(req,res)=>{
     }
 }
 });
-
-app.listen(3001,(err)=>{
+const PORT = process.env.PORT || 3001;
+app.listen(PORT,(err)=>{
     if(err){
         console.log('ERROR:',err.message);
     }
-        console.log('LISTENING on port 3001')
+        console.log(`LISTENING on port ${PORT}`)
 })

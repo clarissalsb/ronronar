@@ -4,7 +4,7 @@ import express from 'express'
 import bodyParser from "body-parser";
 import cors from 'cors';
 const app = express();
-
+const router = express.Router();
 //const corsOptions = {
   //origin: 'http://127.0.0.1:5500', 
   //methods: ['GET','POST','DELETE','PUT','OPTIONS'],

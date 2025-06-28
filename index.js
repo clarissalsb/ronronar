@@ -46,7 +46,37 @@ app.get('/api/:type',(req,res)=>{
     }
 }
 });
+app.post('/login/:type',(req,res)=>{
+    const type=  req.params.type
+    if(type ==="user"){
+    console.log(req.body);
+    res.set('content-type','application/json');
+    const {email, senha} = req.body;
+    if(!email || !senha ){
+          return res.status(400).send(JSON.stringify({ message: "Dados incompletos" }));
+    }
 
+    
+    const loginSql = 'SELECT * FROM users WHERE user_email = ?';
+
+    DB.get(loginSql,[email],(err,row)=>{
+        if(err){
+            console.error(err.message);
+            return res.status(500).send({message:"Erro no servidor"});
+        
+        }
+        if(!row){
+            return res.status(401).send({message: "Usuario nao encontrado"});
+
+        }
+       
+        if(row.user_senha !== senha){
+            return res.status(401).send({ message: "Senha incorreta" });
+        }
+        res.status(200).send({ message: "Login bem-sucedido", userId: row.user_id });
+    })
+    }
+})
 
 app.post('/register/:type',(req,res)=>{
     const type = req.params.type

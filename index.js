@@ -14,13 +14,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5500'); // igual ao seu corsOptions
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  next();
-});
+
 app.get('/',(req,res)=>{
     res.status(200);
     res.send('Serviço de usuários está online');

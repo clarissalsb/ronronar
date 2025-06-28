@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Chamar o back-end (caiaques)
-    fetch('https://ronronar.onrender.com/register/user', { // tocer pra esse funcionar
+    fetch('http://localhost:3001/register/user', { // tocer pra esse funcionar
       method: 'POST',
      headers: {
         'Content-Type': 'application/json',

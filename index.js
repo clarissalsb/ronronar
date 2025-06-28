@@ -5,15 +5,15 @@ import bodyParser from "body-parser";
 import cors from 'cors';
 const app = express();
 
-const corsOptions = {
-  origin: 'http://127.0.0.1:5500', 
-  methods: ['GET','POST','DELETE','PUT','OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-};
+//const corsOptions = {
+  //origin: 'http://127.0.0.1:5500', 
+  //methods: ['GET','POST','DELETE','PUT','OPTIONS'],
+  //allowedHeaders: ['Content-Type', 'Authorization'],
+  //credentials: true
+//};
 
 app.use(bodyParser.json());
-app.use(cors(corsOptions));
+app.use(cors());
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5500'); // igual ao seu corsOptions
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');

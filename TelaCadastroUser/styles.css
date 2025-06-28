@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@400;700&family=Baloo&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #ECDFED;
+  color: #9B2AA6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cabeçalho */
+header.menu {
+  padding: 16px 24px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Baloo', cursive;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.menu-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-left a,
+.nav-right a {
+  color: #9B2AA6;
+  text-decoration: none;
+  margin-left: 16px;
+  font-size: 1.1rem;
+  transition: opacity 0.3s;
+}
+
+.nav-left a:first-child {
+  margin-left: 0;
+}
+
+.nav-left a:hover,
+.nav-right a:hover {
+  opacity: 0.7;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+header.menu .logo {
+  height: 48px;
+}
+
+header.menu nav a {
+  color: #9B2AA6;
+  margin-left: 20px;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: opacity 0.3s;
+}
+
+header.menu nav a:hover {
+  opacity: 0.7;
+}
+
+/* Área principal */
+main.cadastro-container {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Averia Serif Libre', serif;
+}
+
+.cadastro-form {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px #E98A14;
+  width: 100%;
+  max-width: 420px;
+}
+
+.cadastro-form h1 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #9B2AA6;
+  font-family: 'Averia Serif Libre', serif;
+  font-size: 1.8rem;
+}
+
+.cadastro-form label {
+  margin-bottom: 6px;
+  color: #9B2AA6;
+  font-weight: bold;
+  display: block;
+}
+
+.cadastro-form input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #9B2AA6;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.cadastro-form input:focus {
+  border-color: #E98A14;
+  outline: none;
+}
+
+.cadastro-form button {
+  width: 100%;
+  padding: 12px;
+  background: #9B2AA6;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-family: 'Averia Serif Libre', serif;
+}
+
+.cadastro-form button:hover {
+  background: #7c2186;
+}
+
+.error-message {
+  background: #ffe6eb;
+  color: #a60032;
+  border: 1px solid #a60032;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  display: none;
+  font-size: 0.9rem;
+}
+
+/* Rodapé */
+footer.footer {
+  padding: 12px;
+  text-align: center;
+  color: black;
+  font-family: 'Averia Serif Libre', serif;
+  background: white;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  font-size: 0.9rem;
+}
+
+footer.footer p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+footer.footer .insta-link img {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    transition: opacity 0.3s;
+}
+
+footer.footer .insta-link img:hover {
+    opacity: 0.7;
+}

@@ -57,6 +57,14 @@ app.get('/dashboard',(req,res)=>{
         return res.status(401).json({msg:"No token provided"})
 
     }
+    const token = authHeader.split(' ')[1];
+    try{
+       const decoded = jwt.verify(token,process.env.JWT_SECRET);
+       const {email} = decoded;
+       res.status(200).json({msg: email})
+    } catch(err){
+        return res.status(401).json({msg:"Authentication Failed"})
+    }
 })
 app.post('/login/:type',(req,res)=>{
     const type=  req.params.type

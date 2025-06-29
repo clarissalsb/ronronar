@@ -17,7 +17,8 @@ let sql= `CREATE TABLE IF NOT EXISTS users(
     user_nome TEXT NOT NULL,
     user_email TEXT UNIQUE NOT NULL,
     user_telefone TEXT NOT NULL,
-    user_senha TEXT NOT NULL
+    user_senha TEXT NOT NULL,
+    is_admin INTEGER DEFAULT 0
 
 ) `;
 DB.run(sql,[],(err)=>{

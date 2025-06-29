@@ -1,10 +1,13 @@
 import {DB} from './connect.js';
 
-import express from 'express'
+import jwt from 'jsonwebtoken';
+import express from 'express';
 import bodyParser from "body-parser";
 import cors from 'cors';
-const app = express();
+import dotenv from 'dotenv'
 
+const app = express();
+const router = express.Router();
 //const corsOptions = {
   //origin: 'http://127.0.0.1:5500', 
   //methods: ['GET','POST','DELETE','PUT','OPTIONS'],
@@ -14,7 +17,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
-
+dotenv.config();
 app.get('/',(req,res)=>{
     res.status(200);
     res.send('Serviço de usuários está online');
@@ -47,6 +50,55 @@ app.get('/api/:type',(req,res)=>{
 }
 });
 
+app.get('/dashboard',(req,res)=>{
+    const authHeader=req.headers.authorization;
+
+    if(!authHeader || !authHeader.startsWith("Bearer")){
+        return res.status(401).json({msg:"No token provided"})
+
+    }
+    const token = authHeader.split(' ')[1];
+    try{
+       const decoded = jwt.verify(token,process.env.JWT_SECRET);
+       const {email} = decoded;
+       res.status(200).json({msg: email})
+    } catch(err){
+        return res.status(401).json({msg:"Authentication Failed"})
+    }
+})
+app.post('/login/:type',(req,res)=>{
+    const type=  req.params.type
+    if(type ==="user"){
+    console.log(req.body);
+    res.set('content-type','application/json');
+    const {email, senha} = req.body;
+    if(!email || !senha ){
+          return res.status(400).send(JSON.stringify({ message: "Dados incompletos" }));
+    }
+   
+    
+    const loginSql = 'SELECT * FROM users WHERE user_email = ?';
+
+    DB.get(loginSql,[email],(err,row)=>{
+        if(err){
+            console.error(err.message);
+            return res.status(500).send({message:"Erro no servidor"});
+        
+        }
+        if(!row){
+            return res.status(401).send({message: "Usuario nao encontrado"});
+
+        }
+       
+        if(row.user_senha !== senha){
+            return res.status(401).send({ message: "Senha incorreta" });
+        }
+       
+        const token = jwt.sign({email}, process.env.JWT_SECRET, {expiresIn: '30d'})
+        res.status(200).send({ message: "Login bem-sucedido", userId: row.user_id, token});
+    })
+    }
+})
 
 app.post('/register/:type',(req,res)=>{
     const type = req.params.type

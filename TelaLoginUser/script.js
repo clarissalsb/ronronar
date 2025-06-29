@@ -5,61 +5,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-
-    // Pegar os campos
-    const nome = document.getElementById('nome').value.trim();
-    
-    
+    //pegar campos
+    const email = document.getElementById('email').value.trim();
     const senha = document.getElementById('senha').value;
- 
-
+    
+    // Resetar mensagens de erro
     errorDiv.style.display = 'none';
     errorDiv.innerHTML = '';
-
-
+  
     let erros = [];
 
     // Validações básicas
-    if (!nome || !senha) {
-      erros.push('Preencha todos os campos! ⚠️');
+    if (!email || !senha) {
+      erros.push('⚠️ Preencha todos os campos!');
     }
 
-
-    
-   
-
-   if (erros.length > 0) {
+    if (erros.length > 0) {
       errorDiv.innerHTML = erros.join('<br><br>');
       errorDiv.style.display = 'block';
       return;
     }
+    
+    const dadosUsuario = { email, senha };
 
-    errorDiv.style.display = 'none';
-    const dadosUsuario = { nome: nome, senha: senha };
-
-
-    // Chamar o back-end (caiaques)
-    fetch('https://ronronar.onrender.com/login/user', { // tocer pra esse funcionar
+    fetch('http://localhost:3001/login/user', {
       method: 'POST',
-     headers: {
-        'Content-Type': 'application/json',
-     },
+      headers: {
+        'Content-Type': 'application/json','Autorization':'Bearer'+ 'JWT_SECRET'
+      },
       body: JSON.stringify(dadosUsuario),
     })
-      .then(response => response.json())
-      .then((resposta) => {
-        if (resposta.success) {
-          console.log('Usuário cadastrado com sucesso!');
-        }
-        else {
-          errorDiv.innerHTML = resposta.message || 'Erro ao cadastrar usuário. Tente novamente mais tarde.';
-          errorDiv.style.display = 'block';
-        }
-      })
+    .then(response =>{
+      if (!response.ok){
+      throw new Error('Erro na autenticação:'+response.status)
+      } return response.json()
+    })
+      .then((data) => {
+        console.log('Dados recebidos:'+data)
+  })
       .catch((error) => {
-        errorDiv.innerHTML = 'Erro ao enviar dados. Tente novamente mais tarde.';
-        errorDiv.style.display = 'block';
-        console.error('Erro ao enviar dados:', error);
+       
+        console.error('Erro:', error.message);
       });
-  });
-});
+
+})
+
+
+})

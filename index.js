@@ -23,31 +23,34 @@ app.get('/',(req,res)=>{
     res.send('Serviço de usuários está online');
 });
 
-app.get('/api/:type',(req,res)=>{
-    const type = req.params.type
-    
-    res.set('content-type','application/json');
-    if(type==="user"){
-    const sql= 'SELECT * from users';
-    let data= {users:[]};
-    try{
-    DB.all(sql,[],(err,rows)=>{
-        if(err){
-            throw err;
-        }
-        rows.forEach(row=>{
-            data.users.push({id: row.user_id, nome:row.user_nome, email:row.
-                user_email,telefone:row.user_telefone,senha:row.user_senha});
+app.get('/api/:type', (req, res) => {
+  const type = req.params.type;
+
+  res.set('content-type', 'application/json');
+  if (type === "user") {
+    const sql = 'SELECT * from users';
+    let data = { users: [] };
+
+    DB.all(sql, [], (err, rows) => {
+      if (err) {
+        console.error(err.message);
+        res.status(500).json({ code: 500, status: err.message });
+        return;
+      }
+      rows.forEach(row => {
+        data.users.push({
+          id: row.user_id,
+          nome: row.user_nome,
+          email: row.user_email,
+          telefone: row.user_telefone,
+
         });
-        let content= JSON.stringify(data);
-        res.send(content);
-    }  )
-    }catch(err){
-        console.log(err.message);
-        res.status(467);
-        res.send(`{"code":467, "status":"${err.message}"}`);
-    }
-}
+      });
+      res.status(200).json(data);
+    });
+  } else {
+    res.status(400).json({ message: "Tipo inválido" });
+  }
 });
 
 app.get('/dashboard',(req,res)=>{
@@ -148,18 +151,18 @@ app.post('/register/:type',(req,res)=>{
     }
 }
 );
-app.delete('/api/:type',(req,res)=>{
-    const type = req.params.type
+app.delete('/user/:id',(req,res)=>{
   
     res.set('content-type','application/json');
-    if(type==="user"){
+    const userId = req.params.id;
+
     const sql= 'DELETE FROM users WHERE user_id=?';
     try{
-        DB.run(sql, [req.query.id],function(err){
+        DB.run(sql, [userId],function(err){
             if(err) throw err;
             if(this.changes === 1){
                 res.status(200);
-                res.send(`{"message":"Usuario ${req.query.id} foi removido da lista."}`); 
+                res.send(`{"message":"Usuario ${userId} foi removido da lista."}`); 
             }else{
                res.status(200);
                res.send(`{"message":"Sem operação necesária."}`); 
@@ -172,7 +175,7 @@ app.delete('/api/:type',(req,res)=>{
         res.send(`{"code":468, "status":"${err.message}"}`);
     }
 }
-});
+);
 const PORT = process.env.PORT || 3001;
 app.listen(PORT,(err)=>{
     if(err){

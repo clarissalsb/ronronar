@@ -88,6 +88,7 @@ header.menu nav a:hover {
   cursor: pointer;
   transition: opacity 0.3s;
   border-radius: 25px;
+  box-shadow: 2px 2px 14px rgba(0, 0, 0, 0.1);
 }
 
 .btn-cadastrar {
@@ -186,6 +187,8 @@ main.cadastro-container {
 /* Rodapé */
 footer.footer {
   padding: 12px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
   text-align: center;
   color: black;
   font-family: 'Averia Serif Libre', serif;

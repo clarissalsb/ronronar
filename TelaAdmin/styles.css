@@ -87,6 +87,7 @@ header.menu nav a:hover {
   cursor: pointer;
   transition: opacity 0.3s;
   border-radius: 25px;
+  box-shadow: 2px 2px 14px rgba(0, 0, 0, 0.1);
 }
 
 .btn-cadastrar {
@@ -177,40 +178,39 @@ header.menu nav a:hover {
 .action-menu {
   display: none;
   position: absolute;
-  top: 32px;
-  right: 0;
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   z-index: 10;
-  min-width: 140px;
-  padding: 6px 0;
 }
 
-/* Itens do menu */
+.action-menu.aberto {
+  display: block;
+}
+
 .action-item {
   display: block;
+  padding: 8px 16px;
   width: 100%;
-  padding: 10px 16px;
   background: none;
   border: none;
   text-align: left;
   cursor: pointer;
-  font-family: 'Baloo', cursive;
-  color: #9B2AA6;
-  font-size: 1rem;
-  transition: background-color 0.2s;
+  font-family: 'Averia Serif Libre', serif;
 }
 
 .action-item:hover {
-  background-color: #f3e2f4;
+  background-color: #f3f3f3;
 }
+
 
 
 /* Rodapé */
 footer.footer {
   padding: 12px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
   text-align: center;
   color: black;
   font-family: 'Averia Serif Libre', serif;

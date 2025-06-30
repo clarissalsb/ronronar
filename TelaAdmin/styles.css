@@ -105,83 +105,106 @@ header.menu nav a:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Área principal */
-main.login-container {
+/* Painel de Administração */
+.admin-container {
+  padding: 40px 24px;
+  font-family: 'Baloo', cursive;
   flex: 1;
-  padding: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Averia Serif Libre', serif;
 }
 
-.login-form {
-  background: white;
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: 4px 4px 0 #E98A14;
-  width: 100%;
-  max-width: 420px;
-}
-
-.login-form h1 {
+.admin-container h1,
+.admin-container h2 {
   text-align: center;
   margin-bottom: 24px;
-  color: #9B2AA6;
-  font-family: 'Averia Serif Libre', serif;
-  font-size: 1.8rem;
 }
 
-.login-form label {
-  margin-bottom: 6px;
+/* Tabela de usuários */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin: 0 auto;
+  max-width: 1000px;
+}
+
+.user-table thead {
+  border-radius: 12px;
+  background-color: #9B2AA6;
+  color: white;
+}
+
+.user-table th,
+.user-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+}
+
+.user-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.user-table tbody tr:hover {
+  background-color: #f3e2f4;
+  transition: background-color 0.2s ease;
+}
+
+/* Coluna de ações */
+.user-actions {
+  position: relative;
+  display: inline-block;
+}
+
+/* Botão de três pontinhos */
+.action-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
   color: #9B2AA6;
-  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.action-toggle:hover {
+  background-color: #ecd7ef;
+}
+
+/* Menu flutuante */
+.action-menu {
+  display: none;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  z-index: 10;
+}
+
+.action-menu.aberto {
   display: block;
 }
 
-.login-form input {
+.action-item {
+  display: block;
+  padding: 8px 16px;
   width: 100%;
-  padding: 10px;
-  border: 2px solid #9B2AA6;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-}
-
-.login-form input:focus {
-  border-color: #E98A14;
-  outline: none;
-}
-
-.login-form button {
-  width: 100%;
-  padding: 12px;
-  background: #9B2AA6;
+  background: none;
   border: none;
-  border-radius: 8px;
-  color: white;
-  font-size: 1.1rem;
-  font-weight: bold;
+  text-align: left;
   cursor: pointer;
-  transition: background 0.3s;
   font-family: 'Averia Serif Libre', serif;
 }
 
-.login-form button:hover {
-  background: #7c2186;
+.action-item:hover {
+  background-color: #f3f3f3;
 }
 
-.error-message {
-  background: #ffe6eb;
-  color: #a60032;
-  border: 1px solid #a60032;
-  padding: 8px;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  display: none;
-  font-size: 0.9rem;
-}
+
 
 /* Rodapé */
 footer.footer {

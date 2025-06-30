@@ -28,6 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const dadosUsuario = { email, senha };
 
+
+    errorDiv.style.display = 'none';
+    const dadosUsuario = { nome: nome, senha: senha };
+
+
+    // Chamar o back-end (caiaques)
+
     fetch('http://localhost:3001/login/user', {
       method: 'POST',
       headers: {

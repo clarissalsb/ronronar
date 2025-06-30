@@ -105,9 +105,32 @@ header.menu nav a:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.usuario-logado {
+  font-family: 'Baloo', cursive;
+  font-weight: bold;
+  color: #9B2AA6;
+  margin-right: 16px;
+}
+
+.btn-sair {
+  background-color: #fff;
+  color: #9B2AA6;
+  border: 2px solid #9B2AA6;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-family: 'Averia Serif Libre', serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-sair:hover {
+  background-color: #9B2AA6;
+  color: #fff;
+}
+
 
 /* Área principal */
-
 /* Banner */
 .banner {
     position: relative;

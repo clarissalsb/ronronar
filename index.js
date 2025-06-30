@@ -102,7 +102,7 @@ app.post('/login/:type',(req,res)=>{
         }
         const isAdmin = row.is_admin ===1;
         const token = jwt.sign({email,id:row.user_id,isAdmin}, process.env.JWT_SECRET, {expiresIn: '30d'})
-        res.status(200).send({ message: "Login bem-sucedido", token,isAdmin});
+        res.status(200).send({ message: "Login bem-sucedido", success:true, token,isAdmin, nome:row.user_nome});
     })
     }
 })

@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Chamar o back-end (caiaques)
-    fetch('http://localhost:3001/register/user', { // tocer pra esse funcionar
+    fetch('http://localhost:3001/register/user', {
       method: 'POST',
      headers: {
         'Content-Type': 'application/json',
@@ -67,12 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
       body: JSON.stringify(dadosUsuario),
     })
       .then(response => response.json())
-      .then((resposta) => {
-        if (resposta.success) {
+      .then((response) => {
+        if (response.success) {
           console.log('Usuário cadastrado com sucesso!');
+          window.location.href='../TelaLoginUser/index.html'
         }
         else {
-          errorDiv.innerHTML = resposta.message || 'Erro ao cadastrar usuário. Tente novamente mais tarde.';
+          errorDiv.innerHTML = response.message || 'Erro ao cadastrar usuário. Tente novamente mais tarde.';
           errorDiv.style.display = 'block';
         }
       })
@@ -82,4 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Erro ao enviar dados:', error);
       });
   });
+
+
 });

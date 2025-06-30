@@ -1,5 +1,4 @@
 function ativarBotoesAcoes (){
-    function ativarBotoesAcoes() {
   const botoes = document.querySelectorAll(".action-toggle");
 
   botoes.forEach((botao) => {
@@ -27,7 +26,7 @@ function ativarBotoesAcoes (){
   });
 }
 
-}
+
 
 function carregarUsuarios() {
   fetch("http://localhost:3000/usuarios") // substitua pela sua URL se for diferente
@@ -50,11 +49,13 @@ function carregarUsuarios() {
           <td>${usuario.telefone}</td>
           <td>${usuario.senha}</td>
           <td>${usuario.status}</td>
-          <td class="acoes">
-            <button class="btn-acoes">⋮</button>
-            <div class="menu-acoes oculto">
-              <button class="action-item">Remover</button>
-              <button class="action-item">Tornar Admin</button>
+          <td> 
+            <div class="user-actions">
+                <button class="action-toggle">⋮</button>
+                <div class="action-menu">
+                    <button class="action-item">Remover</button>
+                    <button class="action-item">Tornar Admin</button>
+                </div>
             </div>
           </td>
         `;

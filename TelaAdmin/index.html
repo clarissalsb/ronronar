@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Tela Admin</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+    <!-- Cabeçalho (menu) -->
+    <header class="menu">
+        <div class="menu-left">
+            <a href="../TelaInicial/index.html">
+                <img src="../imagens/Logo Projeto Ronronar.jpg" alt="Logo do projeto" class="logo" />
+            </a>
+            <nav class="nav-left">
+                <a href="#">Quem somos</a>
+                <a href="#">Apadrinhamento</a>
+                <a href="#">Doações</a>
+            </nav>
+        </div>
+        <nav class="nav-right">
+            <a href="../TelaLoginUser/index.html">Entrar</a>
+            <a href="../TelaCadastroUser/index.html" class="btn-cadastrar">Cadastre-se</a>
+        </nav>
+    </header>
+
+    <!-- Área principal -->
+    <main class="admin-container">
+        <h1>Painel de Administração</h1>
+        <!-- Conteúdo do painel de administração -->
+         <h2> Usuários Cadastrados</h2>
+         <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Senha</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Elias</td>
+                    <td>elias@jeiel.com</td>
+                    <td>(11) 99999-9999</td>
+                    <td>senha123</td>
+                    <td>Admin</td>
+                    <td>
+                        <div class="user-actions">
+                            <button class="action-toggle">⋮</button>
+                            <div class="action-menu">
+                                <button class="action-item">Remover</button>
+                                <button class="action-item">Remover Admin</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Cayky</td>
+                    <td>cayky@pereira.com</td>
+                    <td>(11) 98888-8888</td>
+                    <td>senha456</td>
+                    <td>Usuário</td>
+                    <td>
+                        <div class="user-actions">
+                            <button class="action-toggle">⋮</button>
+                            <div class="action-menu">
+                                <button class="action-item">Remover</button>
+                                <button class="action-item">Tornar Admin</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Saul</td>
+                    <td>saulzito@andrade.com</td>
+                    <td>(11) 97777-7777</td>
+                    <td>senha789</td>
+                    <td>Usuário</td>
+                    <td>
+                        <div class="user-actions">
+                            <button class="action-toggle">⋮</button>
+                            <div class="action-menu">
+                                <button class="action-item">Remover</button>
+                                <button class="action-item">Tornar Admin</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody id="user-table-body">
+
+            </tbody>
+        </table>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+       <p>
+        <a href="https://www.instagram.com/projeto.ronronar?utm_source=ig_web_button_share_sheet&igsh=MXdlcnhvOTMyODU1YQ==" target="_blank" class="insta-link">
+            <img src="../Imagens/Logo Instagram.jpg" alt="Instagram" />
+        </a>
+        Cada clique aqui aproxima um gatinho do lar que ele merece. <br>
+        Obrigado por fazer parte dessa rede de amor. 🐾
+    </p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

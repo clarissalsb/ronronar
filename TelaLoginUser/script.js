@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Chamar o back-end (caiaques)
-    fetch('https://ronronar.onrender.com/register/user', { // tocer pra esse funcionar
+    fetch('https://ronronar.onrender.com/login/user', { // tocer pra esse funcionar
       method: 'POST',
      headers: {
         'Content-Type': 'application/json',

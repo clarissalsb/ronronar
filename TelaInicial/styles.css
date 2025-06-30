@@ -1,0 +1,321 @@
+@import url('https://fonts.googleapis.com/css2?family=Averia+Serif+Libre&family=Baloo&family=Kaushan+Script&family=Leckerli+One&family=Miltonian&family=Miltonian+Tattoo&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #ECDFED;
+  color: #9B2AA6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cabeçalho */
+header.menu {
+  padding: 16px 24px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Baloo', cursive;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+}
+
+.menu-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-left a,
+.nav-right a {
+  color: #9B2AA6;
+  text-decoration: none;
+  margin-left: 16px;
+  font-size: 1.1rem;
+  transition: opacity 0.3s;
+}
+
+.nav-left a:first-child {
+  margin-left: 0;
+}
+
+.nav-left a:hover,
+.nav-right a:hover {
+  opacity: 0.7;
+}
+
+.nav-right .btn-cadastrar {
+  color: white
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+header.menu .logo {
+  height: 48px;
+}
+
+header.menu nav a {
+  color: #9B2AA6;
+  margin-left: 20px;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: opacity 0.3s;
+}
+
+header.menu nav a:hover {
+  opacity: 0.7;
+}
+
+.menu-left a:hover img{
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.logo {
+  height: 48px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  border-radius: 25px;
+}
+
+.btn-cadastrar {
+  padding: 8px 16px;
+  background-color: #9B2AA6;
+  border: 2px solid #9B2AA6;
+  border-radius: 8px;
+  font-family: 'Baloo', cursive;
+  transition: all 0.3s ease;
+}
+
+.btn-cadastrar:hover {
+  background-color: #7a1f7c;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Área principal */
+
+/* Banner */
+.banner {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    margin: 24px auto; 
+    padding: 0;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+}
+
+.banner img {
+    width: 100%;
+    height: 650px;
+    object-fit: cover;
+    border-radius: 24px;
+    filter: brightness(0.8);
+    display: block;
+}
+
+.banner-content {
+    position: absolute;
+    top: 150px;
+    left: 110px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 2;
+}
+
+.banner-content span {
+    color: #FCDC5C;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    line-height: 1.1;
+}
+
+/* Fontes do lettering do banner */
+.ajude{
+    font-family: 'Kaushan Script', cursive;
+}
+
+.sem {
+    font-family: 'Miltonian Tattoo', cursive;
+}
+
+.sair-de{
+    font-family: 'Leckerli One', cursive;
+}
+
+.casa {
+    font-family: 'Miltonian', cursive;
+}
+
+.apadrinhar-chamada {
+    background-color: #ECDFED;
+    padding: 32px 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-apadrinhar {
+    display: inline-block;
+    background-color: #9B2AA6;
+    color: white;
+    padding: 16px 14px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-family: 'Baloo', cursive;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 90%;
+    max-width: 800px;
+}
+
+.btn-apadrinhar:hover {
+    background-color: #7a1f7c;
+}
+
+/* grid dos cards */
+.cards-gatos {
+  padding: 64px 24px;
+  background-color: #ECDFED;
+  text-align: center;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto 32px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 230px;
+  width: 160px;
+  margin: 0 auto;
+}
+
+.card img {
+  width: 140px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.nome-gato {
+  margin-top: 8px;
+  font-family: 'Averia Serif Libre', serif;
+  font-size: 1rem;
+  font-weight: bold;
+  color: black;
+}
+
+.btn-ver-mais {
+  background-color: white;
+  color: #9B2AA6;
+  font-family: 'Baloo', cursive;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-ver-mais:hover {
+  transform: scale(1.05);
+}
+
+/* Por que apadrinhar */
+.por-que-apadrinhar {
+  padding: 64px 24px;
+  margin-bottom: 64px;
+  background-color: #ECDFED;
+  font-family: 'averia serif libre', serif;
+}
+
+.motivos-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: left;
+  justify-content: center;
+  gap: 24px;
+}
+
+.motivos-container h2 {
+  color: #9B2AA6;
+  font-size: 2.2rem;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 24px;
+  padding-left: 8px;
+}
+
+.motivo {
+  background-color: white;
+  padding: 16px 24px;
+  border-radius: 16px;
+  box-shadow: 3px 4px 0 #E98A14;
+  max-width: 300px;
+  flex: 1 1 280px;
+  font-size: 1rem;
+  text-align: left;
+  position: relative;
+}
+
+/* Rodapé */
+footer.footer {
+  margin-top: 64px;
+  padding: 12px;
+  text-align: center;
+  color: black;
+  font-family: 'Averia Serif Libre', serif;
+  background: white;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  font-size: 0.9rem;
+}
+
+footer.footer p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+footer.footer .insta-link img {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    transition: opacity 0.3s;
+}
+
+footer.footer .insta-link img:hover {
+    opacity: 0.7;
+}
+

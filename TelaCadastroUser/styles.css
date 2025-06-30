@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@400;700&family=Baloo&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Averia+Serif+Libre&family=Baloo&family=Kaushan+Script&family=Leckerli+One&family=Miltonian&family=Miltonian+Tattoo&display=swap');
+
 
 * {
   box-sizing: border-box;
@@ -17,12 +18,14 @@ body {
 /* Cabeçalho */
 header.menu {
   padding: 16px 24px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
   background: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-family: 'Baloo', cursive;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
 }
 
 .menu-left {
@@ -49,6 +52,10 @@ header.menu {
   opacity: 0.7;
 }
 
+.nav-right .btn-cadastrar {
+  color: white;
+}
+
 .nav-right {
   display: flex;
   align-items: center;
@@ -71,6 +78,33 @@ header.menu nav a:hover {
   opacity: 0.7;
 }
 
+.menu-left a:hover img{
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.logo {
+  height: 48px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  border-radius: 25px;
+}
+
+.btn-cadastrar {
+  padding: 8px 16px;
+  background-color: #9B2AA6;
+  border: 2px solid #9B2AA6;
+  border-radius: 8px;
+  font-family: 'Baloo', cursive;
+  transition: all 0.3s ease;
+}
+
+.btn-cadastrar:hover {
+  background-color: #7a1f7c;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 /* Área principal */
 main.cadastro-container {
   flex: 1;
@@ -85,7 +119,7 @@ main.cadastro-container {
   background: white;
   padding: 24px;
   border-radius: 16px;
-  box-shadow: 0 0 20px #E98A14;
+  box-shadow: 4px 4px 0 #E98A14;
   width: 100%;
   max-width: 420px;
 }

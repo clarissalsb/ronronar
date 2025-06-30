@@ -1,23 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.action-toggle').forEach(button => {
-        button.addEventListener('click', function (event) {
-        event.stopPropagation();
-        document.querySelectorAll('.action-menu').forEach(menu => {
-            if (menu !== this.nextElementSibling) {
-            menu.style.display = 'none';
-            }
-        });
-        const menu = this.nextElementSibling;
-        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        });
-    });
-    document.addEventListener('click', () => {
-        document.querySelectorAll('.action-menu').forEach(menu => {
-            menu.style.display = 'none';
-        });
-    });
-    // Função para carregar os usuários da API
-    function carregarUsuarios() {
+function carregarUsuarios() {
         fetch("http://localhost:3000/usuarios")
             .then(res => res.json())
             .then(usuarios => {
@@ -57,4 +38,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+document.addEventListener('DOMContentLoaded', (carregarUsuarios) => {
+    document.querySelectorAll('.action-toggle').forEach(button => {
+        button.addEventListener('click', function (event) {
+        event.stopPropagation();
+        document.querySelectorAll('.action-menu').forEach(menu => {
+            if (menu !== this.nextElementSibling) {
+            menu.style.display = 'none';
+            }
+        });
+        const menu = this.nextElementSibling;
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        });
+    });
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.action-menu').forEach(menu => {
+            menu.style.display = 'none';
+        });
+    });
 });

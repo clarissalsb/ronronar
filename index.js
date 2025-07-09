@@ -1,5 +1,5 @@
 import {DB} from './connect.js';
-
+import {bancoPets} from './connect.js';
 import jwt from 'jsonwebtoken';
 import express from 'express';
 import bodyParser from "body-parser";
@@ -26,7 +26,90 @@ app.get('/',(req,res)=>{
     res.send('Serviço de usuários está online');
 });
 
-//Função pra visualizar lista de usuários, precisa ser admin e do token para funcionar
+app.get('/pets',(req,res)=>{
+    res.status(200);
+    res.send('Serviço de pets está online')
+})
+
+
+app.get('/pets/listagem',(req,res)=>{
+  res.set('content-type', 'application/json');
+  
+  const sql ='SELECT * from pets';
+  let data={ pets: []};
+  bancoPets.all(sql,[],(err,rows)=>{
+    if(err){
+      console.error(err.message);
+      res.status(500).json({code:500,status:err.message});
+      return
+    }
+    rows.forEach(row=>{
+      data.pets.push({
+        id:row.pet_id,
+        nome:row.pet_nome,
+        idade:row.pet_idade,
+        saude:row.pet_saude,
+        vacinas:row.pet_vacinas,
+        caracteristicas:row.pet_caracteristicas,
+        descricao:row.pet_descricao
+      })
+    })
+    res.status(200).json(data);
+
+  })
+
+})
+app.post('/pets/registrar',checkAdmin,(req,res)=>{
+  res.set('content-type','application/json')
+  const {nome,idade,saude,vacinas,caracteristicas,descricao} = req.body;
+  console.log("Dados recebidos: ",req.body)
+  if(!nome || !idade || !saude || !vacinas || !caracteristicas || !descricao){
+    console.log("Dados incompletos")
+    return res.status(400).json({message: "Dados incompletos"});
+  }
+
+  const insertSql = 'INSERT INTO pets(pet_nome,pet_idade,pet_saude,pet_vacinas,pet_caracteristicas,pet_descricao) VALUES (?,?,?,?,?,?)'
+  bancoPets.run(insertSql,[nome,idade,saude,vacinas,caracteristicas,descricao],function(err){
+    if(err){
+      console.log("Erro ao inserir usuario")
+      return res.status(500).json({message:"Erro ao cadastrar usuário"});
+    }
+    const newId= this.lastID;
+    return res.status(201).json({
+      status:201,
+      sucess:true,
+      message:`Pet ${newId} cadastrado`
+    })
+  })
+})
+
+app.delete('/pets/deletar/:id',checkAdmin,(req,res)=>{
+  res.set('content-type','application/json');
+  const petId=req.params.id;
+
+  const deletesql='DELETE FROM PETS WHERE pet_id=?'
+  try{
+    bancoPets.run(deletesql,[petId],function(err){
+      if(err){
+         console.log("Erro ao remover pet")
+      return res.status(500).json({message:"Erro ao deletar pet"});
+      }
+      if(this.changes === 1){
+        res.status(200);
+        res.send({message:`Pet ${petId} foi removido com sucesso`});
+      }else{
+        res.status(200);
+        res.send({"message":"Sem operação necessária"})
+      }
+    })
+  }
+  catch(err){
+    console.log(err.message);
+    res.status(468);
+    res.send({code:468, status:`${err.message}`});
+  }
+})
+
 app.get('/api/:type',checkAdmin, (req, res) => {
   const type = req.params.type;
 
@@ -47,7 +130,7 @@ app.get('/api/:type',checkAdmin, (req, res) => {
           nome: row.user_nome,
           email: row.user_email,
           telefone: row.user_telefone,
-          isAdmin: row.is_admin === 1
+          isAdmin: row.is_admin === 0
 
         });
       });
@@ -58,7 +141,6 @@ app.get('/api/:type',checkAdmin, (req, res) => {
   }
 });
 
-//função para checar se o usuário está autenticado ou nao
 app.get('/dashboard',(req,res)=>{
     const authHeader=req.headers.authorization;
 
@@ -75,8 +157,6 @@ app.get('/dashboard',(req,res)=>{
         return res.status(401).json({msg:"Authentication Failed"})
     }
 })
-
-//função para login, com type sendo user, ou seja /login/user
 app.post('/login/:type',(req,res)=>{
     const type=  req.params.type
     if(type ==="user"){
@@ -111,7 +191,6 @@ app.post('/login/:type',(req,res)=>{
     }
 })
 
-//funçao para registrar, novamente com type sendo user
 app.post('/register/:type', (req, res) => {
   const type = req.params.type;
   res.set('content-type', 'application/json');
@@ -142,7 +221,7 @@ app.post('/register/:type', (req, res) => {
     }
 
     const insertSql = 'INSERT INTO users(user_nome, user_email, user_telefone, user_senha, is_admin) VALUES (?, ?, ?, ?, ?)';
-    DB.run(insertSql, [nome, email, telefone, senha, 1], function (err) {
+    DB.run(insertSql, [nome, email, telefone, senha, 0], function (err) {
       if (err) {
         console.error("Erro ao inserir usuário:", err.message);
         return res.status(500).json({ message: "Erro ao salvar usuário" });
@@ -159,7 +238,8 @@ app.post('/register/:type', (req, res) => {
   });
 });
 
- //função para transformar um usuario em admin, precisando de token para isso, e o id do usuario que vai ser promovido
+
+ 
 app.patch('/promoveradmin/:id', checkAdmin, (req, res) => {
   res.set('content-type', 'application/json');
 
@@ -195,7 +275,7 @@ app.patch('/promoveradmin/:id', checkAdmin, (req, res) => {
   });
 });
 
-//função para remover usuario, precisando do id do usuario, ficando assim /user/1 por exemplo
+
 app.delete('/user/:id',checkAdmin,(req,res)=>{
   
     res.set('content-type','application/json');
@@ -210,7 +290,7 @@ app.delete('/user/:id',checkAdmin,(req,res)=>{
                 res.send({message:`Usuario ${userId} foi removido da lista.`}); 
             }else{
                res.status(200);
-               res.send({"message":"Sem operação necesária."}); 
+               res.send({"message":"Sem operação necessária."}); 
             }
         })
     }
@@ -221,8 +301,6 @@ app.delete('/user/:id',checkAdmin,(req,res)=>{
     }
 }
 );
-
-//função para rodar o servidor
 const PORT = process.env.PORT || 3001;
 app.listen(PORT,(err)=>{
     if(err){

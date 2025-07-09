@@ -65,11 +65,11 @@ CD ronronar
 
  |  ID  |           Título            |    Descrição     | Status |
  |------|-----------------------------|------------------|--------|
- | RF01 | Autenticar Usuário          |O usuário deve poder realizar login usando e-mail e senha. O sistema deve manter o usuário autenticado.                  |        |
- | RF02 | Cadastrar Usuário           |O usuário deve poder realizar o cadastro com nome, e-mail e senha. O sistema deve checar se o e-mail já está em uso.                  |        |
- | RF03 | Remover Usuário             |A voluntária deve poder remover usuários inativos          |        |
+ | RF01 | Autenticar Usuário          |O usuário deve poder realizar login usando e-mail e senha. O sistema deve manter o usuário autenticado.                  |    ✔️    |
+ | RF02 | Cadastrar Usuário           |O usuário deve poder realizar o cadastro com nome, e-mail e senha. O sistema deve checar se o e-mail já está em uso.                  |    ✔️    |
+ | RF03 | Remover Usuário             |A voluntária deve poder remover usuários inativos          |    ✔️    |
  | RF04 | Editar Dados                |O usuário deve ser capaz de alterar sua senha, no cenário em que ele esqueça seus dados, por meio de um processo de recuperação.                  |        |
- | RF05 | Função de Admin               |O sistema deve permitir que administradores gerenciem usuários.                  |        |
+ | RF05 | Função de Admin               |O sistema deve permitir que administradores gerenciem usuários.                  |    ✔️    |
  | RF06 | Cadastrar pet             |O usuário deve ser capaz de inserir e armazenar dados do pet, como registros médicos, peso e idade.                  |        |
  | RF07 | Editar dados do pet            |As voluntárias devem ser capazes de alterar dados do pet, como idade, peso e registros médicos.              |        |
  | RF08 | Inserir Imagens            |O usuário deve ser capaz de enviar imagens para a aplicação.                |        |

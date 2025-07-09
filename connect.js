@@ -29,4 +29,35 @@ DB.run(sql,[],(err)=>{
     console.log('TABELA CRIADA')
 });
 
+function connected2(err){
+    if(err){
+        return new Error();
+    }
+    console.log("Conectado ao bancoPets ou bancoPets já existe")
+    }
+
+
+const bancoPets = new sql3.Database('./mydataPets.db',sqlite3.OPEN_READWRITE,connected2);
+
+
+let sqlPets = `CREATE TABLE IF NOT EXISTS pets(
+    pet_id INTEGER PRIMARY KEY,
+    pet_nome TEXT NOT NULL,
+    pet_idade TEXT NOT NULL,
+    pet_saude TEXT NOT NULL,
+    pet_vacinas TEXT NOT NULL,
+    pet_caracteristicas TEXT NOT NULL,
+    pet_descricao TEXT NOT NULL
+)`;
+
+bancoPets.run(sqlPets,[],(err)=>{
+    if(err){
+      {console.log(`erro criando tabela de pets`)};
+      return
+    }
+    console.log('TABELA DE PETS CRIADA');
+})
+
+
 export {DB};
+export {bancoPets};

@@ -83,6 +83,41 @@ app.post('/pets/registrar',checkAdmin,(req,res)=>{
   })
 })
 
+app.put('/pets/editar/:id',checkAdmin,(req,res)=>{
+  res.set('content-type','application/json');
+  const petId=req.params.id;
+  const {nome,idade,saude,vacinas,caracteristicas,descricao} = req.body;
+  console.log("Dados recebidos:",req.body);
+
+  if(!nome || !saude || !vacinas || !caracteristicas || !descricao){
+    console.log("Dados incompletos");
+    return res.status(400).json({message:"dados incompletos"});
+  }
+  const checkSql='SELECT * from pets WHERE pet_id = ?';
+  bancoPets.get(checkSql,[petId],(err,row)=>{
+    if(err){
+      console.error(err);
+      return res.status(500).json({message: 'Erro no servidor'}); 
+    }
+    if(!row){
+      return res.status(404).json({messsage:'Usuário não encontrado'});
+
+    }
+    const editSql='UPDATE pets SET pet_nome = ?, pet_idade = ?, pet_saude = ?, pet_vacinas = ?, pet_caracteristicas = ?, pet_descricao = ? WHERE pet_id=? '
+    bancoPets.run(editSql,[nome,idade,saude,vacinas,caracteristicas,descricao,petId],function(err){
+      if(err){
+        console.error(err);
+        return res.status(500).json({message:'Erro ao editar pet'});
+      }
+      
+      res.status(200).json({
+        message:`Pet ${petId} foi editado`
+        
+      })
+    })
+  })
+})
+
 app.delete('/pets/deletar/:id',checkAdmin,(req,res)=>{
   res.set('content-type','application/json');
   const petId=req.params.id;

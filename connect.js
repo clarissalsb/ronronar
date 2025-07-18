@@ -58,6 +58,29 @@ bancoPets.run(sqlPets,[],(err)=>{
     console.log('TABELA DE PETS CRIADA');
 })
 
+const bancoImagensPets = new sql3.Database('./mydataUploadsPets.db',sqlite3.OPEN_READWRITE,connected3)
+
+let sqlUploads= `CREATE TABLE IF NOT EXISTS imagens_pets(
+    imagem_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    pet_id INTEGER,
+    imagem TEXT,
+    FOREIGN KEY (pet_id) REFERENCES pets(pet_id)
+)`;
+
+bancoImagensPets.run(sqlUploads,[],(err)=>{
+    if(err){
+    {console.log(`erro criando tabela de imagens de pets`)};
+      return
+    }
+    console.log('TABELA DE IMAGENS DE PETS CRIADA')
+})
+function connected3(err){
+    if(err){
+        return new Error();
+    }
+    console.log("Conectado ao bancoImagensPets ou bancoImagensPets já existe")
+    }
 
 export {DB};
 export {bancoPets};
+export {bancoImagensPets};

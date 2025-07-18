@@ -1,11 +1,15 @@
 import {DB} from './connect.js';
 import {bancoPets} from './connect.js';
+import {bancoImagensPets} from './connect.js';
 import jwt from 'jsonwebtoken';
 import express from 'express';
 import bodyParser from "body-parser";
 import cors from 'cors';
 import dotenv from 'dotenv'
 import {checkAdmin} from './middlewares/checkadmin.js';
+import multer from 'multer';
+import fs from 'fs';
+import path from 'path';
 
 
 
@@ -17,6 +21,34 @@ const router = express.Router();
   //allowedHeaders: ['Content-Type', 'Authorization'],
   //credentials: true
 //};
+
+const storage = multer.diskStorage({
+  destination: function(req,file,cb){
+    cb(null, 'middlewares/uploads');
+  },
+  filename: function(req,file,cb){
+    const uniqueSuffix=Date.now()+ '-'+Math.round(Math.random()*1e9);
+    const ext = path.extname(file.originalname); // .jpg, .png, etc
+    const nomeSemExt = path.basename(file.originalname, ext);
+        cb(null, nomeSemExt + '-' + uniqueSuffix + ext);
+  }
+  
+})
+const fileFilter= (req,file,cb)=>{
+    if(file.mimetype == "image/png" || file.mimetype =="image/jpeg" || file.mimetype =="image/webp"){
+      cb(null,true);
+    }
+    else{
+       cb(new Error('Formato de arquivo não suportado, favor, inserir apenas arquivos jpg, png ou webp'), false);
+    }
+  }
+const maxSize=5*1024*1024;
+
+const upload= multer({
+  storage,
+  fileFilter,
+  limits:{fileSize:maxSize}
+});
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -59,6 +91,73 @@ app.get('/pets/listagem',(req,res)=>{
   })
 
 })
+
+
+
+
+app.post("/pet/upload/:id",checkAdmin,(req,res)=>{
+  const petId=req.params.id;
+  upload.array("imagempet",10)(req,res,(err)=>{
+   if(err instanceof multer.MulterError){
+     return res.status(500).json({message:err.message});
+  }
+  else if(err){
+      console.error(err);
+      return res.status(500).json({message: 'Erro ao inserir imagem'}); 
+  }
+  const arquivos= req.files;
+  if(!arquivos || arquivos.length ===0){
+    return res.status(500).json({message:"Nenhuma mensagem enviada"});
+  }
+  const insertSql = 'INSERT INTO imagens_pets(pet_id,imagem) values (?,?)'
+  let insercoesConcluidas = 0;
+  let erroOcorrido = [];
+  
+  for(const file of arquivos){
+  
+  bancoImagensPets.run(insertSql,[petId,file.path],function(err){
+     if(err){
+      console.log("Erro ao inserir imagem",err.message);
+      erroOcorrido.push(file.originalname);
+    }
+    insercoesConcluidas++;
+  if(insercoesConcluidas === arquivos.length){  
+   console.log(req.files);
+  if(erroOcorrido.length>0){
+    console.log("Erros ocorreram nas seguintes imagens:");
+    for(const nome of erroOcorrido){
+      console.log("-"+nome);
+    }
+    
+  }  
+   res.status(201).json({
+        status: 201,
+        success: true,
+        message: 'Multiplas imagens inseridas com sucesso'
+      });
+    }
+  })
+}
+})
+});
+
+
+
+
+app.delete("/pet/upload/delete/:imagem",async (req,res)=>{
+
+  const nomedaimagem=req.params.imagem
+  const caminho = path.join('middlewares','uploads',nomedaimagem);
+  fs.unlink(caminho,(err)=>{
+    if(err){
+      console.error(err);
+      return res.status(500).json({ message:'Erro ao deletar imagem'});
+    }
+    res.status(200).send('Arquivo deletado com sucesso');
+  })
+  
+})
+
 app.post('/pets/registrar',checkAdmin,(req,res)=>{
   res.set('content-type','application/json')
   const {nome,idade,saude,vacinas,caracteristicas,descricao} = req.body;
@@ -336,6 +435,9 @@ app.delete('/user/:id',checkAdmin,(req,res)=>{
     }
 }
 );
+
+
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT,(err)=>{
     if(err){

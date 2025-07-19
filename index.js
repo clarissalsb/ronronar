@@ -10,8 +10,8 @@ import {checkAdmin} from './middlewares/checkadmin.js';
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
-
-
+import nodemailer from 'nodemailer';
+import xoauth2 from 'xoauth2';
 
 const app = express();
 const router = express.Router();
@@ -49,6 +49,37 @@ const upload= multer({
   fileFilter,
   limits:{fileSize:maxSize}
 });
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    xoauth2:xoauth2.createXoauth2Generator({
+      user: 'ronronar.suporte@gmail.com',
+      clientId: '',
+      clientSecret:'',
+      resetToken:''
+    })
+  }
+})
+const mailOption = {
+    from: 'Ronronar <ronronar.suporte@gmail.com',
+    to: 'mission.tawryd@gmail.com',
+    subject: 'Mudança de senha',
+    text: 'Hello world'
+}
+
+transporter.sendMail(mailOptions, function(err,res){
+  if(err){
+    console.log('Error');
+  }else {
+    console.log('Email sent')
+  }
+
+})
+
+
+
+
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -144,7 +175,7 @@ app.post("/pet/upload/:id",checkAdmin,(req,res)=>{
 
 
 
-app.delete("/pet/upload/delete/:imagem",async (req,res)=>{
+app.delete("/pet/upload/delete/:imagem",checkAdmin,async (req,res)=>{
 
   const nomedaimagem=req.params.imagem
   const caminho = path.join('middlewares','uploads',nomedaimagem);
@@ -153,7 +184,7 @@ app.delete("/pet/upload/delete/:imagem",async (req,res)=>{
 
     await bancoImagensPets.run('DELETE FROM imagens_pets WHERE imagem = ?', [caminho])
 
-    res.status(200).send('Arquivo deletado com sucesso');
+    res.status(200).json({sucess:true,message:'Arquivo deletado com sucesso'});
 
   }catch(error){
     console.error(error);
@@ -376,6 +407,26 @@ app.post('/register/:type', (req, res) => {
   });
 });
 
+app.post('/esqueciminhasenha',(req,res)=>{
+  res.set('content-type','application/json');
+  const {email}= req.body;
+  if(!email){
+      return res.status(500).json({message :"Dados incompletos"})
+  }
+
+  const loginSql= 'SELECT * FROM users WHERE user_email = ?';
+  DB.get(loginSql,[email],(err,row)=>{
+    if(err){
+      console.error(err.message);
+      return res.status(500).json({message:"Erro no servidor"});
+    }
+    if(!row){
+        return res.status(500).json({message:"Usuario não encontrado"});
+    }
+  
+  const tokenreset =jwt.sign({email,id:row.user_id},process.env.JWT_SECRET,{expiresIn:'1h'});
+})
+})
 
  
 app.patch('/promoveradmin/:id', checkAdmin, (req, res) => {

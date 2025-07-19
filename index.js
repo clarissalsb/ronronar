@@ -148,13 +148,17 @@ app.delete("/pet/upload/delete/:imagem",async (req,res)=>{
 
   const nomedaimagem=req.params.imagem
   const caminho = path.join('middlewares','uploads',nomedaimagem);
-  fs.unlink(caminho,(err)=>{
-    if(err){
-      console.error(err);
-      return res.status(500).json({ message:'Erro ao deletar imagem'});
-    }
+  try{
+    fs.unlinkSync(caminho);
+
+    await bancoImagensPets.run('DELETE FROM imagens_pets WHERE imagem = ?', [caminho])
+
     res.status(200).send('Arquivo deletado com sucesso');
-  })
+
+  }catch(error){
+    console.error(error);
+    res.status(500).json({message: 'Erro ao deletar imagem ou registro no banco de dados'})
+  }
   
 })
 

@@ -26,6 +26,7 @@ app.get('/',(req,res)=>{
     res.send('Serviço de usuários está online');
 });
 
+//Função pra visualizar lista de usuários, precisa ser admin e do token para funcionar
 app.get('/api/:type',checkAdmin, (req, res) => {
   const type = req.params.type;
 
@@ -57,6 +58,7 @@ app.get('/api/:type',checkAdmin, (req, res) => {
   }
 });
 
+//função para checar se o usuário está autenticado ou nao
 app.get('/dashboard',(req,res)=>{
     const authHeader=req.headers.authorization;
 
@@ -73,6 +75,8 @@ app.get('/dashboard',(req,res)=>{
         return res.status(401).json({msg:"Authentication Failed"})
     }
 })
+
+//função para login, com type sendo user, ou seja /login/user
 app.post('/login/:type',(req,res)=>{
     const type=  req.params.type
     if(type ==="user"){
@@ -107,6 +111,7 @@ app.post('/login/:type',(req,res)=>{
     }
 })
 
+//funçao para registrar, novamente com type sendo user
 app.post('/register/:type', (req, res) => {
   const type = req.params.type;
   res.set('content-type', 'application/json');
@@ -154,7 +159,7 @@ app.post('/register/:type', (req, res) => {
   });
 });
 
- 
+ //função para transformar um usuario em admin, precisando de token para isso, e o id do usuario que vai ser promovido
 app.patch('/promoveradmin/:id', checkAdmin, (req, res) => {
   res.set('content-type', 'application/json');
 
@@ -190,7 +195,7 @@ app.patch('/promoveradmin/:id', checkAdmin, (req, res) => {
   });
 });
 
-
+//função para remover usuario, precisando do id do usuario, ficando assim /user/1 por exemplo
 app.delete('/user/:id',checkAdmin,(req,res)=>{
   
     res.set('content-type','application/json');
@@ -216,6 +221,8 @@ app.delete('/user/:id',checkAdmin,(req,res)=>{
     }
 }
 );
+
+//função para rodar o servidor
 const PORT = process.env.PORT || 3001;
 app.listen(PORT,(err)=>{
     if(err){

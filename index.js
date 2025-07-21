@@ -49,35 +49,7 @@ const upload= multer({
   fileFilter,
   limits:{fileSize:maxSize}
 });
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    xoauth2:xoauth2.createXoauth2Generator({
-      user: 'ronronar.suporte@gmail.com',
-      clientId: '',
-      clientSecret:'',
-      resetToken:''
-    })
-  }
-})
-const mailOption = {
-    from: 'Ronronar <ronronar.suporte@gmail.com',
-    to: 'mission.tawryd@gmail.com',
-    subject: 'Mudança de senha',
-    text: 'Hello world'
-}
-
-transporter.sendMail(mailOptions, function(err,res){
-  if(err){
-    console.log('Error');
-  }else {
-    console.log('Email sent')
-  }
-
-})
-
-
+const tokenPorEmail ={}
 
 
 
@@ -407,7 +379,7 @@ app.post('/register/:type', (req, res) => {
   });
 });
 
-app.post('/esqueciminhasenha',(req,res)=>{
+app.post('/auth/esqueci-minha-senha',(req,res)=>{
   res.set('content-type','application/json');
   const {email}= req.body;
   if(!email){
@@ -424,10 +396,122 @@ app.post('/esqueciminhasenha',(req,res)=>{
         return res.status(500).json({message:"Usuario não encontrado"});
     }
   
-  const tokenreset =jwt.sign({email,id:row.user_id},process.env.JWT_SECRET,{expiresIn:'1h'});
+   const tokenReset =jwt.sign({email,id:row.user_id},process.env.JWT_SECRET,{expiresIn:'1h'});
+   tokenPorEmail[email]=tokenReset;
+   const transporter = nodemailer.createTransport({
+    service: 'gmail',
+     auth: {
+      type: 'OAuth2',
+      user: 'ronronar.suporte@gmail.com',
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret:process.env.GOOGLE_CLIENT_SECRET,
+      refreshToken:process.env.GOOGLE_REFRESH_TOKEN
+           },
+      tls:{
+        rejectUnauthorized:false
+      },     
+      secure:true
+        })
+
+  const mailOptions = {
+    from: 'Ronronar <ronronar.suporte@gmail.com>',
+    to: email,
+    subject: 'Mudança de senha',
+    html: `  
+      <p>Clique no link abaixo para redefinir sua senha (expira em 1h):</p>
+      <a href="https://seusite.com/reset-password?token=${tokenReset}">
+      Redefinir senha
+      </a> `
+}
+
+transporter.sendMail(mailOptions, function(err,response){
+  if(err){
+      console.error('Erro ao enviar e-mail:', err);
+        return res.status(500).json({ 
+          success: false,
+          message: "Falha ao enviar e-mail"
+        });
+  }
+  res.json({
+    sucess:true,
+    message:"Email enviado com sucesso!",
+    token:tokenReset
+  })
+
 })
+   
+  
+  })
 })
 
+app.get('/auth/validar-reset-token',(req,res)=>{
+    const authHeader=req.headers.authorization
+
+    if(!authHeader || !authHeader.startsWith("Bearer")){
+      return res.status(401).json({msg:"No token provided"})
+    }
+    const token = authHeader.split(' ')[1];
+    try{
+      const decoded=jwt.verify(token,process.env.JWT_SECRET);
+      const {email} = decoded;
+      res.status(200).json({msg:email})
+    }
+    catch(err){
+      return res.status(401).json({msg:"Authentication Failed!"})
+    }
+})
+
+app.patch('/auth/editarsenha',(req,res)=>{
+  res.set('content-type','application/json');
+  const authHeader=req.headers.authorization;
+
+  if(!authHeader || !authHeader.startsWith("Bearer")){
+    return res.status(401).json({msg:"No token provided"})
+  }
+  const token = authHeader.split(' ')[1];
+  let email;
+    try{
+      const decoded=jwt.verify(token,process.env.JWT_SECRET);
+      email = decoded.email;
+      
+    }
+    catch(err){
+      return res.status(401).json({msg:"Authentication Failed!"})
+    }
+  const {novasenha}= req.body;
+  if(!novasenha){
+return res.status(400).send(JSON.stringify({ message: "Dados incompletos" }));
+  }  
+
+  const sql = 'SELECT * FROM users WHERE user_email = ?';
+
+  DB.get(sql, [email], (err,row)=>{
+    if(err){
+      console.error(err.message);
+      return res.status(500).send({message:"Erro no servidor"})
+    }
+   if(!row){
+    return res.status(401).send({message: "Usuario nao encontradfo"})
+   }
+  if(row.user_senha == novasenha){
+    return res.status(401).send({message:"Mesma senha que a anterior, por favor mude"});
+
+  }
+  const editsql= 'UPDATE users SET user_senha = ? WHERE user_email = ?';
+  DB.run(editsql, [novasenha, email],function(err){
+    if(err){
+      console.error(err);
+      return res.status(500).json({message: 'Erro ao atualizar senha'});
+
+    }
+  res.status(200).json({
+    sucess:true,
+    message: 'Senha alterada com sucesso'
+  })
+  })
+  })
+
+})
  
 app.patch('/promoveradmin/:id', checkAdmin, (req, res) => {
   res.set('content-type', 'application/json');
@@ -463,6 +547,28 @@ app.patch('/promoveradmin/:id', checkAdmin, (req, res) => {
     });
   });
 });
+
+app.put('editarUsuario/:id',(req,res)=>{
+  res.set('content-type','application/json');
+  const userId=req.params.id;
+  const{nome,email,telefone,senha}= req.body;
+  console.log("Dados recebidos:",req.body);
+
+  if(!nome || !email|| !telefone || !senha){
+    console.log("Dados incompletos");
+    return res.status(400).json({message:"Dados incompletos"});
+  }
+
+  const sql= 'SELECT * from pets WHERE user_id ? ';
+  DB.get(sql,[userId],(err,row)=>{
+    if(err){
+      console.error(err);
+      return res.status(500).json({message:'Erro no servidor'});
+    }
+
+
+  })
+})
 
 
 app.delete('/user/:id',checkAdmin,(req,res)=>{

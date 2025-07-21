@@ -1,6 +1,11 @@
 import {DB} from './connect.js';
 import {bancoPets} from './connect.js';
 import {bancoImagensPets} from './connect.js';
+import { bancoImagensUsers } from './connect.js';
+import {apadrinhamentos2} from './connect.js';
+import {planos} from './connect.js';
+import { doacoes } from './connect.js';
+import { relatorios } from './connect.js';
 import jwt from 'jsonwebtoken';
 import express from 'express';
 import bodyParser from "body-parser";
@@ -271,7 +276,7 @@ app.get('/api/:type',checkAdmin, (req, res) => {
           nome: row.user_nome,
           email: row.user_email,
           telefone: row.user_telefone,
-          isAdmin: row.is_admin === 0
+          isAdmin: row.is_admin === 1
 
         });
       });
@@ -548,7 +553,7 @@ app.patch('/promoveradmin/:id', checkAdmin, (req, res) => {
   });
 });
 
-app.put('editarUsuario/:id',(req,res)=>{
+app.put('/editarUsuario/:id',(req,res)=>{
   res.set('content-type','application/json');
   const userId=req.params.id;
   const{nome,email,telefone,senha}= req.body;
@@ -559,15 +564,108 @@ app.put('editarUsuario/:id',(req,res)=>{
     return res.status(400).json({message:"Dados incompletos"});
   }
 
-  const sql= 'SELECT * from pets WHERE user_id ? ';
-  DB.get(sql,[userId],(err,row)=>{
+  const sql= 'SELECT user_id from users WHERE user_email = ? AND user_id !=? ';
+  DB.get(sql,[email,userId],(err,row)=>{
     if(err){
       console.error(err);
       return res.status(500).json({message:'Erro no servidor'});
     }
+    if(row){
+      return res.status(404).json({message:'Email já em uso por outro usuário'})
 
+    }
+    const editSql= 'UPDATE users SET user_nome = ?, user_email = ?, user_telefone = ?, user_senha = ? WHERE user_id=? '
+    DB.run(editSql, [nome,email,telefone,senha,userId],function(err){
+      if(err){
+        console.error(err);
+        return res.status(500).json({message:'Erro ao editar usuario'})
+      }
+      res.status(200).json({
+        message:'Usuario foi editado',
+        sucess:true
+      })
+    })
 
   })
+})
+
+app.post("/user/upload/:id",(req,res)=>{
+  const userId=req.params.id;
+  upload.single("imagemuser")(req,res,(err)=>{
+    if(err instanceof multer.MulterError){
+      return res.status(500).json({message:err.message});
+    }
+    else if(err){
+      console.error(err);
+      return res.status(500).json({message:'Erro ao inserir imagem'})
+    }
+    const arquivo = req.file;
+    if(!arquivo){
+      return res.status(500).json({message:"Nenhuma imagem foi inserida"});
+
+    }
+    const insertsql= 'INSERT INTO imagens_users(user_id,imagem) values (?,?)'
+    bancoImagensUsers.run(insertsql,[userId,arquivo.path],function(err){
+      if(err){
+        console.log("Erro ao inserir imagem",err.message);
+
+      }
+      res.status(201).json({
+        status:201,
+        sucess:true,
+        message: 'Imagem inserida com sucesso'
+      })
+    })
+  })
+})
+app.patch("/user/upload/edit/:id",(req,res)=>{
+  const userId=req.params.id;
+  upload.single("imagemuser")(req,res,(err)=>{
+    if(err instanceof multer.MulterError){
+      return res.status(500).json({message:err.message});
+    }
+    else if(err){
+      console.error(err);
+      return res.status(500).json({message:'Erro ao inserir imagem'})
+    }
+    const arquivo = req.file;
+    if(!arquivo){
+      return res.status(500).json({message:"Nenhuma imagem foi inserida"});
+
+    }
+   const selectSQL = "SELECT imagem FROM imagens_users WHERE user_id = ?";
+    bancoImagensUsers.get(selectSQL, [userId], (err, row) => {
+      if (err) {
+        console.log("Erro ao buscar imagem antiga:", err.message);
+        return res.status(500).json({ message: "Erro ao buscar imagem antiga" });
+      }
+
+  
+      if (row && row.imagem) {
+        const caminhoAntigo = row.imagem;
+        fs.unlink(caminhoAntigo, (err) => {
+          if (err) {
+            console.warn("Não foi possível remover imagem antiga (talvez já não exista):", err.message);
+          } else {
+            console.log("Imagem antiga removida com sucesso.");
+          }
+        });
+      }
+   
+    const insertsql= 'UPDATE imagens_users SET imagem = ? WHERE user_id = ? ';
+    bancoImagensUsers.run(insertsql,[arquivo.path,userId],function(err){
+      if(err){
+        console.log("Erro ao editar imagem de perfil",err.message);
+
+      }
+      res.status(201).json({
+        status:201,
+        sucess:true,
+        message: 'Imagem de perfil editada com sucesso'
+      })
+    })
+  })
+})
 })
 
 
@@ -597,7 +695,238 @@ app.delete('/user/:id',checkAdmin,(req,res)=>{
 }
 );
 
+app.post('/apadrinhar',(req,res)=>{
+res.set('content-type','application/json')
+const {user_id,pet_id,plano_id}=req.body
 
+if(!user_id || !pet_id || !plano_id ){
+  return res.status(400).json({error:'Dados Obrigatórios faltando'})
+}
+
+
+const insertSql= 'INSERT INTO apadrinhamentos (user_id, pet_id, plano_id, data_inicio, ativo) VALUES (?, ?, ?, CURRENT_TIMESTAMP, 1);'
+
+apadrinhamentos2.run(insertSql,[user_id,pet_id,plano_id],function(err){
+  if(err){
+    console.log("Erro ao inserir imagem", err.message);
+  }
+  res.status(201).json({
+    sucess:true,
+    message:'Apadrinhamento bem sucedido',
+    apadrinhamento_id: this.lastID
+  })
+})
+})
+
+app.patch('/apadrinhar/desativar/:id',(req,res)=>{
+  const Id=req.params.id;
+  const selectSQL= "SELECT * FROM apadrinhamentos WHERE id = ? "
+  apadrinhamentos2.get(selectSQL,[Id],(err,row)=>{
+    if(err){
+      console.error(err);
+      return res.status(500).json({message:'Erro no servidor'})
+    }
+    if(!row){
+      return res.status(404).json({message:'Apadrinhamento nao encontrado'})
+    }
+    const sql = 'UPDATE apadrinhamentos SET ativo = ? WHERE id = ?';
+    apadrinhamentos2.run(sql,[0,Id],function(err){
+      if(err){
+        console.error(err);
+        return res.status(500).json({message: 'Erro ao desativar'})
+      }
+      res.status(200).json({
+        message: `Apadrinhamento ${Id} foi desativado `
+      })
+    })
+  })
+})
+
+
+app.get('/padrinhos/:id/apadrinhamentos', (req, res) => {
+  const userId = req.params.id;
+
+  const sqlApadrinhamentos = `
+    SELECT 
+      id AS apadrinhamento_id,
+      pet_id,
+      plano_id,
+      data_inicio,
+      ativo
+    FROM apadrinhamentos
+    WHERE user_id = ?
+    ORDER BY data_inicio DESC
+  `;
+
+  apadrinhamentos2.all(sqlApadrinhamentos, [userId], (err, rows) => {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).json({ error: 'Erro ao buscar apadrinhamentos' });
+    }
+
+    if (!rows || rows.length === 0) {
+      return res.status(404).json({ message: 'Nenhum apadrinhamento encontrado para esse padrinho' });
+    }
+
+    const results = [];
+    let pending = rows.length;
+
+    rows.forEach(apad => {
+      bancoPets.get('SELECT * FROM pets WHERE pet_id = ?', [apad.pet_id], (errPet, pet) => {
+        if (errPet || !pet) {
+          pet = { error: 'Pet não encontrado' };
+        }
+
+        planos.get('SELECT * FROM planos WHERE id = ?', [apad.plano_id], (errPlano, plano) => {
+          if (errPlano || !plano) {
+            plano = { error: 'Plano não encontrado' };
+          }
+
+          results.push({
+            ...apad,
+            pet,
+            plano
+          });
+
+          pending--;
+          if (pending === 0) {
+            res.status(200).json({
+              user_id: userId,
+              historico: results
+            });
+          }
+        });
+      });
+    });
+  });
+});
+
+app.post('/registrardoacao',checkAdmin,(req,res)=>{
+  res.set('content-type','application/json')
+  const {valor,data,forma,doador} = req.body;
+  console.log("Dados recebidos:",req.body);
+  if(!valor|| !data || !forma || !doador){
+    console.log("Dados incompletos");
+    return res.status(404).json({message:"Dados ncompeltos"})
+  }
+  const insertSql ='INSERT INTO doacoes(doacao_valor,doacao_data,doacao_forma,doacao_doador)VALUES(?,?,?,?)'
+  doacoes.run(insertSql,[valor,data,forma,doador],function(err){
+    if(err){
+      console.error("Erro ao registrar doacao",err.message)
+      return res.status(500).json({ message: "Erro ao salvar usuário" });
+
+    }
+    return res.status(201).json({
+        status: 201,
+        success: true,
+        message: 'Doaçao registrada'
+      });
+  })
+})
+
+app.post('/relatorios', checkAdmin, (req, res) => {
+  upload.array('imagens', 5)(req, res, (err) => {
+    if (err) {
+      console.error('Erro no upload de arquivos:', err);
+      return res.status(400).json({ message: 'Erro no upload de arquivos', error: err.message });
+    }
+
+    const { apadrinhamento_id, titulo, mensagem } = req.body;
+    const imagens = req.files || [];
+
+    // Continue com sua lógica aqui...
+    const sqlGetUserId = 'SELECT user_id FROM apadrinhamentos WHERE id = ?';
+    apadrinhamentos2.get(sqlGetUserId, [apadrinhamento_id], (err, apad) => {
+      if (err) return res.status(500).json({ message: 'Erro ao buscar apadrinhamento', error: err.message });
+      if (!apad) return res.status(404).json({ message: 'Apadrinhamento não encontrado', error: err.message });
+
+      const userId = apad.user_id;
+
+      const sqlGetEmail = 'SELECT user_email FROM users WHERE user_id = ?';
+      DB.get(sqlGetEmail, [userId], (err, user) => {
+        if (err) return res.status(500).json({ message: 'Erro ao buscar email do padrinho', error: err.message });
+        if (!user) return res.status(404).json({ message: 'Usuário não encontrado', error: err.message });
+
+        const email = user.user_email;
+
+        const sqlInsertRelatorio = `
+          INSERT INTO relatorios (apadrinhamento_id, titulo, mensagem)
+          VALUES (?, ?, ?)
+        `;
+        relatorios.run(sqlInsertRelatorio, [apadrinhamento_id, titulo, mensagem], function (err) {
+          if (err) return res.status(500).json({ message: 'Erro ao registrar relatório', error: err.message });
+
+          const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              type: 'OAuth2',
+              user: 'ronronar.suporte@gmail.com',
+              clientId: process.env.GOOGLE_CLIENT_ID,
+              clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+              refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+            },
+            tls: { rejectUnauthorized: false },
+            secure: true,
+          });
+
+          let html = `<p>${mensagem}</p><br>`;
+          const attachments = imagens.map((img, index) => {
+            const cid = `img${index}`;
+            html += `<img src="cid:${cid}" style="max-width:300px; margin-bottom:10px;" /><br>`;
+            return {
+              filename: img.originalname,
+              path: img.path,
+              cid: cid,
+            };
+          });
+
+          const mailOptions = {
+            from: 'Ronronar <ronronar.suporte@gmail.com>',
+            to: email,
+            subject: `Relatório sobre o pet - ${titulo}`,
+            html: html,
+            attachments: attachments,
+          };
+
+          transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+              console.error('Erro ao enviar e-mail:', err);
+              return res.status(500).json({ success: false, message: 'Falha ao enviar e-mail', err: err.message });
+            }
+
+            res.json({
+              success: true,
+              message: 'Email enviado com sucesso!',
+            });
+          });
+        });
+      });
+    });
+  });
+});
+
+app.get('/visualizardoacoes',checkAdmin,(req,res)=>{
+  res.set('content-type', 'application/json');
+  const sql = 'SELECT * FROM doacoes';
+  let data = {doacoes:[]}
+  doacoes.all(sql,[],(err,rows)=>{
+    if(err){
+      console.error(err.message);
+      res.status(500).json({code:500,status:err.message})
+      return;
+    }
+    rows.forEach(row=>{
+      data.doacoes.push({
+        id:row.user_id,
+        valor:row.doacao_valor,
+        data:row.doacao_data,
+        forma:row.doacao_forma,
+        doador:row.doacao_doador
+      })
+    })
+    res.status(200).json(data);
+  })
+})
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT,(err)=>{

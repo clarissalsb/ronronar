@@ -1,0 +1,582 @@
+@import url('https://fonts.googleapis.com/css2?family=Averia+Serif+Libre&family=Baloo&family=Kaushan+Script&family=Leckerli+One&family=Miltonian&family=Miltonian+Tattoo&display=swap');
+
+/* ==================== RESET ==================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #ECDFED;
+  color: #9B2AA6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* ==================== CABEÇALHO ==================== */
+header.menu {
+  padding: 16px 24px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Baloo', cursive;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+}
+
+.menu-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-left a,
+.nav-right a {
+  color: #9B2AA6;
+  text-decoration: none;
+  margin-left: 16px;
+  font-size: 1.1rem;
+  transition: opacity 0.3s;
+}
+
+.nav-left a:first-child {
+  margin-left: 0;
+}
+
+.nav-left a:hover,
+.nav-right a:hover {
+  opacity: 0.7;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo {
+  height: 48px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  border-radius: 25px;
+  box-shadow: 2px 2px 14px rgba(0, 0, 0, 0.1);
+}
+
+.menu-left a:hover img {
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.btn-login, .btn-cadastro {
+  font-size: 1.1rem;
+  font-family: 'Baloo', cursive;
+  text-decoration: none;
+  margin-left: 12px;
+}
+
+.btn-cadastro {
+  background-color: #9B2AA6;
+  color: white !important;
+  border-radius: 8px;
+  padding: 8px 16px;
+  border: 2px solid #9B2AA6;
+  transition: 0.3s;
+}
+
+.btn-cadastro:hover {
+  background-color: #7a1f7c;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ==================== USUÁRIO NO TOPO ==================== */
+.usuario-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.usuario-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+#btn-usuario {
+  background-color: transparent;
+  color: #9B2AA6;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 8px 12px;
+  font-family: 'Baloo', cursive;
+}
+
+#btn-usuario:hover {
+  opacity: 0.7;
+}
+
+.menu-usuario {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 110%;
+  background-color: #9B2AA6;
+  color: white;
+  border-radius: 12px;
+  padding: 8px 0;
+  min-width: 180px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.menu-usuario a {
+  display: block;
+  padding: 10px 16px;
+  color: white;
+  text-decoration: none;
+  font-family: 'Averia Serif Libre', serif;
+}
+
+.menu-usuario a:hover {
+  background-color: #7a1f7c;
+}
+
+/* ==================== ALTO CONTRASTE ==================== */
+.btn-contraste {
+  background-color: white;
+  color: #9B2AA6;
+  border: 2px solid #9B2AA6;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-family: 'Averia Serif Libre', serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-contraste:hover {
+  background-color: #9B2AA6;
+  color: white;
+}
+
+.alto-contraste {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+.alto-contraste header.menu,
+.alto-contraste .apadrinhar-chamada,
+.alto-contraste .cards-gatos,
+.alto-contraste .por-que-apadrinhar,
+.alto-contraste .banner,
+.alto-contraste footer.footer {
+  background-color: #111 !important;
+  color: #fff !important;
+}
+
+.alto-contraste a,
+.alto-contraste p {
+  color: #FCDC5C !important;
+}
+
+/* ==================== BANNER INICIAL ==================== */
+.banner {
+  position: relative;
+  width: 90%;
+  max-width: 1200px;
+  margin: 24px auto;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+}
+
+.banner img {
+  width: 100%;
+  height: 650px;
+  object-fit: cover;
+  border-radius: 24px;
+  filter: brightness(0.8);
+  display: block;
+}
+
+.banner-content {
+  position: absolute;
+  top: 150px;
+  left: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 2;
+}
+
+.banner-content span {
+  color: #FCDC5C;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  line-height: 1.1;
+}
+
+/* Fonts lettering */
+.ajude { font-family: 'Kaushan Script', cursive; }
+.sem { font-family: 'Miltonian Tattoo', cursive; }
+.sair-de { font-family: 'Leckerli One', cursive; }
+.casa { font-family: 'Miltonian', cursive; }
+
+/* ==================== CHAMADA & APADRINHAR ==================== */
+.apadrinhar-chamada {
+  background-color: #ECDFED;
+  padding: 32px 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-apadrinhar {
+  display: inline-block;
+  background-color: #9B2AA6;
+  color: white;
+  padding: 16px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-family: 'Baloo', cursive;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 90%;
+  max-width: 800px;
+}
+
+.btn-apadrinhar:hover {
+  background-color: #7a1f7c;
+}
+
+/* ==================== GRID DOS CARDS ==================== */
+.cards-gatos {
+  padding: 64px 24px;
+  background-color: #ECDFED;
+  text-align: center;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto 32px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 230px;
+  width: 160px;
+  margin: 0 auto;
+}
+
+.card img {
+  width: 140px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.nome-gato {
+  margin-top: 8px;
+  font-family: 'Averia Serif Libre', serif;
+  font-size: 1rem;
+  font-weight: bold;
+  color: black;
+}
+
+.btn-ver-mais {
+  background-color: white;
+  color: #9B2AA6;
+  font-family: 'Baloo', cursive;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-ver-mais:hover {
+  transform: scale(1.05);
+}
+
+/* ==================== POR QUE APADRINHAR ==================== */
+.por-que-apadrinhar {
+  padding: 64px 24px;
+  margin-bottom: 96px;
+  background-color: #ECDFED;
+  font-family: 'Averia Serif Libre', serif;
+}
+
+.motivos-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+}
+
+.motivos-container h2 {
+  color: #9B2AA6;
+  font-size: 2.2rem;
+  width: 100%;
+  margin-bottom: 24px;
+  padding-left: 8px;
+}
+
+.motivo {
+  background-color: white;
+  padding: 16px 24px;
+  border-radius: 16px;
+  box-shadow: 3px 4px 0 #E98A14;
+  max-width: 300px;
+  flex: 1 1 280px;
+  font-size: 1rem;
+}
+
+/* ==================== FORMULÁRIOS (LOGIN / CADASTRO) ==================== */
+main.cadastro-container,
+main.login-container {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Averia Serif Libre', serif;
+}
+
+.cadastro-form,
+.login-form {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 #E98A14;
+  width: 100%;
+  max-width: 420px;
+}
+
+.cadastro-form h1,
+.login-form h1 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #9B2AA6;
+  font-size: 1.8rem;
+}
+
+.cadastro-form label,
+.login-form label {
+  margin-bottom: 6px;
+  color: #9B2AA6;
+  font-weight: bold;
+  display: block;
+}
+
+.cadastro-form input,
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #9B2AA6;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.cadastro-form input:focus,
+.login-form input:focus {
+  border-color: #E98A14;
+  outline: none;
+}
+
+.cadastro-form button,
+.login-form button {
+  width: 100%;
+  padding: 12px;
+  background: #9B2AA6;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-family: 'Averia Serif Libre', serif;
+}
+
+.cadastro-form button:hover,
+.login-form button:hover {
+  background: #7c2186;
+}
+
+.error-message {
+  background: #ffe6eb;
+  color: #a60032;
+  border: 1px solid #a60032;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  display: none;
+  font-size: 0.9rem;
+}
+
+/* ==================== ADMIN ==================== */
+.admin-container {
+  padding: 40px 24px;
+  font-family: 'Baloo', cursive;
+  flex: 1;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin: 0 auto;
+  max-width: 1000px;
+}
+
+.user-table thead {
+  background-color: #9B2AA6;
+  color: white;
+}
+
+.user-table th,
+.user-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+}
+
+.user-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.user-table tbody tr:hover {
+  background-color: #f3e2f4;
+}
+
+.user-actions {
+  position: relative;
+  display: inline-block;
+}
+
+.action-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #9B2AA6;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.action-toggle:hover {
+  background-color: #ecd7ef;
+}
+
+.action-menu {
+  display: none;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  z-index: 10;
+}
+
+.action-menu.aberto {
+  display: block;
+}
+
+.action-item {
+  display: block;
+  padding: 8px 16px;
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: 'Averia Serif Libre', serif;
+}
+
+.action-item:hover {
+  background-color: #f3f3f3;
+}
+
+/* ==================== RODAPÉ ==================== */
+footer.footer {
+  padding: 12px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  text-align: center;
+  color: black;
+  font-family: 'Averia Serif Libre', serif;
+  background: white;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  font-size: 0.9rem;
+}
+
+footer.footer p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+footer.footer .insta-link img {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  transition: opacity 0.3s;
+}
+
+footer.footer .insta-link img:hover {
+  opacity: 0.7;
+}
+
+/* ==================== RESPONSIVIDADE ==================== */
+@media (max-width: 600px) {
+  .banner-content {
+    top: 80px;
+    left: 24px;
+  }
+
+  .banner-content span {
+    font-size: 2rem;
+  }
+
+  .cards-container {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+  .cadastro-form,
+  .login-form {
+    padding: 16px;
+  }
+
+  .btn-apadrinhar {
+    font-size: 1rem;
+    padding: 14px 12px;
+  }
+}

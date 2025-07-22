@@ -3,27 +3,26 @@
 <head>
     <meta charset="UTF-8" />
     <title>Cadastro</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="../css/styles.css" />
 </head>
 <body>
 
-    <!-- Cabeçalho (menu) -->
-    <header class="menu">
-        <div class="menu-left">
-            <a href="../TelaInicial/index.html">
-                <img src="../imagens/Logo Projeto Ronronar.jpg" alt="Logo do projeto" class="logo" />
-            </a>
-            <nav class ="nav-left">
-            <a href="#">Quem somos</a>
-            <a href="#">Apadrinhamento</a>
-            <a href="#">Doações</a>
+     <!-- Cabeçalho (menu) -->
+        <header class="menu">
+            <div class="menu-left">
+                <a href="../TelaInicial/index.html">
+                    <img src="../Imagens/Logo Projeto Ronronar.jpg" alt="Logo do projeto" class="logo">
+                </a>
+                <nav class="nav-left">
+                    <a href="#">Quem somos</a>
+                    <a href="../TelaApadrinhamento/index.html">Apadrinhamento</a>
+                    <a href="#">Doações</a>
+                </nav>
+            </div>
+            <nav class="nav-right" id="areaUsuario">
+                <!-- preenchido no js -->
             </nav>
-        </div>
-        <nav class="nav-right">
-            <a href="../TelaLoginUser/index.html">Entrar</a>
-            <a href="index.html" class="btn-cadastrar">Cadastre-se</a>
-        </nav>
-    </header>
+        </header>
 
     <!-- Área principal -->
     <main class="cadastro-container">
@@ -31,24 +30,19 @@
             <h1>Cadastro</h1>
 
             <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" />
-            <br>
+            <input type="text" id="nome" name="nome" placeholder="Seu nome completo" maxlength="50" required />
 
             <label for="email">Email</label>
-            <input type="text" id="email" name="email" />
-            <br>
+            <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" maxlength="100" autocomplete="email" required />
 
             <label for="telefone">Telefone</label>
-            <input type="tel" id="telefone" name="telefone" />
-            <br>
+            <input type="tel" id="telefone" name="telefone" maxlength="15" pattern="[0-9]{11}" placeholder="(DDD) 9XXXX-XXXX" required />
 
             <label for="senha">Senha</label>
-            <input type="password" id="senha" name="senha" />
-            <br>
+            <input type="password" id="senha" name="senha" maxlength="20" placeholder="Crie uma senha segura" autocomplete="new-password" required />
 
             <label for="confirmar-senha">Confirmar Senha</label>
-            <input type="password" id="confirmar-senha" name="confirmar-senha" />
-            <br>
+            <input type="password" id="confirmar-senha" name="confirmarSenha" maxlength="20" placeholder="Digite a senha novamente" required />
 
             <div class="error-message" id="error-message"></div>
 
@@ -66,6 +60,6 @@
         Obrigado por fazer parte dessa rede de amor. 🐾
     </p>
     </footer>
-    <script src="script.js"></script>
+    <script src="../js/script.js"></script>
 </body>
 </html>

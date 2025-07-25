@@ -71,7 +71,10 @@ app.get('/pets',(req,res)=>{
     res.send('Serviço de pets está online')
 })
 
+//funçoes de pets, todas as funçoes de pets precisam ser admin com exceçao da listagem
 
+
+//funçao para listar os pets
 app.get('/pets/listagem',(req,res)=>{
   res.set('content-type', 'application/json');
   
@@ -102,7 +105,7 @@ app.get('/pets/listagem',(req,res)=>{
 
 
 
-
+//funçao para lançar as imagens do pet, sera lançada pelo id do pet, id esse que deve estar no link ex: /pet/upload/4
 app.post("/pet/upload/:id",checkAdmin,(req,res)=>{
   const petId=req.params.id;
   upload.array("imagempet",10)(req,res,(err)=>{
@@ -151,7 +154,7 @@ app.post("/pet/upload/:id",checkAdmin,(req,res)=>{
 
 
 
-
+//funçao que deleta a imagem de um pet, nisso o nome da imagem deve estar no link ex: /pet/upload/gato.kjpg-21312312
 app.delete("/pet/upload/delete/:imagem",checkAdmin,async (req,res)=>{
 
   const nomedaimagem=req.params.imagem
@@ -170,6 +173,7 @@ app.delete("/pet/upload/delete/:imagem",checkAdmin,async (req,res)=>{
   
 })
 
+//funçao para registrar pets, aguarda a resposta: nome,idade,saude,vacinas,caracteristicas e descricao,precisa ser admin
 app.post('/pets/registrar',checkAdmin,(req,res)=>{
   res.set('content-type','application/json')
   const {nome,idade,saude,vacinas,caracteristicas,descricao} = req.body;
@@ -193,7 +197,7 @@ app.post('/pets/registrar',checkAdmin,(req,res)=>{
     })
   })
 })
-
+//funçao para editar pets, vai editar pelo id que deve ser inserido no link, precisa ser admin
 app.put('/pets/editar/:id',checkAdmin,(req,res)=>{
   res.set('content-type','application/json');
   const petId=req.params.id;
@@ -229,6 +233,8 @@ app.put('/pets/editar/:id',checkAdmin,(req,res)=>{
   })
 })
 
+
+//funçao para editar pet, vai ser deletado pelo id no link
 app.delete('/pets/deletar/:id',checkAdmin,(req,res)=>{
   res.set('content-type','application/json');
   const petId=req.params.id;
@@ -256,6 +262,8 @@ app.delete('/pets/deletar/:id',checkAdmin,(req,res)=>{
   }
 })
 
+
+//funçao para listar usuarios, deve ser admin e o type é user ou seja /api/user
 app.get('/api/:type',checkAdmin, (req, res) => {
   const type = req.params.type;
 
@@ -287,6 +295,7 @@ app.get('/api/:type',checkAdmin, (req, res) => {
   }
 });
 
+//funçao para verificar se o usuario está autenticado
 app.get('/dashboard',(req,res)=>{
     const authHeader=req.headers.authorization;
 
@@ -303,6 +312,8 @@ app.get('/dashboard',(req,res)=>{
         return res.status(401).json({msg:"Authentication Failed"})
     }
 })
+
+//funçao para login, novamente tipo user, e recebe email e senha
 app.post('/login/:type',(req,res)=>{
     const type=  req.params.type
     if(type ==="user"){
@@ -337,6 +348,8 @@ app.post('/login/:type',(req,res)=>{
     }
 })
 
+
+//funçao para registrar, type user novamente, e espera como resposta o nome,email,telefone e senha
 app.post('/register/:type', (req, res) => {
   const type = req.params.type;
   res.set('content-type', 'application/json');
@@ -383,7 +396,10 @@ app.post('/register/:type', (req, res) => {
     });
   });
 });
+//aqui inicia o processo de recuperaçao de senha, o processo possui 3 etapas
 
+//primeira etapa, lança o email para o usuario com o link com o token para resetar a senha
+//espera como resposta o email
 app.post('/auth/esqueci-minha-senha',(req,res)=>{
   res.set('content-type','application/json');
   const {email}= req.body;
@@ -449,6 +465,7 @@ transporter.sendMail(mailOptions, function(err,response){
   })
 })
 
+//2 etapa, funçao para checar se o token pra resetar a senha é valido
 app.get('/auth/validar-reset-token',(req,res)=>{
     const authHeader=req.headers.authorization
 
@@ -466,6 +483,8 @@ app.get('/auth/validar-reset-token',(req,res)=>{
     }
 })
 
+//terceira etapa, apos tudo isso recebe o token e muda a senha
+//espera o auth bearer padrao de token, e como resposta espera o novasenha
 app.patch('/auth/editarsenha',(req,res)=>{
   res.set('content-type','application/json');
   const authHeader=req.headers.authorization;
@@ -518,6 +537,7 @@ return res.status(400).send(JSON.stringify({ message: "Dados incompletos" }));
 
 })
  
+//funçao para promover a admin, espera o id do usuario
 app.patch('/promoveradmin/:id', checkAdmin, (req, res) => {
   res.set('content-type', 'application/json');
 
@@ -553,6 +573,8 @@ app.patch('/promoveradmin/:id', checkAdmin, (req, res) => {
   });
 });
 
+
+//funçao para editarusuario, tem que colocar o id do usuario no link e espera como resposta o nome,email,telefone e senha
 app.put('/editarUsuario/:id',(req,res)=>{
   res.set('content-type','application/json');
   const userId=req.params.id;
@@ -589,6 +611,8 @@ app.put('/editarUsuario/:id',(req,res)=>{
   })
 })
 
+
+//funçao para colocar a imagem do usuario, colocar id do usuario no link
 app.post("/user/upload/:id",(req,res)=>{
   const userId=req.params.id;
   upload.single("imagemuser")(req,res,(err)=>{
@@ -618,6 +642,8 @@ app.post("/user/upload/:id",(req,res)=>{
     })
   })
 })
+
+//funçao para editar imagem do usuario, espera o id tambem
 app.patch("/user/upload/edit/:id",(req,res)=>{
   const userId=req.params.id;
   upload.single("imagemuser")(req,res,(err)=>{
@@ -668,7 +694,7 @@ app.patch("/user/upload/edit/:id",(req,res)=>{
 })
 })
 
-
+//funçao para deletar usuario, espera o id do usuario no link, precisa ser admin
 app.delete('/user/:id',checkAdmin,(req,res)=>{
   
     res.set('content-type','application/json');
@@ -694,7 +720,7 @@ app.delete('/user/:id',checkAdmin,(req,res)=>{
     }
 }
 );
-
+//funçao para apadrinhar, precisa do id do usuario, do id do ped e do id do plano que ele vai desejar, 1,2 e 3 sendo o id dos 3 respectivos planos
 app.post('/apadrinhar',(req,res)=>{
 res.set('content-type','application/json')
 const {user_id,pet_id,plano_id}=req.body
@@ -717,8 +743,8 @@ apadrinhamentos2.run(insertSql,[user_id,pet_id,plano_id],function(err){
   })
 })
 })
-
-app.patch('/apadrinhar/desativar/:id',(req,res)=>{
+//funçao para desativar o apadrinhamento, precisa do id do apadrinhamento e ser admin
+app.patch('/apadrinhar/desativar/:id',checkAdmin,(req,res)=>{
   const Id=req.params.id;
   const selectSQL= "SELECT * FROM apadrinhamentos WHERE id = ? "
   apadrinhamentos2.get(selectSQL,[Id],(err,row)=>{
@@ -741,9 +767,9 @@ app.patch('/apadrinhar/desativar/:id',(req,res)=>{
     })
   })
 })
+//funçao para visualizar o historico de apadrinhamentos de um padrinho, precisa ser admin e precisa do id de usuario no link /padrinhos/1/apadrinhamentos
 
-
-app.get('/padrinhos/:id/apadrinhamentos', (req, res) => {
+app.get('/padrinhos/:id/apadrinhamentos', checkAdmin, (req, res) => {
   const userId = req.params.id;
 
   const sqlApadrinhamentos = `
@@ -801,6 +827,7 @@ app.get('/padrinhos/:id/apadrinhamentos', (req, res) => {
   });
 });
 
+//funçao para registrar doaçao, precisa do valor, data, forma e doador e ser admin
 app.post('/registrardoacao',checkAdmin,(req,res)=>{
   res.set('content-type','application/json')
   const {valor,data,forma,doador} = req.body;
@@ -824,6 +851,7 @@ app.post('/registrardoacao',checkAdmin,(req,res)=>{
   })
 })
 
+//funçao para registrar relatorios, precisa ser admin, e espera o id do apadrinhamento, titulo, e a mensagem
 app.post('/relatorios', checkAdmin, (req, res) => {
   upload.array('imagens', 5)(req, res, (err) => {
     if (err) {
@@ -834,7 +862,6 @@ app.post('/relatorios', checkAdmin, (req, res) => {
     const { apadrinhamento_id, titulo, mensagem } = req.body;
     const imagens = req.files || [];
 
-    // Continue com sua lógica aqui...
     const sqlGetUserId = 'SELECT user_id FROM apadrinhamentos WHERE id = ?';
     apadrinhamentos2.get(sqlGetUserId, [apadrinhamento_id], (err, apad) => {
       if (err) return res.status(500).json({ message: 'Erro ao buscar apadrinhamento', error: err.message });
@@ -905,6 +932,7 @@ app.post('/relatorios', checkAdmin, (req, res) => {
   });
 });
 
+//funçao para visualizar doaçoes registradas, precisa ser admin 
 app.get('/visualizardoacoes',checkAdmin,(req,res)=>{
   res.set('content-type', 'application/json');
   const sql = 'SELECT * FROM doacoes';
@@ -928,6 +956,7 @@ app.get('/visualizardoacoes',checkAdmin,(req,res)=>{
   })
 })
 
+//funçao para iniciar o servidor
 const PORT = process.env.PORT || 3001;
 app.listen(PORT,(err)=>{
     if(err){

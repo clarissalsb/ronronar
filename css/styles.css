@@ -556,6 +556,88 @@ footer.footer .insta-link img:hover {
   opacity: 0.7;
 }
 
+/* ==================== MODAL DO PET ==================== */
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  max-width: 700px;
+  width: 90%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.modal-img img {
+  width: 250px;
+  height: auto;
+  object-fit: cover;
+}
+
+.modal-info {
+  padding: 24px;
+  flex: 1;
+  font-family: 'Averia Serif Libre', serif;
+  color: #9B2AA6;
+}
+
+.modal-info h2 {
+  font-family: 'Baloo', cursive;
+  margin-bottom: 8px;
+  font-size: 1.5rem;
+}
+
+.modal-botoes {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+.modal-botoes button {
+  background-color: #9B2AA6;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 12px 16px;
+  font-family: 'Baloo', cursive;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal-botoes button:hover {
+  background-color: #7a1f7c;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 1.5rem;
+  color: #9B2AA6;
+  cursor: pointer;
+  font-weight: bold;
+}
+
 /* ==================== RESPONSIVIDADE ==================== */
 @media (max-width: 600px) {
   .banner-content {
@@ -581,3 +663,4 @@ footer.footer .insta-link img:hover {
     padding: 14px 12px;
   }
 }
+

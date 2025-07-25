@@ -226,6 +226,66 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // ==== MODAL DOS PETS ====
+
+  if (document.getElementById('tela-inicial') || document.getElementById('tela-apadrinhamento')){
+    const container = document.querySelectorAll('.cards-container');
+    const modal = document.getElementById('pet-modal');
+    const closeBtn = document.querySelector('.modal-close');
+
+    // Elementos do modal
+    const modalImg = document.getElementById('modal-img');
+    const modalNome = document.getElementById('modal-nome');
+    const modalGenero = document.getElementById('modal-genero');
+    const modalSaude = document.getElementById('modal-saude');
+    const modalOutros = document.getElementById('modal-outros');
+    const modalDesc = document.getElementById('modal-desc');
+
+    // dados dos pets
+    let dadosPets = []; 
+
+    fetch('http://localhost:3001/pets')
+    .then(res => res.json())
+    .then(pets => {
+     dadosPets = pets; // Salva os dados pra usar no modal
+
+     pets.forEach((pet, index) => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = `
+         <img src="${pet.imagem}" alt="${pet.nome}">
+         <p class="nome-gato">${pet.nome}</p>
+        `;
+
+       // Evento para abrir o modal
+        card.addEventListener('click', () => {
+          modalImg.src = pet.imagem;
+         modalNome.textContent = `${pet.nome}, ${pet.idade}`;
+         modalGenero.textContent = pet.genero;
+         modalSaude.textContent = pet.saude;
+         modalOutros.textContent = pet.caracteristicas || '';
+         modalDesc.textContent = pet.descricao || '';
+         modal.classList.remove('hidden');
+       });
+
+        container.appendChild(card);
+     });
+    })
+    .catch(err => {
+      console.error('Erro ao carregar pets:', err);
+    });
+
+    // Fecha o modal
+    closeBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+      modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
+  }
+
   // ==== TELA DE ADMIN ====
   if (document.getElementById("user-table-body")) {
     function ativarBotoesAcoes () {

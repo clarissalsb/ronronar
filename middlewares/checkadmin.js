@@ -4,7 +4,7 @@ export function checkAdmin(req,res,next){
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     
-     if(!token) return res.status(401).json({message: 'Token não fornecido'});
+     if(!token) return res.status(401).json({message: 'Token não fornecido',});
 
     try{
         const decoded = jwt.verify(token,process.env.JWT_SECRET);
@@ -17,6 +17,7 @@ export function checkAdmin(req,res,next){
         next();
     }
     catch(err){
+        console.log(err.message)
         return res.status(403).json({message:'token invalido'});
         
     }

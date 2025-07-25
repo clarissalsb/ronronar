@@ -325,7 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function carregarUsuarios() {
       fetch("http://localhost:3001/api/user",{
         headers:{
-             "Authorization": "Bearer" + localStorage.getItem("token")
+             "Authorization": "Bearer " + localStorage.getItem("token")
         }
       })
         .then(res => {

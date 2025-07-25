@@ -39,7 +39,7 @@ header.menu {
 }
 
 .nav-left a,
-.nav-right a {
+.nav-right a:not(.btn-cadastro) {
   color: #9B2AA6;
   text-decoration: none;
   margin-left: 16px;
@@ -84,12 +84,15 @@ header.menu {
 
 .btn-cadastro {
   background-color: #9B2AA6;
-  color: white !important;
+  color: white;
   border-radius: 8px;
   padding: 8px 16px;
   border: 2px solid #9B2AA6;
-  transition: 0.3s;
+  font-family: 'Baloo', cursive;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
 }
+
 
 .btn-cadastro:hover {
   background-color: #7a1f7c;
@@ -150,42 +153,140 @@ header.menu {
 }
 
 /* ==================== ALTO CONTRASTE ==================== */
-.btn-contraste {
-  background-color: white;
-  color: #9B2AA6;
-  border: 2px solid #9B2AA6;
-  border-radius: 8px;
-  padding: 6px 12px;
-  font-family: 'Averia Serif Libre', serif;
-  font-size: 0.95rem;
+.btn-contraste-icon {
+  background: none;
+  border: none;
   cursor: pointer;
-  transition: 0.3s;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.btn-contraste:hover {
-  background-color: #9B2AA6;
-  color: white;
+.btn-contraste-icon:hover {
+  background-color: rgba(155, 42, 166, 0.1);
 }
 
+.btn-contraste-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: #9B2AA6;
+  transition: fill 0.3s ease;
+}
+
+/* Tema do Alto Contraste */
 .alto-contraste {
-  background-color: #000 !important;
-  color: #fff !important;
+  background-color: #12005C !important;
+  color: #FFFFFF !important;
 }
 
-.alto-contraste header.menu,
+/* Cabeçalho */
+.alto-contraste header.menu {
+  background-color: #12005C !important;
+  color: #FFFFFF !important;
+  border-bottom: 3px solid #FFD500;
+}
+
+.alto-contraste header.menu a:not(.btn-cadastro) {
+  color: #FFEB3B !important;
+} 
+
+/* Cards dos gatos */
+.alto-contraste .card {
+  background-color: #2E009E !important;
+  color: #FFFFFF !important;
+  border: 2 px solid #FFD500 !important;
+  box-shadow: none !important;
+}
+
+/* Texto dos cards */
+.alto-contraste .nome-gato {
+  color: #FFEB3B !important;
+}
+
+/* Botões principais */
+.alto-contraste .btn-apadrinhar,
+.alto-contraste .btn-ver-mais {
+  background-color: #FFD500 !important;
+  color: #12005C !important;
+  border: none !important;
+}
+
+.alto-contraste a.btn-cadastro,
+.alto-contraste .btn-cadastro {
+  background-color: #FFD500 !important;
+  color: #12005C !important;
+  font-family: 'Baloo', cursive !important;
+  font-size: 1.1rem;
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  border: none !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  transition: none !important;
+}
+
+
+.alto-contraste .btn-contraste-icon svg {
+  fill: #FFD500 !important;
+}
+
+/* Hover dos botões */
+.alto-contraste .btn-apadrinhar:hover,  
+.alto-contraste .btn-cadastro:hover,  
+.alto-contraste .btn-ver-mais:hover {
+  background-color: #FFEB3B !important  ;
+  color: #12005C !important;
+}
+
+/* Modal */
+.alto-contraste .modal-content {
+  background-color: #2E009E !important;
+  color: #FFFFFF !important;
+  border: 3px solid #FFD500 !important;
+}
+
+/* Motivos */
+.alto-contraste .motivos-container h2 {
+  color: #FFD500 !important;
+} 
+
+.alto-contraste .motivo {
+  background-color: #2E009E !important;
+  color: #FFFFFF !important;
+  border: 2px solid #FFD500 !important;
+}
+
+/* Banner */
+.alto-contraste .banner {
+  background-color: #12005C !important;
+}
+
+.alto-contraste .banner-content span {
+  color: #FFD500 !important ;
+}
+
+/* Rodapé */
+.alto-contraste footer.footer {
+  background-color: #12005C !important;
+  color: #FFFFFF !important;
+  border-top: 3px solid #FFD500;
+} 
+
+.alto-contraste footer.footer a,
+.alto-contraste footer.footer img {
+  filter: brightness(2);
+}
+
+/* Sections */ 
 .alto-contraste .apadrinhar-chamada,
 .alto-contraste .cards-gatos,
-.alto-contraste .por-que-apadrinhar,
-.alto-contraste .banner,
-.alto-contraste footer.footer {
-  background-color: #111 !important;
-  color: #fff !important;
-}
-
-.alto-contraste a,
-.alto-contraste p {
-  color: #FCDC5C !important;
-}
+.alto-contraste .por-que-apadrinhar {
+  background-color: #12005C !important;
+  color: #FFFFFF !important;
+} 
 
 /* ==================== BANNER INICIAL ==================== */
 .banner {
@@ -266,6 +367,14 @@ header.menu {
   text-align: center;
 }
 
+.cards-gatos h2 {
+  text-align: left;
+  color: #9B2AA6;
+  font-size: 2.2rem;
+  margin-bottom: 32px;
+  font-family: 'Baloo', cursive;
+} 
+
 .cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -341,6 +450,7 @@ header.menu {
   width: 100%;
   margin-bottom: 24px;
   padding-left: 8px;
+  text-align: left;
 }
 
 .motivo {

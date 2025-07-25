@@ -21,7 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
               <a href="#" onclick="logout()">Sair</a>
             </div>
           </div>
-          <button id="btn-contraste" class="btn-contraste">Alto contraste</button>
+          <button id="btn-contraste" class="btn-contraste-icon" title="Ativar alto contraste">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#9B2AA6" viewBox="0 0 24 24">
+              <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm0 18V4a8 8 0 0 1 0 16Z" />
+            </svg>
+          </button>
         </div>
       `;
 
@@ -42,7 +46,11 @@ document.addEventListener("DOMContentLoaded", () => {
       // Usuário não logado
       areaUsuario.innerHTML = `
         <div class="usuario-wrapper">
-          <button id="btn-contraste" class="btn-contraste">Alto contraste</button>
+          <button id="btn-contraste" class="btn-contraste-icon" title="Ativar alto contraste">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#9B2AA6" viewBox="0 0 24 24">
+              <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm0 18V4a8 8 0 0 1 0 16Z" />
+            </svg>
+          </button>
           <a href="../TelaLoginUser/index.html" class="btn-login">Entrar</a>
           <a href="../TelaCadastroUser/index.html" class="btn-cadastro">Cadastrar</a>
         </div>
@@ -242,37 +250,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalGenero = document.getElementById('modal-genero');
     const modalSaude = document.getElementById('modal-saude');
     const modalOutros = document.getElementById('modal-outros');
-    const modalDesc = document.getElementById('modal-desc');
-
-    // dados dos pets
-    let dadosPets = []; 
+    const modalDesc = document.getElementById('modal-desc'); 
 
     fetch('http://localhost:3001/pets')
     .then(res => res.json())
     .then(pets => {
-     dadosPets = pets; // Salva os dados pra usar no modal
 
-     pets.forEach((pet, index) => {
+      pets.forEach((pet) => {
         const card = document.createElement('div');
         card.classList.add('card');
+
         card.innerHTML = `
-         <img src="${pet.imagem}" alt="${pet.nome}">
-         <p class="nome-gato">${pet.nome}</p>
+          <img src="${pet.imagem}" alt="${pet.nome}">
+          <p class="nome-gato">${pet.nome}</p>
         `;
 
        // Evento para abrir o modal
         card.addEventListener('click', () => {
           modalImg.src = pet.imagem;
-         modalNome.textContent = `${pet.nome}, ${pet.idade}`;
-         modalGenero.textContent = pet.genero;
-         modalSaude.textContent = pet.saude;
-         modalOutros.textContent = pet.caracteristicas || '';
-         modalDesc.textContent = pet.descricao || '';
-         modal.classList.remove('hidden');
-       });
+          modalNome.textContent = `${pet.nome}, ${pet.idade}`;
+          modalGenero.textContent = pet.genero;
+          modalSaude.textContent = pet.saude;
+          modalOutros.textContent = pet.caracteristicas || '';
+          modalDesc.textContent = pet.descricao || '';
+          modal.classList.remove('hidden');
+        });
 
         container.appendChild(card);
-     });
+      });
     })
     .catch(err => {
       console.error('Erro ao carregar pets:', err);
@@ -282,6 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
     closeBtn.addEventListener('click', () => {
       modal.classList.add('hidden');
     });
+
       modal.addEventListener('click', (e) => {
       if (e.target === modal) {
         modal.classList.add('hidden');

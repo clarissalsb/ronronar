@@ -27,7 +27,7 @@
 
 
         <!-- Área principal -->
-        <main>
+        <main id="tela-inicial">
         <!-- Banner e btn quero apadrinhar-->
         <section class="banner">
             <div class="banner-content">
@@ -108,6 +108,27 @@
                 Obrigado por fazer parte dessa rede de amor. 🐾
             </p>
         </footer>
+
+        <!-- Modal (pop-up) dos cards dos Pets -->
+        <div id="pet-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <div class="modal-img">
+                    <img id="modal-img" src="" alt="Foto do gatinho">
+                </div>
+                <div class="modal-info">
+                    <h2 id="modal-nome"></h2>
+                    <p id="modal-genero"></p>
+                    <p id="modal-saude"></p>
+                    <p id="modal-outros"></p>
+                    <p id="modal-desc"></p>
+                    <div class="modal-botoes">
+                        <button class="btn-apadrinhar">Quero apadrinhar</button>
+                        <button class="btn-adotar">Quero adotar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script src="../js/script.js"></script>
     </body>
 </html>

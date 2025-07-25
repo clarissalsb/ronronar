@@ -29,7 +29,7 @@ const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: function(req,file,cb){
-    cb(null, 'middlewares/uploads');
+    cb(null, 'Imagens');
   },
   filename: function(req,file,cb){
     const uniqueSuffix=Date.now()+ '-'+Math.round(Math.random()*1e9);
@@ -40,14 +40,14 @@ const storage = multer.diskStorage({
   
 })
 const fileFilter= (req,file,cb)=>{
-    if(file.mimetype == "image/png" || file.mimetype =="image/jpeg" || file.mimetype =="image/webp"){
+    if(file.mimetype == "image/png" || file.mimetype =="image/jpeg" || file.mimetype =="image/webp" || file.mimetype == "video/mp4" || file.mimetype == "video/webm" || file.mimetype == "video/ogg" ){
       cb(null,true);
     }
     else{
        cb(new Error('Formato de arquivo não suportado, favor, inserir apenas arquivos jpg, png ou webp'), false);
     }
   }
-const maxSize=5*1024*1024;
+const maxSize=50*1024*1024;
 
 const upload= multer({
   storage,
@@ -158,7 +158,7 @@ app.post("/pet/upload/:id",checkAdmin,(req,res)=>{
 app.delete("/pet/upload/delete/:imagem",checkAdmin,async (req,res)=>{
 
   const nomedaimagem=req.params.imagem
-  const caminho = path.join('middlewares','uploads',nomedaimagem);
+  const caminho = path.join('Imagens',nomedaimagem);
   try{
     fs.unlinkSync(caminho);
 

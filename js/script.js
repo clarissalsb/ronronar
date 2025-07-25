@@ -64,8 +64,47 @@ document.addEventListener("DOMContentLoaded", () => {
   const formCadastro = document.querySelector('.cadastro-form');
   if (formCadastro) {
     const errorDiv = document.getElementById('error-message');
+    const inputTelefone = document.getElementById('telefone');
 
-    formCadastro.addEventListener('submit', (e) => {
+    if (inputTelefone) {
+
+      // Função que formata e mantém o cursor no lugar certo
+      function formatarTelefoneComCursor(input) {
+        let posicao = input.selectionStart;
+        let valorOriginal = input.value;
+        let numeros = valorOriginal.replace(/\D/g, '');
+
+        // Limita a 11 dígitos
+        numeros = numeros.slice(0, 11);
+
+        // Formata
+        let novoValor = '';
+        if (numeros.length > 0) novoValor = '(' + numeros.slice(0, 2);
+        if (numeros.length >= 3) novoValor += ') ' + numeros.slice(2, 7);
+        if (numeros.length >= 8) novoValor += '-' + numeros.slice(7);
+        else if (numeros.length > 2 && numeros.length <= 7) novoValor += numeros.slice(7);
+
+        // Define nova posição do cursor
+        let deslocamento = 0;
+        if (valorOriginal.length < novoValor.length) {
+          deslocamento = novoValor.length - valorOriginal.length;
+        }
+
+        input.value = novoValor;
+
+        // Só reposiciona se o cursor não estiver no final
+        if (posicao < novoValor.length) {
+          input.setSelectionRange(posicao + deslocamento, posicao + deslocamento);
+        }
+      }
+
+      // Listener que chama a função ao digitar
+      inputTelefone.addEventListener('input', () => {
+        formatarTelefoneComCursor(inputTelefone);
+      });
+    }
+
+      formCadastro.addEventListener('submit', (e) => {
       e.preventDefault();
 
       const nome = document.getElementById('nome').value.trim();
@@ -109,28 +148,6 @@ document.addEventListener("DOMContentLoaded", () => {
         errorDiv.style.display = 'block';
         return;
       }
-
-      const inputTelefone = document.getElementById('telefone');
-
-      if (inputTelefone) {
-        inputTelefone.addEventListener('input', function (e) {
-            let valor = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
-
-            // Formatação: (XX) 9XXXX-XXXX
-            if (valor.length > 11) valor = valor.slice(0, 11); // Limita a 11 dígitos
-
-            if (valor.length > 6) {
-                valor = `(${valor.slice(0, 2)}) ${valor.slice(2, 7)}-${valor.slice(7)}`;
-            } else if (valor.length > 2) {
-                valor = `(${valor.slice(0, 2)}) ${valor.slice(2)}`;
-            } else if (valor.length > 0) {
-                valor = `(${valor}`;
-            }
-
-            e.target.value = valor;
-        });
-      }
-
 
       const dadosUsuario = { nome, email, telefone, senha };
 

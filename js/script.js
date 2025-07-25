@@ -213,6 +213,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (resultado.success) {
           localStorage.setItem("usuarioLogado", resultado.nome);
+          if (resultado.token) {
+           localStorage.setItem("token", resultado.token); // ← Aqui você salva o token
+          }
           window.location.href = "../TelaInicial/index.html";
         } else {
           errorDiv.innerHTML = resultado.message || 'Login falhou. Verifique seus dados.';
@@ -314,7 +317,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function carregarUsuarios() {
-      fetch("http://localhost:3001/usuarios")
+      fetch("http://localhost:3001/api/user",{
+        headers:{
+             "Authorization": "Bearer" + localStorage.getItem("token")
+        }
+      })
         .then(res => {
           if (!res.ok) throw new Error("Erro ao buscar usuários");
           return res.json();

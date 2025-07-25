@@ -226,10 +226,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ==== MODAL DOS PETS ====
+  // ==== CARDS E MODAL DOS PETS ====
 
   if (document.getElementById('tela-inicial') || document.getElementById('tela-apadrinhamento')){
-    const container = document.querySelectorAll('.cards-container');
+    const container = document.querySelector('.cards-container');
     const modal = document.getElementById('pet-modal');
     const closeBtn = document.querySelector('.modal-close');
 

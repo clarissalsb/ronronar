@@ -322,50 +322,84 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    function carregarUsuarios() {
-      fetch("http://localhost:3001/api/user",{
-        headers:{
-             "Authorization": "Bearer " + localStorage.getItem("token")
-        }
-      })
-        .then(res => {
-          if (!res.ok) throw new Error("Erro ao buscar usuários");
-          return res.json();
-        })
-       .then(dados => {
-         const tabela = document.getElementById("user-table-body");
-          tabela.innerHTML = "";
-
-          dados.users.forEach(usuario => {
-            const linha = document.createElement("tr");
-            linha.innerHTML = `
-              <td>${usuario.nome}</td>
-              <td>${usuario.email}</td>
-              <td>${usuario.telefone}</td>
-              <td>${usuario.senha}</td>
-              <td>${usuario.status}</td>
-              <td> 
-                <div class="user-actions">
-                    <button class="action-toggle">⋮</button>
-                    <div class="action-menu">
-                        <button class="action-item">Remover</button>
-                        <button class="action-item">Tornar Admin</button>
-                    </div>
-                </div>
-              </td>
-            `;
-            tabela.appendChild(linha);
-          });
-
-          ativarBotoesAcoes();
-        })
-        .catch(err => console.error("Erro ao carregar usuários:", err));
+  function carregarUsuarios() {
+  fetch("http://localhost:3001/api/user", {
+    headers: {
+      "Authorization": "Bearer " + localStorage.getItem("token")
     }
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Erro ao buscar usuários");
+      return res.json();
+    })
+    .then(dados => {
+      const tabela = document.getElementById("user-table-body");
+      tabela.innerHTML = "";
+
+      dados.users.forEach(usuario => {
+        const linha = document.createElement("tr");
+        linha.innerHTML = `
+          <td>${usuario.nome}</td>
+          <td>${usuario.email}</td>
+          <td>${usuario.telefone || '---'}</td>
+          <td>${usuario.isAdmin ? 'Admin' : 'Usuário'}</td>
+          <td> 
+            <div class="user-actions">
+              <button class="action-toggle">⋮</button>
+              <div class="action-menu">
+                <button class="action-item btn-remover">Remover</button>
+                <button class="action-item btn-promover">Tornar Admin</button>
+              </div>
+            </div>
+          </td>
+        `;
+        // Salva ID do usuário no dataset
+        linha.dataset.userid = usuario.id;
+
+        tabela.appendChild(linha);
+      });
+
+      ativarBotoesAcoes(); // já ativa os menus
+
+      // Adiciona evento de promoção para cada botão
+      document.querySelectorAll('.btn-promover').forEach(botao => {
+        botao.addEventListener('click', function () {
+          const idUsuario = this.closest('tr').dataset.userid;
+          promoverUsuario(idUsuario);
+        });
+      });
+
+      // Aqui você também pode adicionar o evento de remoção, se quiser
+    })
+    .catch(err => console.error("Erro ao carregar usuários:", err));
+}
 
     carregarUsuarios();
   }
 });
 
+  //função do front para promover a admin
+async function promoverUsuario(id) {
+  try {
+    const response = await fetch(`http://localhost:3001/promoveradmin/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem("token"),
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ isAdmin: true }) // ou false se quiser rebaixar
+    });
+
+    if (!response.ok) throw new Error("Erro ao promover usuário");
+
+    const result = await response.json();
+    alert(result.message);
+    carregarUsuarios(); // Atualiza a lista
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao promover usuário.");
+  }
+}
 // ==== FUNÇÃO GLOBAL ====
 function logout() {
   localStorage.clear();

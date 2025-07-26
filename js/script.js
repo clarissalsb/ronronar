@@ -332,11 +332,11 @@ document.addEventListener("DOMContentLoaded", () => {
           if (!res.ok) throw new Error("Erro ao buscar usuários");
           return res.json();
         })
-        .then(usuarios => {
-          const tabela = document.getElementById("user-table-body");
+       .then(dados => {
+         const tabela = document.getElementById("user-table-body");
           tabela.innerHTML = "";
 
-          usuarios.forEach(usuario => {
+          dados.users.forEach(usuario => {
             const linha = document.createElement("tr");
             linha.innerHTML = `
               <td>${usuario.nome}</td>

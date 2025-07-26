@@ -574,7 +574,7 @@ app.patch('/promoveradmin/:id', checkAdmin, (req, res) => {
 });
 
 
-//funçao para editarusuario, tem que colocar o id do usuario no link e espera como resposta o nome,email,telefone e senha
+//funçao para editar usuario, tem que colocar o id do usuario no link e espera como resposta o nome,email,telefone e senha
 app.put('/editarUsuario/:id',(req,res)=>{
   res.set('content-type','application/json');
   const userId=req.params.id;

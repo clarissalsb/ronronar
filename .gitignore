@@ -1,6 +1,8 @@
 node_modules/*
 .env
 *.db
+!mydataPets.db 
+!mydataUploadsPets.db
 .vscode/
 .DS_Store
 Thumbs.db

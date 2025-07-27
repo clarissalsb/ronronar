@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-      formCadastro.addEventListener('submit', (e) => {
+    formCadastro.addEventListener('submit', (e) => {
       e.preventDefault();
 
       const nome = document.getElementById('nome').value.trim();
@@ -238,7 +238,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==== CARDS E MODAL DOS PETS ====
-
   if (document.getElementById('tela-inicial') || document.getElementById('tela-apadrinhamento')){
     const container = document.querySelector('.cards-container');
     const modal = document.getElementById('pet-modal');
@@ -288,7 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
       modal.classList.add('hidden');
     });
 
-      modal.addEventListener('click', (e) => {
+    modal.addEventListener('click', (e) => {
       if (e.target === modal) {
         modal.classList.add('hidden');
       }
@@ -296,38 +295,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==== TELA DE ADMIN ====
-  if (document.getElementById("user-table-body")) {
-    function ativarBotoesAcoes () {
-      const botoes = document.querySelectorAll(".action-toggle");
-
-      botoes.forEach((botao) => {
-        botao.addEventListener("click", (e) => {
-          e.stopPropagation();
-
-          document.querySelectorAll(".action-menu").forEach(menu => {
-            if (menu !== botao.nextElementSibling) {
-              menu.classList.remove("aberto");
-            }
-          });
-
-          const menu = botao.nextElementSibling;
-          menu.classList.toggle("aberto");
-        });
-      });
-
-      document.addEventListener("click", () => {
-        document.querySelectorAll(".action-menu").forEach(menu => {
-          menu.classList.remove("aberto");
-        });
-      });
-    }
-
+  // ==== Função para carregar usuários ====
   function carregarUsuarios() {
-  fetch("http://localhost:3001/api/user", {
-    headers: {
-      "Authorization": "Bearer " + localStorage.getItem("token")
-    }
-  })
+    fetch("http://localhost:3001/api/user", {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem("token")
+      }
+    })
     .then(res => {
       if (!res.ok) throw new Error("Erro ao buscar usuários");
       return res.json();
@@ -353,15 +327,13 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
           </td>
         `;
-        // Salva ID do usuário no dataset
         linha.dataset.userid = usuario.id;
-
         tabela.appendChild(linha);
       });
 
-      ativarBotoesAcoes(); // já ativa os menus
+      ativarBotoesAcoes();
 
-      // Adiciona evento de promoção para cada botão
+      // Botões de ação
       document.querySelectorAll('.btn-promover').forEach(botao => {
         botao.addEventListener('click', function () {
           const idUsuario = this.closest('tr').dataset.userid;
@@ -369,37 +341,97 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       });
 
-      // Aqui você também pode adicionar o evento de remoção, se quiser
+      document.querySelectorAll('.btn-remover').forEach(botao => {
+        botao.addEventListener('click', function () {
+          const idUsuario = this.closest('tr').dataset.userid;
+          removerUsuario(idUsuario);
+        });
+      });
+
     })
     .catch(err => console.error("Erro ao carregar usuários:", err));
-}
-
-    carregarUsuarios();
   }
-});
 
-  //função do front para promover a admin
-async function promoverUsuario(id) {
+  // ==== Função para promover usuário ====
+  async function promoverUsuario(id) {
+    try {
+      const response = await fetch(`http://localhost:3001/promoveradmin/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ isAdmin: true })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) throw new Error(result.message || "Erro ao promover usuário");
+
+      alert(result.message);
+      carregarUsuarios();
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao promover usuário.");
+    }
+  }
+
+  // ==== Função para remover usuário ====
+async function removerUsuario(id) {
   try {
-    const response = await fetch(`http://localhost:3001/promoveradmin/${id}`, {
-      method: "PATCH",
+    const response = await fetch(`http://localhost:3001/user/${id}`, {
+      method: "DELETE",
       headers: {
-        "Authorization": "Bearer " + localStorage.getItem("token"),
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ isAdmin: true }) // ou false se quiser rebaixar
+        "Authorization": "Bearer " + localStorage.getItem("token")
+      }
     });
 
-    if (!response.ok) throw new Error("Erro ao promover usuário");
-
     const result = await response.json();
+
+    if (!response.ok) throw new Error(result.message || "Erro ao remover usuário");
+
     alert(result.message);
-    carregarUsuarios(); // Atualiza a lista
+    carregarUsuarios();
   } catch (err) {
     console.error(err);
-    alert("Erro ao promover usuário.");
+    alert("Erro ao remover usuário.");
   }
 }
+
+
+  // ==== Função para ativar botões de ação (⋮) ====
+  function ativarBotoesAcoes() {
+    const botoes = document.querySelectorAll(".action-toggle");
+
+    botoes.forEach(botao => {
+      botao.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        document.querySelectorAll(".action-menu.aberto").forEach(menu => {
+          if (menu !== botao.nextElementSibling) {
+            menu.classList.remove("aberto");
+          }
+        });
+
+        const menu = botao.nextElementSibling;
+        menu.classList.toggle("aberto");
+      });
+    });
+
+    document.addEventListener("click", () => {
+      document.querySelectorAll(".action-menu.aberto").forEach(menu => {
+        menu.classList.remove("aberto");
+      });
+    });
+  }
+
+  // ==== Executar apenas se for a tela de admin ====
+  if (document.getElementById("user-table-body")) {
+    carregarUsuarios();
+  }
+
+});
+
 // ==== FUNÇÃO GLOBAL ====
 function logout() {
   localStorage.clear();

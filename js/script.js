@@ -235,9 +235,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (resultado.success) {
           localStorage.setItem("usuarioLogado", resultado.nome);
-          localStorage.setItem("usuarioStatus", resultado.status);
+          localStorage.setItem("usuarioStatus", resultado.isAdmin ? "isAdmin" : "comum");
           if (resultado.token) {
-           localStorage.setItem("token", resultado.token); // ← Aqui você salva o token
+           localStorage.setItem("token", resultado.token);
           }
           window.location.href = "../TelaInicial/index.html";
         } else {

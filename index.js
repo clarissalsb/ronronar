@@ -103,7 +103,18 @@ app.get('/pets/listagem',(req,res)=>{
 
 })
 
+//funçao para listar as imagens de pet
+app.get('/pets/imagem/:id', (req, res) => {
+  const petId = req.params.id;
+  const sql = 'SELECT imagem FROM imagens_pets WHERE pet_id = ? LIMIT 1';
 
+  bancoImagensPets.get(sql, [petId], (err, row) => {
+    if (err || !row) {
+      return res.status(404).send('Imagem não encontrada');
+    }
+    res.sendFile(path.resolve(row.imagem));
+  });
+});
 
 //funçao para lançar as imagens do pet, sera lançada pelo id do pet, id esse que deve estar no link ex: /pet/upload/4
 app.post("/pet/upload/:id",checkAdmin,(req,res)=>{
@@ -572,6 +583,7 @@ app.patch('/promoveradmin/:id', checkAdmin, (req, res) => {
     });
   });
 });
+
 
 
 //funçao para editar usuario, tem que colocar o id do usuario no link e espera como resposta o nome,email,telefone e senha

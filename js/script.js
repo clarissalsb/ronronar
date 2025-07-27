@@ -277,13 +277,13 @@ document.addEventListener("DOMContentLoaded", () => {
         card.classList.add('card');
 
         card.innerHTML = `
-          <img src="${pet.imagem}" alt="${pet.nome}">
+         <img src="http://localhost:3001/pets/imagem/${pet.id}" alt="${pet.nome}">
           <p class="nome-gato">${pet.nome}</p>
         `;
 
        // Evento para abrir o modal
         card.addEventListener('click', () => {
-          modalImg.src = pet.imagem;
+         modalImg.src = `http://localhost:3001/pets/imagem/${pet.id}`;
           modalNome.textContent = `${pet.nome}, ${pet.idade}`;
           modalGenero.textContent = pet.genero;
           modalSaude.textContent = pet.saude;

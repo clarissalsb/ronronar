@@ -13,19 +13,24 @@ document.addEventListener("DOMContentLoaded", () => {
       // Usuário logado
       areaUsuario.innerHTML = `
         <div class="usuario-wrapper">
+        <button id="btn-contraste" class="btn-contraste-icon" title="Ativar alto contraste">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#9B2AA6" viewBox="0 0 24 24">
+              <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm0 18V4a8 8 0 0 1 0 16Z" />
+            </svg>
+          </button>
           <div class="usuario-dropdown">
-            <button id="btn-usuario">${nomeUsuario}</button>
+            <button id="btn-usuario">${nomeUsuario}
+              <svg class="seta-baixo" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
             <div id="menu-usuario" class="menu-usuario">
               <a href="#">Perfil</a>
               <a href="#">Meus Apadrinhamentos</a>
               <a href="#" onclick="logout()">Sair</a>
             </div>
           </div>
-          <button id="btn-contraste" class="btn-contraste-icon" title="Ativar alto contraste">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#9B2AA6" viewBox="0 0 24 24">
-              <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm0 18V4a8 8 0 0 1 0 16Z" />
-            </svg>
-          </button>
+          
         </div>
       `;
 
@@ -33,12 +38,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const menu = document.getElementById("menu-usuario");
 
       btnUsuario.addEventListener("click", () => {
-        menu.style.display = menu.style.display === "block" ? "none" : "block";
+        const aberto = menu.style.display === "block";
+        menu.style.display = menu.style.display = aberto ? "none" : "block";
+        btnUsuario.classList.toggle("aberto", !aberto);
       });
 
       window.addEventListener("click", (event) => {
         if (!btnUsuario.contains(event.target)) {
           menu.style.display = "none";
+          btnUsuario.classList.remove("aberto");
         }
       });
 

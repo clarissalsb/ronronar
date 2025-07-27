@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tela Inicial</title>
+        <link rel="stylesheet" href="../css/styles.css">
+    </head>
+    <body>
+
+        <!-- Cabeçalho (menu) -->
+        <header class="menu">
+            <div class="menu-left">
+                <a href="../TelaInicial/index.html">
+                    <img src="../Imagens/Logo Projeto Ronronar.jpg" alt="Logo do projeto" class="logo">
+                </a>
+                <nav class="nav-left">
+                    <a href="../TelaInicial/index.html">Início</a>
+                    <a href="../TelaApadrinhamento/index.html">Apadrinhamento</a>
+                    <a href="#">Doações</a>
+                </nav>
+            </div>
+            <nav class="nav-right" id="areaUsuario">
+                <!-- preenchido no js -->
+            </nav>
+        </header>
+
+        <!-- Área principal -->
+        <main id="tela-apadrinhamento">
+
+
+        </main>
+
+        <!-- Rodapé -->
+        <footer class="footer">
+            <p>
+                <a href="https://www.instagram.com/projeto.ronronar?utm_source=ig_web_button_share_sheet&igsh=MXdlcnhvOTMyODU1YQ==" target="_blank" class="insta-link">
+                    <img src="../Imagens/Logo Instagram.jpg" alt="Instagram" />
+                </a>
+                Cada clique aqui aproxima um gatinho do lar que ele merece. <br>
+                Obrigado por fazer parte dessa rede de amor. 🐾
+            </p>
+        </footer>
+
+        <!-- Modal (pop-up) dos cards dos Pets -->
+        <div id="pet-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <div class="modal-img">
+                    <img id="modal-img" src="" alt="Foto do gatinho">
+                </div>
+                <div class="modal-info">
+                    <h2 id="modal-nome"></h2>
+                    <p id="modal-genero"></p>
+                    <p id="modal-saude"></p>
+                    <p id="modal-outros"></p>
+                    <p id="modal-desc"></p>
+                    <div class="modal-botoes">
+                        <button class="btn-apadrinhar">Quero apadrinhar</button>
+                        <button class="btn-adotar">Quero adotar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="../js/script.js"></script>
+    </body>
+</html>

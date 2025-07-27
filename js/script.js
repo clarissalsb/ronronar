@@ -333,7 +333,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <button class="action-toggle">⋮</button>
               <div class="action-menu">
                 <button class="action-item btn-remover">Remover</button>
-                <button class="action-item btn-promover">Tornar Admin</button>
+                <button class="action-item btn-promover" data-isadmin="${usuario.isAdmin}">${usuario.isAdmin ? 'Tirar Admin' : 'Tornar Admin'}</button>
               </div>
             </div>
           </td>
@@ -345,12 +345,13 @@ document.addEventListener("DOMContentLoaded", () => {
       ativarBotoesAcoes();
 
       // Botões de ação
-      document.querySelectorAll('.btn-promover').forEach(botao => {
-        botao.addEventListener('click', function () {
-          const idUsuario = this.closest('tr').dataset.userid;
-          promoverUsuario(idUsuario);
-        });
-      });
+     document.querySelectorAll('.btn-promover').forEach(botao => {
+  botao.addEventListener('click', function () {
+    const idUsuario = this.closest('tr').dataset.userid;
+    const isAdminAtual = this.dataset.isadmin === 'true'; // string para boolean
+    promoverUsuario(idUsuario, !isAdminAtual); // passa o oposto para alternar
+  });
+});
 
       document.querySelectorAll('.btn-remover').forEach(botao => {
         botao.addEventListener('click', function () {
@@ -363,29 +364,31 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch(err => console.error("Erro ao carregar usuários:", err));
   }
 
-  // ==== Função para promover usuário ====
-  async function promoverUsuario(id) {
-    try {
-      const response = await fetch(`http://localhost:3001/promoveradmin/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Authorization": "Bearer " + localStorage.getItem("token"),
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ isAdmin: true })
-      });
+ // ==== Função para promover ou rebaixar usuário ====
+async function promoverUsuario(id, isAdmin) {
+  console.log('isAdmin recebido:', isAdmin, typeof isAdmin);  // <--- para debugar
 
-      const result = await response.json();
+  try {
+    const response = await fetch(`http://localhost:3001/promoveradmin/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem("token"),
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ isAdmin: isAdmin }) // true para promover, false para rebaixar
+    });
 
-      if (!response.ok) throw new Error(result.message || "Erro ao promover usuário");
+    const result = await response.json();
 
-      alert(result.message);
-      carregarUsuarios();
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao promover usuário.");
-    }
+    if (!response.ok) throw new Error(result.message || "Erro ao atualizar usuário");
+
+    alert(result.message);
+    carregarUsuarios();  // Recarrega a lista para atualizar a UI
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao atualizar usuário.");
   }
+}
 
   // ==== Função para remover usuário ====
 async function removerUsuario(id) {

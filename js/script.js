@@ -7,6 +7,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==== CABEÇALHO / LOGIN ====
   const nomeUsuario = localStorage.getItem("usuarioLogado");
   const areaUsuario = document.getElementById("areaUsuario");
+  const statusUsuario = localStorage.getItem("usuarioStatus");
+
+  const linksDoMenu = `
+    <a href="#">Perfil</a>
+    <a href="#">Meus Apadrinhamentos</a>
+    ${statusUsuario === "isAdmin" ? '<a href="../TelaAdmin/index.html">Painel Admin</a>' : ''}
+    <a href="#" onclick="logout()">Sair</a>
+  `;
 
   if (areaUsuario) {
     if (nomeUsuario) {
@@ -25,9 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
               </svg>
             </button>
             <div id="menu-usuario" class="menu-usuario">
-              <a href="#">Perfil</a>
-              <a href="#">Meus Apadrinhamentos</a>
-              <a href="#" onclick="logout()">Sair</a>
+              ${linksDoMenu}
             </div>
           </div>
           
@@ -229,6 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (resultado.success) {
           localStorage.setItem("usuarioLogado", resultado.nome);
+          localStorage.setItem("usuarioStatus", resultado.status);
           if (resultado.token) {
            localStorage.setItem("token", resultado.token); // ← Aqui você salva o token
           }

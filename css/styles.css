@@ -197,7 +197,7 @@ header.menu {
 .alto-contraste header.menu {
   background-color: #12005C !important;
   color: #FFFFFF !important;
-  border-bottom: 3px solid #FFD500;
+  border-bottom: 1px solid #FFD500;
 }
 
 .alto-contraste header.menu a:not(.btn-cadastro) {
@@ -205,6 +205,10 @@ header.menu {
 } 
 
 /* Cards dos gatos */
+.alto-contraste .cards-gatos h2 {
+  color: #FFEB3B !important;
+}
+
 .alto-contraste .card {
   background-color: #2E009E !important;
   color: #FFFFFF !important;
@@ -223,6 +227,22 @@ header.menu {
   background-color: #FFD500 !important;
   color: #12005C !important;
   border: none !important;
+}
+
+.alto-contraste #btn-usuario {
+  background-color: #FFD500 !important;
+  color: #12005C !important;
+  border: none !important;
+}
+
+.alto-contraste .menu-usuario {
+  background-color: #2E009E !important;
+  color: #FFFFFF !important;
+  border: 1px solid #FFD500 !important;
+}
+
+.alto-contraste .menu-usuario a {
+  color: #FFEB3B !important;
 }
 
 .alto-contraste a.btn-cadastro,
@@ -245,7 +265,8 @@ header.menu {
 }
 
 /* Hover dos botões */
-.alto-contraste .btn-apadrinhar:hover,  
+.alto-contraste .btn-apadrinhar:hover,
+.alto-contraste .menu-usuario a:hover,
 .alto-contraste .btn-cadastro:hover,  
 .alto-contraste .btn-ver-mais:hover {
   background-color: #FFEB3B !important  ;
@@ -267,7 +288,7 @@ header.menu {
 .alto-contraste .motivo {
   background-color: #2E009E !important;
   color: #FFFFFF !important;
-  border: 2px solid #FFD500 !important;
+  border: 1px solid #FFD500 !important;
 }
 
 /* Banner */
@@ -283,12 +304,11 @@ header.menu {
 .alto-contraste footer.footer {
   background-color: #12005C !important;
   color: #FFFFFF !important;
-  border-top: 3px solid #FFD500;
+  border-top: 1px solid #FFD500;
 } 
 
-.alto-contraste footer.footer a,
-.alto-contraste footer.footer img {
-  filter: brightness(2);
+.alto-contraste footer.footer a {
+  color: #FFEB3B !important;
 }
 
 /* Sections */ 
@@ -298,6 +318,15 @@ header.menu {
   background-color: #12005C !important;
   color: #FFFFFF !important;
 } 
+
+.alto-contraste .titulo-cards {
+  background-color: #FFD500 !important;
+  box-shadow: 0 2px 4px #2E009E !important;
+}
+
+.alto-contraste .titulo-cards h2 {
+  color: #12005C !important;
+}
 
 /* ==================== BANNER INICIAL ==================== */
 .banner {
@@ -372,10 +401,26 @@ header.menu {
 }
 
 /* ==================== GRID DOS CARDS ==================== */
+.titulo-cards {
+  background-color: white;
+  padding: 8px 16px;
+  display: inline-block;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 32px;
+  margin-left: 16px;
+}
+
+.titulo-cards h2 {
+  font-family: 'Baloo', cursive;
+  color: #9B2AA6;
+  font-size: 2rem;
+  white-space: nowrap;
+}
+
 .cards-gatos {
   padding: 64px 24px;
   background-color: #ECDFED;
-  text-align: center;
 }
 
 .cards-gatos h2 {

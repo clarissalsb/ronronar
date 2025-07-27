@@ -10,9 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const statusUsuario = localStorage.getItem("usuarioStatus");
 
   const linksDoMenu = `
-    <a href="#">Perfil</a>
+    <a href="../TelaPerfilUser/index.html ">Perfil</a>
     <a href="#">Meus Apadrinhamentos</a>
-    ${statusUsuario === "isAdmin" ? '<a href="../TelaAdmin/index.html">Painel Admin</a>' : ''}
+    ${statusUsuario === "isAdmin" 
+      ? `
+        <a href="../TelaCadastroPet/index.html">Cadastrar Pet</a>
+        <a href="../TelaAdmin/index.html">Painel Admin</a>
+      `
+      : ''
+    }
     <a href="#" onclick="logout()">Sair</a>
   `;
 

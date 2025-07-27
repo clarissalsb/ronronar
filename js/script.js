@@ -259,11 +259,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalOutros = document.getElementById('modal-outros');
     const modalDesc = document.getElementById('modal-desc'); 
 
-    fetch('http://localhost:3001/pets')
+    fetch('http://localhost:3001/pets/listagem')
     .then(res => res.json())
-    .then(pets => {
-
-      pets.forEach((pet) => {
+    .then(data => {
+  data.pets.forEach(pet => {
+    // aqui continua normal
+  
         const card = document.createElement('div');
         card.classList.add('card');
 

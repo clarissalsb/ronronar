@@ -258,6 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalSaude = document.getElementById('modal-saude');
     const modalOutros = document.getElementById('modal-outros');
     const modalDesc = document.getElementById('modal-desc'); 
+    const modalVac = document.getElementById('modal-vac');
 
     fetch('http://localhost:3001/pets/listagem')
     .then(res => res.json())
@@ -280,6 +281,7 @@ document.addEventListener("DOMContentLoaded", () => {
           modalGenero.textContent = pet.genero;
           modalSaude.textContent = pet.saude;
           modalOutros.textContent = pet.caracteristicas || '';
+          modalVac.textContent = pet.vacinas || '';
           modalDesc.textContent = pet.descricao || '';
           modal.classList.remove('hidden');
         });

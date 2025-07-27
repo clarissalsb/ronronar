@@ -477,6 +477,9 @@ header.menu {
   cursor: pointer;
   transition: transform 0.2s ease;
   text-decoration: none;
+  display: block;
+  margin: 0 auto;
+  width: fit-content;
 }
 
 .btn-ver-mais:hover {

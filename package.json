@@ -1,7 +1,7 @@
 {
-  "name": "api_autenticacao",
+  "name": "ronronar",
   "version": "1.0.0",
-  "description": "Código para gerar os primeiro quatro requisitos, focados na autenticação do usuário",
+  "description": "Código utilizado para atender aos requisitos do projeto ronronar",
   "homepage": "https://github.com/clarissalsb/ronronar#readme",
   "bugs": {
     "url": "https://github.com/clarissalsb/ronronar/issues"
@@ -15,7 +15,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "dependencies": {
     "body-parser": "^2.2.0",

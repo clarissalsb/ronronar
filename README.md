@@ -70,12 +70,12 @@ CD ronronar
  | RF03 | Remover Usuário             |A voluntária deve poder remover usuários inativos          |    ✔️    |
  | RF04 | Editar Dados                |O usuário deve ser capaz de alterar sua senha, no cenário em que ele esqueça seus dados, por meio de um processo de recuperação.                  |        |
  | RF05 | Função de Admin               |O sistema deve permitir que administradores gerenciem usuários.                  |    ✔️    |
- | RF06 | Cadastrar pet             |O usuário deve ser capaz de inserir e armazenar dados do pet, como registros médicos, peso e idade.                  |        |
- | RF07 | Editar dados do pet            |As voluntárias devem ser capazes de alterar dados do pet, como idade, peso e registros médicos.              |        |
+ | RF06 | Cadastrar pet             |O usuário deve ser capaz de inserir e armazenar dados do pet, como registros médicos, peso e idade.                  |    ✔️    |
+ | RF07 | Editar dados do pet            |As voluntárias devem ser capazes de alterar dados do pet, como idade, peso e registros médicos.              |    ✔️    |
  | RF08 | Inserir Imagens            |O usuário deve ser capaz de enviar imagens para a aplicação.                |        |
  | RF09 | Remover imagens         |O usuário deve ser capaz de remover imagens antigas do pet, para inserir imagens novas.                  |        |
  | RF10 | Apadrinhamento de pets             |O sistema deve permitir o vínculo de um padrinho a um ou mais pets, armazenando os dados do padrinho e seu histórico de apadrinhamento.                     |        |
- | RF11 | Listar pets disponíveis para apadrinhamento      |O sistema deve exibir uma lista de pets disponíveis para apadrinhamento, com dados básicos e imagens para atrair novos padrinhos.                    |        |
+ | RF11 | Listar pets disponíveis para apadrinhamento      |O sistema deve exibir uma lista de pets disponíveis para apadrinhamento, com dados básicos e imagens para atrair novos padrinhos.                    |    ✔️    |
  | RF12 | Envio de relatórios         |O sistema deve permitir o envio de atualizações ou relatórios sobre o pet apadrinhado ao respectivo padrinho, via e-mail ou sistema                    |        |          
  | RF13 | Controlar doações      | O sistema deve permitir o registro de doações, com dados como valor, data, forma de doação e nome do doador (opcional).                    |        |                   
 

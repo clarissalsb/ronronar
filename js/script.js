@@ -7,20 +7,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==== CABEÇALHO / LOGIN ====
   const nomeUsuario = localStorage.getItem("usuarioLogado");
   const areaUsuario = document.getElementById("areaUsuario");
-  const statusUsuario = localStorage.getItem("usuarioStatus");
+ const statusUsuario = localStorage.getItem("isAdmin");
 
-  const linksDoMenu = `
-    <a href="../TelaPerfilUser/index.html ">Perfil</a>
-    <a href="#">Meus Apadrinhamentos</a>
-    ${statusUsuario === "isAdmin" 
-      ? `
-        <a href="../TelaCadastroPet/index.html">Cadastrar Pet</a>
-        <a href="../TelaAdmin/index.html">Painel Admin</a>
-      `
-      : ''
-    }
-    <a href="#" onclick="logout()">Sair</a>
-  `;
+const linksDoMenu = `
+  <a href="../TelaPerfilUser/index.html ">Perfil</a>
+  <a href="#">Meus Apadrinhamentos</a>
+  ${statusUsuario === "true"
+    ? `
+      <a href="../TelaCadastroPet/index.html">Cadastrar Pet</a>
+      <a href="../TelaAdmin/index.html">Painel Admin</a>
+    `
+    : ''
+  }
+  <a href="#" onclick="logout()">Sair</a>
+`;
 
   if (areaUsuario) {
     if (nomeUsuario) {
@@ -258,7 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ==== CARDS E MODAL DOS PETS ====
+ // ==== CARDS E MODAL DOS PETS ====
 if (document.getElementById('tela-inicial') || document.getElementById('tela-apadrinhamento')) {
   const container = document.querySelector('.cards-container');
   const modal = document.getElementById('pet-modal');
@@ -280,9 +280,15 @@ if (document.getElementById('tela-inicial') || document.getElementById('tela-apa
 
   fetch("http://localhost:3001/pets/listagem")
     .then(res => res.json())
-  .then(data => {
-    const pets = data.pets;  // Aqui está o array correto
-    pets.forEach(pet => {
+    .then(data => {
+      let petsParaExibir = data.pets;
+
+      // Limita a 4 pets na tela inicial
+      if (document.getElementById('tela-inicial')) {
+        petsParaExibir = petsParaExibir.slice(0, 4);
+      }
+
+      petsParaExibir.forEach(pet => {
         const card = document.createElement('div');
         card.classList.add('card');
 
@@ -295,7 +301,7 @@ if (document.getElementById('tela-inicial') || document.getElementById('tela-apa
         card.addEventListener('click', () => {
           modalImg.src = `http://localhost:3001/pets/imagem/${pet.id}`;
           modalNome.textContent = pet.nome;
-          modalGenero.textContent = `Gênero: ${pet.genero}`;
+          modalGenero.textContent = `Gênero: ${pet.genero || 'Não informado'}`;
           modalSaude.textContent = `Saúde: ${pet.saude}`;
           modalOutros.textContent = `Características: ${pet.caracteristicas}`;
           modalDesc.textContent = `Descrição: ${pet.descricao}`;
@@ -306,13 +312,17 @@ if (document.getElementById('tela-inicial') || document.getElementById('tela-apa
 
           const token = localStorage.getItem('token');
           if (token) {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            if (payload.isAdmin) {
-              const editarBtn = document.createElement('button');
-              editarBtn.textContent = 'Editar';
-              editarBtn.classList.add('btn-editar');
-              editarBtn.addEventListener('click', () => abrirEdicaoPet(pet));
-              modalActions.appendChild(editarBtn);
+            try {
+              const payload = JSON.parse(atob(token.split('.')[1]));
+              if (payload.isAdmin) {
+                const editarBtn = document.createElement('button');
+                editarBtn.textContent = 'Editar';
+                editarBtn.classList.add('btn-editar');
+                editarBtn.addEventListener('click', () => abrirEdicaoPet(pet));
+                modalActions.appendChild(editarBtn);
+              }
+            } catch {
+              // token inválido, não faz nada
             }
           }
         });
@@ -332,7 +342,7 @@ if (document.getElementById('tela-inicial') || document.getElementById('tela-apa
     modalOutros.innerHTML = `<textarea id="edit-caracteristicas">${pet.caracteristicas || ''}</textarea>`;
     modalDesc.innerHTML = `<textarea id="edit-descricao">${pet.descricao || ''}</textarea>`;
 
-    const idadePartes = pet.idade.split(',')[0] || pet.idade;
+    const idadePartes = pet.idade ? pet.idade.split(',')[0] : '';
     modalNome.innerHTML += `<br><input type="text" id="edit-idade" value="${idadePartes.trim()}">`;
 
     const salvarBtn = document.createElement('button');
@@ -363,26 +373,27 @@ if (document.getElementById('tela-inicial') || document.getElementById('tela-apa
         },
         body: JSON.stringify(dadosEditados)
       })
-        .then(res => res.json())
-        .then(response => {
-          if (response.message) {
-            alert(response.message);
-            modal.classList.add('hidden');
-            location.reload();
-          } else {
-            alert('Erro ao editar pet.');
-          }
-        })
-        .catch(err => {
-          console.error('Erro ao editar pet:', err);
-          alert('Erro ao conectar com o servidor.');
-        });
+      .then(res => res.json())
+      .then(response => {
+        if (response.message) {
+          alert(response.message);
+          modal.classList.add('hidden');
+          location.reload();
+        } else {
+          alert('Erro ao editar pet.');
+        }
+      })
+      .catch(err => {
+        console.error('Erro ao editar pet:', err);
+        alert('Erro ao conectar com o servidor.');
+      });
     });
 
     modalActions.innerHTML = '';
     modalActions.appendChild(salvarBtn);
   }
 }
+
 
 
 

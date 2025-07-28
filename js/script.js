@@ -370,10 +370,12 @@ if (document.getElementById('tela-inicial') || document.getElementById('tela-apa
           modalImg.src = `http://localhost:3001/pets/imagem/${pet.id}`;
           modalNome.textContent = pet.nome;
           modalGenero.textContent = `Gênero: ${pet.genero || 'Não informado'}`;
-          modalSaude.textContent = `Saúde: ${pet.saude}`;
-          modalOutros.textContent = `Características: ${pet.caracteristicas}`;
-          modalDesc.textContent = `Descrição: ${pet.descricao}`;
-          modalVac.textContent = `Vacinas: ${pet.vacinas}`;
+          modalSaude.textContent = `Descrição: ${pet.saude}`;
+         //GAMBIARRA PROVISÓRIA, DEVE SER ALTERADO NO BACK
+          modalVac.textContent = `Doenças: ${pet.vacinas}`;
+          modalOutros.textContent = `Adversidades: ${pet.caracteristicas}`;
+         
+         //GAMBIARRA PROVISÓRIA, DEVE SER ALTERADO NO BACK
           modal.classList.remove('hidden');
 
           modalActions.innerHTML = '';
@@ -401,52 +403,85 @@ if (document.getElementById('tela-inicial') || document.getElementById('tela-apa
     .catch(err => {
       console.error('Erro ao carregar pets:', err);
     });
-
+// FUNÇÃO EDITAR PETS
   function abrirEdicaoPet(pet) {
-    modalNome.innerHTML = `<input type="text" id="edit-nome" value="${pet.nome}">`;
-    modalGenero.textContent = pet.genero;
-    modalSaude.innerHTML = `<input type="text" id="edit-saude" value="${pet.saude}">`;
-    modalVac.innerHTML = `<input type="text" id="edit-vacinas" value="${pet.vacinas}">`;
-    modalOutros.innerHTML = `<textarea id="edit-caracteristicas">${pet.caracteristicas || ''}</textarea>`;
-    modalDesc.innerHTML = `<textarea id="edit-descricao">${pet.descricao || ''}</textarea>`;
+  modalNome.innerHTML = `<input type="text" id="edit-nome" value="${pet.nome}">`;
+  modalGenero.textContent = pet.genero;
+  modalSaude.innerHTML = `<input type="text" id="edit-saude" value="${pet.saude}">`;
+  modalVac.innerHTML = `<input type="text" id="edit-vacinas" value="${pet.vacinas}">`;
+  modalOutros.innerHTML = `<textarea id="edit-caracteristicas">${pet.caracteristicas || ''}</textarea>`;
+  modalDesc.innerHTML = `<textarea id="edit-descricao">${pet.descricao || ''}</textarea>`;
 
-    const idadePartes = pet.idade ? pet.idade.split(',')[0] : '';
-    modalNome.innerHTML += `<br><input type="text" id="edit-idade" value="${idadePartes.trim()}">`;
+  const idadePartes = pet.idade ? pet.idade.split(',')[0] : '';
+  modalNome.innerHTML += `<br><input type="text" id="edit-idade" value="${idadePartes.trim()}">`;
 
-    const salvarBtn = document.createElement('button');
-    salvarBtn.textContent = 'Salvar';
-    salvarBtn.classList.add('btn-salvar');
+  // Input para imagem
+  const inputImagem = document.createElement('input');
+  inputImagem.type = 'file';
+  inputImagem.id = 'edit-imagem';
+  inputImagem.accept = 'image/*';
 
-    salvarBtn.addEventListener('click', () => {
-      const dadosEditados = {
-        nome: document.getElementById('edit-nome').value.trim(),
-        idade: document.getElementById('edit-idade').value.trim(),
-        saude: document.getElementById('edit-saude').value.trim(),
-        vacinas: document.getElementById('edit-vacinas').value.trim(),
-        caracteristicas: document.getElementById('edit-caracteristicas').value.trim(),
-        descricao: document.getElementById('edit-descricao').value.trim()
-      };
+  // Botão de salvar
+  const salvarBtn = document.createElement('button');
+  salvarBtn.textContent = 'Salvar';
+  salvarBtn.classList.add('btn-salvar');
 
-      const camposVazios = Object.values(dadosEditados).some(v => v === '');
-      if (camposVazios) {
-        alert("Preencha todos os campos.");
-        return;
-      }
+  salvarBtn.addEventListener('click', () => {
+    const dadosEditados = {
+      nome: document.getElementById('edit-nome').value.trim(),
+      idade: document.getElementById('edit-idade').value.trim(),
+      saude: document.getElementById('edit-saude').value.trim(),
+      vacinas: document.getElementById('edit-vacinas').value.trim(),
+      caracteristicas: document.getElementById('edit-caracteristicas').value.trim(),
+      descricao: document.getElementById('edit-descricao').value.trim()
+    };
 
-      fetch(`http://localhost:3001/pets/editar/${pet.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        },
-        body: JSON.stringify(dadosEditados)
-      })
+    const camposVazios = Object.values(dadosEditados).some(v => v === '');
+    if (camposVazios) {
+      alert("Preencha todos os campos.");
+      return;
+    }
+
+    // Atualiza dados principais
+    fetch(`http://localhost:3001/pets/editar/${pet.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+      body: JSON.stringify(dadosEditados)
+    })
       .then(res => res.json())
       .then(response => {
         if (response.message) {
-          alert(response.message);
-          modal.classList.add('hidden');
-          location.reload();
+          // Se tiver imagem, envia depois
+          const imagemSelecionada = inputImagem.files[0];
+          if (imagemSelecionada) {
+            const formData = new FormData();
+            formData.append('imagempet', imagemSelecionada);
+
+            fetch(`http://localhost:3001/pet/upload/${pet.id}`, {
+              method: 'POST',
+              headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+              },
+              body: formData
+            })
+              .then(res => res.json())
+              .then(imgResp => {
+                alert("Pet e imagem atualizados com sucesso.");
+                modal.classList.add('hidden');
+                location.reload();
+              })
+              .catch(imgErr => {
+                console.error("Erro ao enviar imagem:", imgErr);
+                alert("Pet atualizado, mas falha ao enviar imagem.");
+              });
+          } else {
+            alert("Pet atualizado com sucesso.");
+            modal.classList.add('hidden');
+            location.reload();
+          }
         } else {
           alert('Erro ao editar pet.');
         }
@@ -455,11 +490,15 @@ if (document.getElementById('tela-inicial') || document.getElementById('tela-apa
         console.error('Erro ao editar pet:', err);
         alert('Erro ao conectar com o servidor.');
       });
-    });
+  });
 
-    modalActions.innerHTML = '';
-    modalActions.appendChild(salvarBtn);
-  }
+  // Adiciona ao modal
+  const modalActions = document.getElementById('modal-actions');
+  modalActions.innerHTML = '';
+  modalActions.appendChild(inputImagem);
+  modalActions.appendChild(salvarBtn);
+}
+
 }
 
 

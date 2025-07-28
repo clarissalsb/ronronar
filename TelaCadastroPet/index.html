@@ -28,30 +28,29 @@
     <form class="cadastro-form" id="formCadastroPet">
       <h1>Cadastro de Pet</h1>
 
-      <label for="nome">Nome</label>
-      <input type="text" id="nome" name="nome" placeholder="Nome do pet" maxlength="50" required />
+     <label for="nome">Nome:</label>
+  <input type="text" id="nome" name="nome" required>
 
-      <label for="idade">Idade</label>
-      <input type="text" id="idade" name="idade" placeholder="Ex: 2 anos" maxlength="20" required />
+  <label for="idade">Idade:</label>
+  <input type="text" id="idade" name="idade" required>
 
-      <label for="saude">Saúde</label>
-      <input type="text" id="saude" name="saude" placeholder="Condições de saúde" maxlength="100" required />
+  <label for="saude">Gênero:</label>
+  <input type="text" id="saude" name="saude" required>
 
-      <label for="vacinas">Vacinas</label>
-      <input type="text" id="vacinas" name="vacinas" placeholder="Vacinas tomadas" maxlength="100" required />
+  <label for="vacinas">Doenças:</label>
+  <input type="text" id="vacinas" name="vacinas" required>
 
-      <label for="caracteristicas">Características</label>
-      <textarea id="caracteristicas" name="caracteristicas" placeholder="Comportamento, hábitos etc." maxlength="255" required></textarea>
+  <label for="caracteristicas">Adversidades:</label>
+  <input type="text" id="caracteristicas" name="caracteristicas" required>
 
-      <label for="descricao">Descrição</label>
-      <textarea id="descricao" name="descricao" placeholder="Descrição geral do pet" maxlength="255" required></textarea>
+  <label for="descricao">Descrição:</label>
+  <textarea id="descricao" name="descricao" rows="4" required></textarea>
 
-      <div class="error-message" id="error-message"></div>
 
-      <button type="submit">Cadastrar Pet</button>
+  <button type="submit">Cadastrar Pet</button>
     </form>
   </main>
-
+    <div id="error-message" class="error-message" style="display:none;"></div>
   <!-- Rodapé -->
   <footer class="footer">
     <p>

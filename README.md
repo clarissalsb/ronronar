@@ -49,6 +49,27 @@
 git clone https://github.com/clarissalsb/ronronar
 CD ronronar
 ```
+### Front-end
+```
+npm install
+npm install -g live-server
+live-server
+```
+
+### Back-end
+```
+cp .env.example .env
+// entre no seu editor de texto e configure as variáveis de ambiente da .env
+touch mydata.db
+touch mydataApadrinhamentos.db
+touch mydataPets.db
+touch mydataPetsplanos.db
+touch mydataRelatorios.db
+touch mydataUploadsPets.db
+touch mydataUploadsUsers.db
+npm install
+npm start
+```
 
 <a name="tecnologias"></a>
 
@@ -57,7 +78,8 @@ CD ronronar
  * **Node.js** + **Express**
  * **Sequelize(ORM)** (SQLite)
  * **Multer** (Upload)
- * **Alpine.js**
+ * **Nodemailer** (Envio de Emails)
+ * **JSON Web Token** (Token de autenticação)
 
 <a name="requisitos"></a>
 
@@ -68,16 +90,16 @@ CD ronronar
  | RF01 | Autenticar Usuário          |O usuário deve poder realizar login usando e-mail e senha. O sistema deve manter o usuário autenticado.                  |    ✔️    |
  | RF02 | Cadastrar Usuário           |O usuário deve poder realizar o cadastro com nome, e-mail e senha. O sistema deve checar se o e-mail já está em uso.                  |    ✔️    |
  | RF03 | Remover Usuário             |A voluntária deve poder remover usuários inativos          |    ✔️    |
- | RF04 | Editar Dados                |O usuário deve ser capaz de alterar sua senha, no cenário em que ele esqueça seus dados, por meio de um processo de recuperação.                  |        |
+ | RF04 | Editar Dados                |O usuário deve ser capaz de alterar sua senha, no cenário em que ele esqueça seus dados, por meio de um processo de recuperação.                  |    ✔️   |
  | RF05 | Função de Admin               |O sistema deve permitir que administradores gerenciem usuários.                  |    ✔️    |
  | RF06 | Cadastrar pet             |O usuário deve ser capaz de inserir e armazenar dados do pet, como registros médicos, peso e idade.                  |    ✔️    |
  | RF07 | Editar dados do pet            |As voluntárias devem ser capazes de alterar dados do pet, como idade, peso e registros médicos.              |    ✔️    |
- | RF08 | Inserir Imagens            |O usuário deve ser capaz de enviar imagens para a aplicação.                |        |
- | RF09 | Remover imagens         |O usuário deve ser capaz de remover imagens antigas do pet, para inserir imagens novas.                  |        |
- | RF10 | Apadrinhamento de pets             |O sistema deve permitir o vínculo de um padrinho a um ou mais pets, armazenando os dados do padrinho e seu histórico de apadrinhamento.                     |        |
+ | RF08 | Inserir Imagens            |O usuário deve ser capaz de enviar imagens para a aplicação.                | ✔️    |
+ | RF09 | Remover imagens         |O usuário deve ser capaz de remover imagens antigas do pet, para inserir imagens novas.                  |   ✔️    |
+ | RF10 | Apadrinhamento de pets             |O sistema deve permitir o vínculo de um padrinho a um ou mais pets, armazenando os dados do padrinho e seu histórico de apadrinhamento.                     |    ✔️   |
  | RF11 | Listar pets disponíveis para apadrinhamento      |O sistema deve exibir uma lista de pets disponíveis para apadrinhamento, com dados básicos e imagens para atrair novos padrinhos.                    |    ✔️    |
- | RF12 | Envio de relatórios         |O sistema deve permitir o envio de atualizações ou relatórios sobre o pet apadrinhado ao respectivo padrinho, via e-mail ou sistema                    |        |          
- | RF13 | Controlar doações      | O sistema deve permitir o registro de doações, com dados como valor, data, forma de doação e nome do doador (opcional).                    |        |                   
+ | RF12 | Envio de relatórios         |O sistema deve permitir o envio de atualizações ou relatórios sobre o pet apadrinhado ao respectivo padrinho, via e-mail ou sistema                    |   ✔️    |          
+ | RF13 | Controlar doações      | O sistema deve permitir o registro de doações, com dados como valor, data, forma de doação e nome do doador (opcional).                    |    ✔️   |                   
 
 <a name="documento"></a>
 
@@ -90,4 +112,4 @@ https://docs.google.com/document/d/1Gmaj_xU2skCxmeZbeG9Y4FVPVd0U3cdr/edit
 
 ## Licença
 
-Esse projeto atua sob a GNU GPLv3.
+Este código está sobre a licença GNU GPL 3.0. Para mais informações, veja o [LICENSE](LICENSE).

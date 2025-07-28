@@ -7,20 +7,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==== CABEÇALHO / LOGIN ====
   const nomeUsuario = localStorage.getItem("usuarioLogado");
   const areaUsuario = document.getElementById("areaUsuario");
-  const statusUsuario = localStorage.getItem("usuarioStatus");
+ const statusUsuario = localStorage.getItem("isAdmin");
 
-  const linksDoMenu = `
-    <a href="../TelaPerfilUser/index.html ">Perfil</a>
-    <a href="#">Meus Apadrinhamentos</a>
-    ${statusUsuario === "isAdmin" 
-      ? `
-        <a href="../TelaCadastroPet/index.html">Cadastrar Pet</a>
-        <a href="../TelaAdmin/index.html">Painel Admin</a>
-      `
-      : ''
-    }
-    <a href="#" onclick="logout()">Sair</a>
-  `;
+const linksDoMenu = `
+  <a href="../TelaPerfilUser/index.html ">Perfil</a>
+  <a href="#">Meus Apadrinhamentos</a>
+  ${statusUsuario === "true"
+    ? `
+      <a href="../TelaCadastroPet/index.html">Cadastrar Pet</a>
+      <a href="../TelaAdmin/index.html">Painel Admin</a>
+    `
+    : ''
+  }
+  <a href="#" onclick="logout()">Sair</a>
+`;
 
   if (areaUsuario) {
     if (nomeUsuario) {
@@ -89,118 +89,186 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==== TELA DE CADASTRO ====
-  const formCadastro = document.querySelector('.cadastro-form');
-  if (formCadastro) {
-    const errorDiv = document.getElementById('error-message');
-    const inputTelefone = document.getElementById('telefone');
+const formCadastro = document.querySelector('.cadastro-form');
+if (formCadastro) {
+  const errorDiv = document.getElementById('error-message');
 
-    if (inputTelefone) {
+  // Só pega inputTelefone se existir
+  const inputTelefone = document.getElementById('telefone');
+  if (inputTelefone) {
+    // Função para formatar telefone (mesmo seu código)
+    function formatarTelefoneComCursor(input) {
+      let posicao = input.selectionStart;
+      let valorOriginal = input.value;
+      let numeros = valorOriginal.replace(/\D/g, '');
 
-      // Função que formata e mantém o cursor no lugar certo
-      function formatarTelefoneComCursor(input) {
-        let posicao = input.selectionStart;
-        let valorOriginal = input.value;
-        let numeros = valorOriginal.replace(/\D/g, '');
+      numeros = numeros.slice(0, 11);
 
-        // Limita a 11 dígitos
-        numeros = numeros.slice(0, 11);
+      let novoValor = '';
+      if (numeros.length > 0) novoValor = '(' + numeros.slice(0, 2);
+      if (numeros.length >= 3) novoValor += ') ' + numeros.slice(2, 7);
+      if (numeros.length >= 8) novoValor += '-' + numeros.slice(7);
+      else if (numeros.length > 2 && numeros.length <= 7) novoValor += numeros.slice(7);
 
-        // Formata
-        let novoValor = '';
-        if (numeros.length > 0) novoValor = '(' + numeros.slice(0, 2);
-        if (numeros.length >= 3) novoValor += ') ' + numeros.slice(2, 7);
-        if (numeros.length >= 8) novoValor += '-' + numeros.slice(7);
-        else if (numeros.length > 2 && numeros.length <= 7) novoValor += numeros.slice(7);
-
-        // Define nova posição do cursor
-        let deslocamento = 0;
-        if (valorOriginal.length < novoValor.length) {
-          deslocamento = novoValor.length - valorOriginal.length;
-        }
-
-        input.value = novoValor;
-
-        // Só reposiciona se o cursor não estiver no final
-        if (posicao < novoValor.length) {
-          input.setSelectionRange(posicao + deslocamento, posicao + deslocamento);
-        }
+      let deslocamento = 0;
+      if (valorOriginal.length < novoValor.length) {
+        deslocamento = novoValor.length - valorOriginal.length;
       }
 
-      // Listener que chama a função ao digitar
-      inputTelefone.addEventListener('input', () => {
-        formatarTelefoneComCursor(inputTelefone);
-      });
+      input.value = novoValor;
+
+      if (posicao < novoValor.length) {
+        input.setSelectionRange(posicao + deslocamento, posicao + deslocamento);
+      }
     }
 
-    formCadastro.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const nome = document.getElementById('nome').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const telefone = document.getElementById('telefone').value.trim();
-      const senha = document.getElementById('senha').value;
-      const confirmarSenha = document.getElementById('confirmar-senha').value;
-
-      errorDiv.style.display = 'none';
-      errorDiv.innerHTML = '';
-
-      let erros = [];
-
-      if (!nome || !email || !telefone || !senha) {
-        erros.push('Preencha todos os campos! ⚠️');
-      }
-
-      if (senha !== confirmarSenha) {
-        erros.push('As senhas não coincidem! ❌');
-      }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        erros.push('Email inválido! ❌');
-      }
-
-      const senhaRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[$*&@#!])(?!.*(.)\1)[A-Za-z\d$*&@#!]{8,}$/;
-      if (!senhaRegex.test(senha)) {
-        erros.push(`
-          <strong>A senha precisa ter:</strong> <br>
-          - Pelo menos 8 caracteres<br>
-          - Pelo menos uma letra maiúscula<br>
-          - Pelo menos um número<br>
-          - Pelo menos um caractere especial ($*&@#!)<br>
-          - Não pode ter caracteres repetidos consecutivos<br>
-        `);
-      }
-
-      if (erros.length > 0) {
-        errorDiv.innerHTML = erros.join('<br><br>');
-        errorDiv.style.display = 'block';
-        return;
-      }
-
-      const dadosUsuario = { nome, email, telefone, senha };
-
-      fetch('http://localhost:3001/register/user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dadosUsuario),
-      })
-        .then(res => res.json())
-        .then(response => {
-          if (response.success) {
-            localStorage.setItem("usuarioLogado", nome);
-            window.location.href = "../TelaInicial/index.html";
-          } else {
-            errorDiv.innerHTML = response.message || 'Erro ao cadastrar.';
-            errorDiv.style.display = 'block';
-          }
-        })
-        .catch(error => {
-          errorDiv.innerHTML = 'Erro ao enviar dados.';
-          errorDiv.style.display = 'block';
-          console.error('Erro ao enviar dados:', error);
-        });
+    inputTelefone.addEventListener('input', () => {
+      formatarTelefoneComCursor(inputTelefone);
     });
   }
+
+  formCadastro.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Pega cada input com verificação para evitar erro
+    const nomeInput = document.getElementById('nome');
+    const emailInput = document.getElementById('email');
+    const telefoneInput = document.getElementById('telefone');
+    const senhaInput = document.getElementById('senha');
+    const confirmarSenhaInput = document.getElementById('confirmar-senha');
+
+    if (!nomeInput || !emailInput || !telefoneInput || !senhaInput || !confirmarSenhaInput) {
+      errorDiv.innerHTML = 'Formulário incompleto ou campos faltando.';
+      errorDiv.style.display = 'block';
+      return;
+    }
+
+    const nome = nomeInput.value.trim();
+    const email = emailInput.value.trim();
+    const telefone = telefoneInput.value.trim();
+    const senha = senhaInput.value;
+    const confirmarSenha = confirmarSenhaInput.value;
+
+    errorDiv.style.display = 'none';
+    errorDiv.innerHTML = '';
+
+    let erros = [];
+
+    if (!nome || !email || !telefone || !senha) {
+      erros.push('Preencha todos os campos! ⚠️');
+    }
+
+    if (senha !== confirmarSenha) {
+      erros.push('As senhas não coincidem! ❌');
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      erros.push('Email inválido! ❌');
+    }
+
+    const senhaRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[$*&@#!])(?!.*(.)\1)[A-Za-z\d$*&@#!]{8,}$/;
+    if (!senhaRegex.test(senha)) {
+      erros.push(`
+        <strong>A senha precisa ter:</strong> <br>
+        - Pelo menos 8 caracteres<br>
+        - Pelo menos uma letra maiúscula<br>
+        - Pelo menos um número<br>
+        - Pelo menos um caractere especial ($*&@#!)<br>
+        - Não pode ter caracteres repetidos consecutivos<br>
+      `);
+    }
+
+    if (erros.length > 0) {
+      errorDiv.innerHTML = erros.join('<br><br>');
+      errorDiv.style.display = 'block';
+      return;
+    }
+
+    const dadosUsuario = { nome, email, telefone, senha };
+
+    fetch('http://localhost:3001/register/user', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dadosUsuario),
+    })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          localStorage.setItem("usuarioLogado", nome);
+          window.location.href = "../TelaInicial/index.html";
+        } else {
+          errorDiv.innerHTML = response.message || 'Erro ao cadastrar.';
+          errorDiv.style.display = 'block';
+        }
+      })
+      .catch(error => {
+        errorDiv.innerHTML = 'Erro ao enviar dados.';
+        errorDiv.style.display = 'block';
+        console.error('Erro ao enviar dados:', error);
+      });
+  });
+}
+  // ==== CADASTRO DE PETS ====
+const formCadastroPet = document.getElementById('formCadastroPet');
+if (formCadastroPet) {
+  const errorDiv = document.getElementById('error-message');
+
+  formCadastroPet.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const nome = document.getElementById('nome').value.trim();
+    const idade = document.getElementById('idade').value.trim();
+    const saude = document.getElementById('saude').value.trim();
+    const vacinas = document.getElementById('vacinas').value.trim();
+    const caracteristicas = document.getElementById('caracteristicas').value.trim();
+    const descricao = document.getElementById('descricao').value.trim();
+
+    errorDiv.style.display = 'none';
+    errorDiv.innerHTML = '';
+
+    const camposObrigatorios = [nome, idade, saude, vacinas, caracteristicas, descricao];
+    const vazio = camposObrigatorios.some(campo => campo === '');
+    if (vazio) {
+      errorDiv.innerHTML = 'Preencha todos os campos! ⚠️';
+      errorDiv.style.display = 'block';
+      return;
+    }
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      errorDiv.innerHTML = 'Você precisa estar logado como administrador para cadastrar um pet.';
+      errorDiv.style.display = 'block';
+      return;
+    }
+
+    const dadosPet = { nome, idade, saude, vacinas, caracteristicas, descricao };
+
+    fetch('http://localhost:3001/pets/registrar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify(dadosPet),
+    })
+      .then(res => res.json())
+      .then(response => {
+        if (response.sucess) {
+          alert(response.message);
+          formCadastroPet.reset();
+        } else {
+          errorDiv.innerHTML = response.message || 'Erro ao cadastrar pet.';
+          errorDiv.style.display = 'block';
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao enviar dados:', error);
+        errorDiv.innerHTML = 'Erro ao conectar com o servidor.';
+        errorDiv.style.display = 'block';
+      });
+  });
+}
 
   // ==== TELA DE LOGIN ====
   const formLogin = document.querySelector('.login-form');
@@ -238,16 +306,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const resultado = await response.json();
-
         if (resultado.success) {
           localStorage.setItem("usuarioLogado", resultado.nome);
-          localStorage.setItem("usuarioStatus", resultado.isAdmin ? "isAdmin" : "comum");
+          localStorage.setItem("isAdmin", resultado.isAdmin ? "true" : "false");  // <-- importante
           if (resultado.token) {
-           localStorage.setItem("token", resultado.token);
+            localStorage.setItem("token", resultado.token);
           }
           window.location.href = "../TelaInicial/index.html";
+
         } else {
-          errorDiv.innerHTML = resultado.message || 'Login falhou. Verifique seus dados.';
+                  errorDiv.innerHTML = resultado.message || 'Login falhou. Verifique seus dados.';
           errorDiv.style.display = 'block';
         }
       } catch (erro) {
@@ -258,67 +326,144 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ==== CARDS E MODAL DOS PETS ====
-  if (document.getElementById('tela-inicial') || document.getElementById('tela-apadrinhamento')){
-    const container = document.querySelector('.cards-container');
-    const modal = document.getElementById('pet-modal');
-    const closeBtn = document.querySelector('.modal-close');
+ // ==== CARDS E MODAL DOS PETS ====
+if (document.getElementById('tela-inicial') || document.getElementById('tela-apadrinhamento')) {
+  const container = document.querySelector('.cards-container');
+  const modal = document.getElementById('pet-modal');
+  const closeBtn = document.querySelector('.modal-close');
 
-    // Elementos do modal
-    const modalImg = document.getElementById('modal-img');
-    const modalNome = document.getElementById('modal-nome');
-    const modalGenero = document.getElementById('modal-genero');
-    const modalSaude = document.getElementById('modal-saude');
-    const modalOutros = document.getElementById('modal-outros');
-    const modalDesc = document.getElementById('modal-desc'); 
-    const modalVac = document.getElementById('modal-vac');
+  // Elementos do modal
+  const modalImg = document.getElementById('modal-img');
+  const modalNome = document.getElementById('modal-nome');
+  const modalGenero = document.getElementById('modal-genero');
+  const modalSaude = document.getElementById('modal-saude');
+  const modalOutros = document.getElementById('modal-outros');
+  const modalDesc = document.getElementById('modal-desc'); 
+  const modalVac = document.getElementById('modal-vac');
+  const modalActions = document.getElementById('modal-actions');
 
-    fetch('http://localhost:3001/pets/listagem')
-.then(res => res.json())
-.then(data => {
-  let petsParaExibir = data.pets;
-
-  // Se estiver na tela inicial, limitar a 4
-  if (document.getElementById('tela-inicial')) {
-    petsParaExibir = petsParaExibir.slice(0, 4);
-  }
-
-  petsParaExibir.forEach(pet => {
-    const card = document.createElement('div');
-    card.classList.add('card');
-
-    card.innerHTML = `
-      <img src="http://localhost:3001/pets/imagem/${pet.id}" alt="${pet.nome}">
-      <p class="nome-gato">${pet.nome}</p>
-    `;
-
-    // Evento para abrir o modal
-    card.addEventListener('click', () => {
-      modalImg.src = `http://localhost:3001/pets/imagem/${pet.id}`;
-      modalNome.textContent = `${pet.nome}, ${pet.idade}`;
-      modalGenero.textContent = pet.genero;
-      modalSaude.textContent = pet.saude;
-      modalOutros.textContent = pet.caracteristicas || '';
-      modalVac.textContent = pet.vacinas || '';
-      modalDesc.textContent = pet.descricao || '';
-      modal.classList.remove('hidden');
-    });
-
-    container.appendChild(card);
+  closeBtn.addEventListener('click', () => {
+    modal.classList.add('hidden');
   });
-})
 
-    // Fecha o modal
-    closeBtn.addEventListener('click', () => {
-      modal.classList.add('hidden');
-    });
+  fetch("http://localhost:3001/pets/listagem")
+    .then(res => res.json())
+    .then(data => {
+      let petsParaExibir = data.pets;
 
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.classList.add('hidden');
+      // Limita a 4 pets na tela inicial
+      if (document.getElementById('tela-inicial')) {
+        petsParaExibir = petsParaExibir.slice(0, 4);
       }
+
+      petsParaExibir.forEach(pet => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+
+        card.innerHTML = `
+          <img src="http://localhost:3001/pets/imagem/${pet.id}" alt="${pet.nome}">
+          <h3>${pet.nome}</h3>
+          <p>${pet.idade}</p>
+        `;
+
+        card.addEventListener('click', () => {
+          modalImg.src = `http://localhost:3001/pets/imagem/${pet.id}`;
+          modalNome.textContent = pet.nome;
+          modalGenero.textContent = `Gênero: ${pet.genero || 'Não informado'}`;
+          modalSaude.textContent = `Saúde: ${pet.saude}`;
+          modalOutros.textContent = `Características: ${pet.caracteristicas}`;
+          modalDesc.textContent = `Descrição: ${pet.descricao}`;
+          modalVac.textContent = `Vacinas: ${pet.vacinas}`;
+          modal.classList.remove('hidden');
+
+          modalActions.innerHTML = '';
+
+          const token = localStorage.getItem('token');
+          if (token) {
+            try {
+              const payload = JSON.parse(atob(token.split('.')[1]));
+              if (payload.isAdmin) {
+                const editarBtn = document.createElement('button');
+                editarBtn.textContent = 'Editar';
+                editarBtn.classList.add('btn-editar');
+                editarBtn.addEventListener('click', () => abrirEdicaoPet(pet));
+                modalActions.appendChild(editarBtn);
+              }
+            } catch {
+              // token inválido, não faz nada
+            }
+          }
+        });
+
+        container.appendChild(card);
+      });
+    })
+    .catch(err => {
+      console.error('Erro ao carregar pets:', err);
     });
+
+  function abrirEdicaoPet(pet) {
+    modalNome.innerHTML = `<input type="text" id="edit-nome" value="${pet.nome}">`;
+    modalGenero.textContent = pet.genero;
+    modalSaude.innerHTML = `<input type="text" id="edit-saude" value="${pet.saude}">`;
+    modalVac.innerHTML = `<input type="text" id="edit-vacinas" value="${pet.vacinas}">`;
+    modalOutros.innerHTML = `<textarea id="edit-caracteristicas">${pet.caracteristicas || ''}</textarea>`;
+    modalDesc.innerHTML = `<textarea id="edit-descricao">${pet.descricao || ''}</textarea>`;
+
+    const idadePartes = pet.idade ? pet.idade.split(',')[0] : '';
+    modalNome.innerHTML += `<br><input type="text" id="edit-idade" value="${idadePartes.trim()}">`;
+
+    const salvarBtn = document.createElement('button');
+    salvarBtn.textContent = 'Salvar';
+    salvarBtn.classList.add('btn-salvar');
+
+    salvarBtn.addEventListener('click', () => {
+      const dadosEditados = {
+        nome: document.getElementById('edit-nome').value.trim(),
+        idade: document.getElementById('edit-idade').value.trim(),
+        saude: document.getElementById('edit-saude').value.trim(),
+        vacinas: document.getElementById('edit-vacinas').value.trim(),
+        caracteristicas: document.getElementById('edit-caracteristicas').value.trim(),
+        descricao: document.getElementById('edit-descricao').value.trim()
+      };
+
+      const camposVazios = Object.values(dadosEditados).some(v => v === '');
+      if (camposVazios) {
+        alert("Preencha todos os campos.");
+        return;
+      }
+
+      fetch(`http://localhost:3001/pets/editar/${pet.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(dadosEditados)
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.message) {
+          alert(response.message);
+          modal.classList.add('hidden');
+          location.reload();
+        } else {
+          alert('Erro ao editar pet.');
+        }
+      })
+      .catch(err => {
+        console.error('Erro ao editar pet:', err);
+        alert('Erro ao conectar com o servidor.');
+      });
+    });
+
+    modalActions.innerHTML = '';
+    modalActions.appendChild(salvarBtn);
   }
+}
+
+
+
 
   // ==== TELA DE ADMIN ====
   // ==== Função para carregar usuários ====

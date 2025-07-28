@@ -479,6 +479,7 @@ header.menu {
   height: 230px;
   width: 160px;
   margin: 0 auto;
+  cursor: pointer;
 }
 
 .card img {
@@ -514,6 +515,36 @@ header.menu {
 .btn-ver-mais:hover {
   transform: scale(1.05);
 }
+
+.modal-botoes {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-apadrinhar,
+.btn-adotar {
+  background-color: #9B2AA6;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-family: 'Baloo', cursive;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.2s ease;
+  flex: 1;
+  text-align: center;
+}
+
+.btn-apadrinhar:hover,
+.btn-adotar:hover {
+  background-color: #7a1f7c;
+}
+
 
 /* ==================== POR QUE APADRINHAR ==================== */
 .por-que-apadrinhar {
@@ -636,6 +667,25 @@ main.login-container {
   font-size: 0.9rem;
 }
 
+.esqueceu-senha {
+  text-align: left;
+  margin-top: 6px;
+  margin-bottom: 16px;
+}
+
+.esqueceu-senha a {
+  color: blue;
+  text-decoration: underline;
+  font-size: 0.95rem;
+  font-family: 'Averia Serif Libre', serif;
+  transition: color 0.2s ease;
+}
+
+.esqueceu-senha a:hover {
+  color: darkblue;
+  text-decoration: underline;
+}
+
 /* ==================== ADMIN ==================== */
 .admin-container {
   padding: 40px 24px;
@@ -722,6 +772,156 @@ main.login-container {
 
 .action-item:hover {
   background-color: #f3f3f3;
+}
+
+/* ==================== Tela Planos ==================== */
+.conteudo-centralizado {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.planos-container {
+  background-color: #ECDFED;
+  padding: 3rem 1rem;
+  min-height: 80vh;
+}
+
+.titulo-planos {
+  background-color: white;
+  padding: 8px 20px;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+  font-family: 'Baloo', cursive;
+  font-size: 1.5rem;
+  color: #9B2AA6;
+  width: fit-content;          
+  margin-left: 0;
+}
+
+.cards-planos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.plano-card {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+  padding: 1.5rem;
+  width: 260px;
+  text-align: center;
+  font-family: 'Averia Serif Libre', serif;
+  color: #9B2AA6;
+  vertical-align: center;
+}
+
+.plano-card img {
+  width: 60px;
+  margin: 1rem 0;
+}
+
+.btn-escolher {
+  margin-top: 1rem;
+  background-color: #9B2AA6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-family: 'Baloo', cursive;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-escolher:hover {
+  background-color: #7a1f7c;
+}
+
+.icone-patinha {
+  width: 48px;
+  height: 48px;
+  margin: 1rem auto;
+  display: block;
+}
+
+.icone-wrapper.prata svg {
+  color: #C0C0C0;
+}
+
+.icone-wrapper.ouro svg {
+  color: #FFD700;
+}
+
+.icone-wrapper.dima svg {
+  color: #00CFFF;
+}
+
+
+/* ==================== TELA DOACOES ============================= */
+.doacoes-container {
+  background-color: #ECDFED;
+  padding: 3rem 1rem 2rem;
+  min-height: 80vh;
+}
+
+.titulo-doacoes {
+  font-family: 'Baloo', cursive;
+  font-size: 2rem;
+  color: #9B2AA6;
+  margin-bottom: 2rem;
+  padding: 8px;
+  background-color: white;
+  width: fit-content;
+  border-radius: 12px;
+}
+
+.texto-doacoes {
+  background-color: white;
+  padding: 24px 32px;
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+  font-family: 'Averia Serif Libre', serif;
+  color: #9B2AA6;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+}
+
+.texto-doacoes a {
+  color: #9B2AA6;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.texto-doacoes a:hover {
+  text-decoration: underline;
+}
+
+.cards-doacao {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card-doacao {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+  width: 200px;
+  text-align: center;
+  padding: 1rem;
+  font-family: 'Averia Serif Libre', serif;
+  color: #3b0b45;
+}
+
+.card-doacao img {
+  width: 120px;
+  height: auto;
+  margin-bottom: 1rem;
 }
 
 /* ==================== Perfil do Usuário e Cadastrar Pets ==================== */
@@ -872,6 +1072,56 @@ main.login-container {
   display: none;
 }
 
+/* ==================== TELA APADRINHAMENTO ==================== */
+.conteudo-centralizado {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.topo-apadrinhamento {
+  background-color: #ECDFED;
+  padding: 48px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  margin: 0 auto;
+}
+
+.titulo {
+  background-color: white;
+  padding: 6px 18px;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
+  align-self: left;
+  width: fit-content;
+  margin-bottom: 24px;
+}
+
+.titulo h2 {
+  font-family: 'Baloo', cursive;
+  font-size: 2rem;
+  color: #9B2AA6;
+}
+
+.pq-apadrinhar {
+  background-color: white;
+  padding: 24px 32px;
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
+  max-width: 900px;
+  width: 100%;
+  text-align: left;
+}
+
+.pq-apadrinhar h3 {
+  font-family: 'Averia Serif Libre', serif;
+  color: #9B2AA6;
+  font-size: 1.1rem;
+  font-weight: normal;
+  line-height: 1.2;
+}
 
 /* ==================== RODAPÉ ==================== */
 footer.footer {
@@ -1031,6 +1281,21 @@ footer.footer .insta-link img:hover {
   display: none;
 }
 
+.btn-editar {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: #9B2AA6;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  align-self: flex-start;
+}
+
+.btn-editar:hover {
+  transform: scale(1.05);
+}
 
 /* ==================== RESPONSIVIDADE ==================== */
 @media (max-width: 600px) {

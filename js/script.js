@@ -275,6 +275,15 @@ if (formCadastroPet) {
   if (formLogin) {
     const errorDiv = document.getElementById('error-message');
 
+    const esqueciSenhaBtn = document.getElementById("btn-esqueci-senha")
+
+    if (esqueciSenhaBtn) {
+      esqueciSenhaBtn.addEventListener("click", (e) =>{
+        e.preventDefault();
+        window.location.href = "../TelaEsqueciSenha/index.html";
+      });
+    }
+
     formLogin.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -474,12 +483,8 @@ if (document.getElementById('tela-inicial') || document.getElementById('tela-apa
           modalNome.textContent = pet.nome;
           modalGenero.textContent = `Gênero: ${pet.genero || 'Não informado'}`;
           modalSaude.textContent = `Descrição: ${pet.saude}`;
-         //GAMBIARRA PROVISÓRIA, DEVE SER ALTERADO NO BACK
           modalVac.textContent = `Doenças: ${pet.vacinas}`;
           modalOutros.textContent = `Adversidades: ${pet.caracteristicas}`;
-         
-         //GAMBIARRA PROVISÓRIA, DEVE SER ALTERADO NO BACK
-          modal.classList.remove('hidden');
 
           modalActions.innerHTML = '';
 
@@ -489,8 +494,9 @@ if (document.getElementById('tela-inicial') || document.getElementById('tela-apa
               const payload = JSON.parse(atob(token.split('.')[1]));
               if (payload.isAdmin) {
                 const editarBtn = document.createElement('button');
-                editarBtn.textContent = 'Editar';
+                editarBtn.innerHTML = '✏️'
                 editarBtn.classList.add('btn-editar');
+                editarBtn.setAttribute('title', 'Editar informações do pet')
                 editarBtn.addEventListener('click', () => abrirEdicaoPet(pet));
                 modalActions.appendChild(editarBtn);
               }
@@ -498,6 +504,8 @@ if (document.getElementById('tela-inicial') || document.getElementById('tela-apa
               // token inválido, não faz nada
             }
           }
+
+          modal.classList.remove('hidden');
         });
 
         container.appendChild(card);

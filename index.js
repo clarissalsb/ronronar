@@ -791,9 +791,9 @@ app.patch('/apadrinhar/desativar/:id',checkAdmin,(req,res)=>{
     })
   })
 })
-//funçao para visualizar o historico de apadrinhamentos de um padrinho, precisa ser admin e precisa do id de usuario no link /padrinhos/1/apadrinhamentos
+//funçao para visualizar o historico de apadrinhamentos de um padrinho e precisa do id de usuario no link /padrinhos/1/apadrinhamentos
 
-app.get('/padrinhos/:id/apadrinhamentos', checkAdmin, (req, res) => {
+app.get('/padrinhos/:id/apadrinhamentos', (req, res) => {
   const userId = req.params.id;
 
   const sqlApadrinhamentos = `

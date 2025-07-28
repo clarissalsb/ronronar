@@ -31,6 +31,14 @@ main {
   flex: 1;
 }
 
+.site-wrapper {
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
 /* ==================== CABEÇALHO ==================== */
 header.menu {
   padding: 16px 24px;
@@ -643,11 +651,13 @@ main.login-container {
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   margin: 0 auto;
   max-width: 1000px;
+  border-radius: 16px;
 }
 
-.user-table thead {
+.admin-topo {
   background-color: #9B2AA6;
   color: white;
+  border-radius: 16px;
 }
 
 .user-table th,
@@ -714,34 +724,184 @@ main.login-container {
   background-color: #f3f3f3;
 }
 
-/* ==================== RODAPÉ ==================== */
-footer.footer {
-  padding: 12px;
+/* ==================== Perfil do Usuário e Cadastrar Pets ==================== */
+.editar-perfil {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+  background-color: #ECDFED;
+}
+
+
+.container-perfil-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.foto-perfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  flex-shrink: 0;
+}
+
+.form-perfil-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem 2rem;
+  flex: 1;
+  min-width: 320px;
+  width: 100%;
+}
+
+.form-perfil-grid .linha-inteira {
+  grid-column: 1 / 3;
+}
+
+.card-editar {
+  padding: 0 2rem 2rem 2rem;
+  margin-top: 2rem;
+  position: relative;
+  background-color: white;
+  border-radius: 16px;
+}
+
+.topo-edicao {
+  background-color: #9B2AA6;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
+  padding: 1.5rem;
+  margin: 0 -2rem 2rem -2rem;
+  position: relative;
   text-align: center;
-  color: black;
+}
+
+.topo-edicao h2 {
+  color: white;
+  font-size: 1.8rem;
+  margin: 0;
+  font-family: 'Baloo', cursive;
+}
+
+#btn-editar {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: white;
+}
+
+.circulo-foto {
+  background-color: #c4c4c4;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Baloo', cursive;
+  color: #555;
+  font-size: 1rem;
+  border: 2px solid #ECDFED;
+}
+
+.btn-alterar-foto {
+  margin-top: 1rem;
+  background-color: #9B2AA6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-family: 'Baloo', cursive;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.15);
+  transition: background-color 0.3s ease;
+}
+
+.btn-alterar-foto:hover {
+  background-color: #d4c0db;
+}
+
+.grupo-campo label {
+  font-weight: bold;
+  color: #9B2AA6;
+  margin-bottom: 4px;
+  font-family: 'Baloo', cursive;
+}
+
+.grupo-campo input {
+  padding: 10px;
+  border: 1px solid #E98A14;
+  border-radius: 12px;
+  font-size: 1rem;
   font-family: 'Averia Serif Libre', serif;
+  background-color: #fff;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+.btn-cadastro-pet {
+  background-color: #9B2AA6;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Baloo', cursive;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+  transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.btn-cadastro-pet:hover {
+  background-color: #7a1f7c;
+}
+
+#input-foto-pet {
+  display: none;
+}
+
+
+/* ==================== RODAPÉ ==================== */
+footer.footer {
+  position: relative;
   background: white;
+  padding: 24px 32px;
+  font-family: 'Averia Serif Libre', serif;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
   font-size: 0.9rem;
-  position: relative;
+  color: black;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-top: auto;
   overflow: visible;
 }
 
-footer.footer::after {
-  content: '';
-  display: block;
-  height: 0;
-  clear: both;
+.footer-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex-direction: row;
+  text-align: left;
 }
 
 footer.footer p {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  flex-wrap: wrap;
+  margin: 0;
+  text-align: left; 
 }
 
 footer.footer .insta-link img {
@@ -761,29 +921,27 @@ footer.footer .insta-link img:hover {
   right: 50px;
   width: 40px;
   height: auto;
-  z-index: 5;
+  z-index: 1;
   transform: rotate(5deg);
-  margin: 0 !important;
+  pointer-events: none;
 }
 
-/* ==================== MODAL DO PET ==================== */
 
+
+/* ==================== MODAL DO PET ==================== */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
-.modal.hidden {
-  display: none;
-}
 
 .modal-content {
   background-color: white;
@@ -795,42 +953,63 @@ footer.footer .insta-link img:hover {
   width: 90%;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   position: relative;
+  padding: 1rem;
+  gap: 1rem;
 }
 
-.modal-img img {
-  width: 250px;
+.modal-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.modal-foto {
+  width: 240px;
   height: auto;
+  border-radius: 16px;
   object-fit: cover;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
 }
 
 .modal-info {
-  padding: 24px;
   flex: 1;
+  padding: 1rem 1rem 1rem 0;
   font-family: 'Averia Serif Libre', serif;
   color: #9B2AA6;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .modal-info h2 {
   font-family: 'Baloo', cursive;
-  margin-bottom: 8px;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  margin-bottom: 0.3rem;
+  color: #9B2AA6;
+}
+
+.modal-info p {
+  margin: 0.2rem 0;
+  font-size: 1rem;
 }
 
 .modal-botoes {
-  margin-top: 20px;
   display: flex;
-  gap: 12px;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 .modal-botoes button {
   background-color: #9B2AA6;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   color: white;
   padding: 12px 16px;
   font-family: 'Baloo', cursive;
   font-size: 1rem;
   cursor: pointer;
+  flex: 1;
   transition: background-color 0.2s ease;
 }
 
@@ -847,6 +1026,11 @@ footer.footer .insta-link img:hover {
   cursor: pointer;
   font-weight: bold;
 }
+
+.modal.hidden {
+  display: none;
+}
+
 
 /* ==================== RESPONSIVIDADE ==================== */
 @media (max-width: 600px) {

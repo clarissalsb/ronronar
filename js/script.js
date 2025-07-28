@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const linksDoMenu = `
   <a href="../TelaPerfilUser/index.html ">Perfil</a>
-  <a href="#">Meus Apadrinhamentos</a>
+  <a href="../TelaApadrinhado/index.html">Meus Apadrinhamentos</a>
   ${statusUsuario === "true"
     ? `
       <a href="../TelaCadastroPet/index.html">Cadastrar Pet</a>
@@ -325,17 +325,107 @@ if (formCadastroPet) {
       }
     });
   }
+  // ==== TELA DE APADRINHADO ====
+  const apadrinhado = document.getElementById('tela-apadrinhado')
+  if (apadrinhado) {
+    //codigo em breve
+  }
 
   // ==== TELA DE PERFIL ====
-  const perfilUsuario = document.getElementById('editar-perfil');
+  const perfilUsuario = document.getElementById('tela-perfil');
   if (perfilUsuario) {
+
+    const token = localStorage.getItem("token");
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const userId = payload.id
+
+      fetch(`http://localhost:3001/api/user`, {
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          const usuario = data.users.find(u => u.id === userId);
+
+          if (usuario) {
+            document.getElementById("nome").value = usuario.nome || "";
+            document.getElementById("email").value = usuario.email || "";
+            document.getElementById("telefone").value = usuario.telefone || "";
+            document.getElementById("data-nascimento").value = usuario.nascimento || "";
+            document.getElementById("genero").value = usuario.genero || "";
+            document.getElementById("endereco").value = usuario.endereco || "";
+          } else {
+            console.warn("Usuário não encontrado.");
+          }
+        })
+        .catch(err => {
+          console.error("Erro ao carregar dados do usuário:", err);
+        });
+    }
+
     const btnEditar = document.getElementById('btn-editar');
     const inputs = document.querySelectorAll('.form-perfil input');
 
+    let editando = false;
+
     btnEditar.addEventListener('click', () => {
+      editando = !editando;
+
       inputs.forEach(input => {
-        input.disabled = !input.disabled;
+        input.disabled = !editando;
       });
+    
+
+    if(!editando) {
+      //salvar quando clica pra desativar a edição
+      const nome = document.getElementById("nome").value.trim();
+      const telefone = document.getElementById("telefone").value.trim();
+      const nascimento = document.getElementById("data-nascimento").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const genero = document.getElementById("genero").value.trim();
+      const endereco = document.getElementById("endereco").value.trim();
+
+      const senha = prompt("Confirme sua senha atual para salvar as alterações:");
+      if (!senha) {
+        alert("É necessário confirmar sua senha para salvar.");
+      return;
+      }
+
+      const token = localStorage.getItem("token");
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const userId = payload.id;
+
+
+      fetch(`http://localhost:3001/editarUsuario/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Authorization": "Bearer " + token,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          nome,
+          email,
+          telefone,
+          genero,
+          nascimento,
+          endereco,
+          senha
+        })
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.sucess || response.success) {
+          alert("Perfil atualizado com sucesso!");
+        } else {
+          alert(response.message || "Erro ao atualizar perfil.");
+        }
+      })
+      .catch(err => {
+        console.error("Erro ao atualizar perfil", err);
+      })
+    }
     });
   }
 

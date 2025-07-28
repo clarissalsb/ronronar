@@ -238,16 +238,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const resultado = await response.json();
-
         if (resultado.success) {
           localStorage.setItem("usuarioLogado", resultado.nome);
-          localStorage.setItem("usuarioStatus", resultado.isAdmin ? "isAdmin" : "comum");
+          localStorage.setItem("isAdmin", resultado.isAdmin ? "true" : "false");  // <-- importante
           if (resultado.token) {
-           localStorage.setItem("token", resultado.token);
+            localStorage.setItem("token", resultado.token);
           }
           window.location.href = "../TelaInicial/index.html";
+
         } else {
-          errorDiv.innerHTML = resultado.message || 'Login falhou. Verifique seus dados.';
+                  errorDiv.innerHTML = resultado.message || 'Login falhou. Verifique seus dados.';
           errorDiv.style.display = 'block';
         }
       } catch (erro) {
@@ -259,66 +259,132 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==== CARDS E MODAL DOS PETS ====
-  if (document.getElementById('tela-inicial') || document.getElementById('tela-apadrinhamento')){
-    const container = document.querySelector('.cards-container');
-    const modal = document.getElementById('pet-modal');
-    const closeBtn = document.querySelector('.modal-close');
+if (document.getElementById('tela-inicial') || document.getElementById('tela-apadrinhamento')) {
+  const container = document.querySelector('.cards-container');
+  const modal = document.getElementById('pet-modal');
+  const closeBtn = document.querySelector('.modal-close');
 
-    // Elementos do modal
-    const modalImg = document.getElementById('modal-img');
-    const modalNome = document.getElementById('modal-nome');
-    const modalGenero = document.getElementById('modal-genero');
-    const modalSaude = document.getElementById('modal-saude');
-    const modalOutros = document.getElementById('modal-outros');
-    const modalDesc = document.getElementById('modal-desc'); 
-    const modalVac = document.getElementById('modal-vac');
+  // Elementos do modal
+  const modalImg = document.getElementById('modal-img');
+  const modalNome = document.getElementById('modal-nome');
+  const modalGenero = document.getElementById('modal-genero');
+  const modalSaude = document.getElementById('modal-saude');
+  const modalOutros = document.getElementById('modal-outros');
+  const modalDesc = document.getElementById('modal-desc'); 
+  const modalVac = document.getElementById('modal-vac');
+  const modalActions = document.getElementById('modal-actions');
 
-    fetch('http://localhost:3001/pets/listagem')
-.then(res => res.json())
-.then(data => {
-  let petsParaExibir = data.pets;
-
-  // Se estiver na tela inicial, limitar a 4
-  if (document.getElementById('tela-inicial')) {
-    petsParaExibir = petsParaExibir.slice(0, 4);
-  }
-
-  petsParaExibir.forEach(pet => {
-    const card = document.createElement('div');
-    card.classList.add('card');
-
-    card.innerHTML = `
-      <img src="http://localhost:3001/pets/imagem/${pet.id}" alt="${pet.nome}">
-      <p class="nome-gato">${pet.nome}</p>
-    `;
-
-    // Evento para abrir o modal
-    card.addEventListener('click', () => {
-      modalImg.src = `http://localhost:3001/pets/imagem/${pet.id}`;
-      modalNome.textContent = `${pet.nome}, ${pet.idade}`;
-      modalGenero.textContent = pet.genero;
-      modalSaude.textContent = pet.saude;
-      modalOutros.textContent = pet.caracteristicas || '';
-      modalVac.textContent = pet.vacinas || '';
-      modalDesc.textContent = pet.descricao || '';
-      modal.classList.remove('hidden');
-    });
-
-    container.appendChild(card);
+  closeBtn.addEventListener('click', () => {
+    modal.classList.add('hidden');
   });
-})
 
-    // Fecha o modal
-    closeBtn.addEventListener('click', () => {
-      modal.classList.add('hidden');
+  fetch("http://localhost:3001/pets/listagem")
+    .then(res => res.json())
+  .then(data => {
+    const pets = data.pets;  // Aqui está o array correto
+    pets.forEach(pet => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+
+        card.innerHTML = `
+          <img src="http://localhost:3001/pets/imagem/${pet.id}" alt="${pet.nome}">
+          <h3>${pet.nome}</h3>
+          <p>${pet.idade}</p>
+        `;
+
+        card.addEventListener('click', () => {
+          modalImg.src = `http://localhost:3001/pets/imagem/${pet.id}`;
+          modalNome.textContent = pet.nome;
+          modalGenero.textContent = `Gênero: ${pet.genero}`;
+          modalSaude.textContent = `Saúde: ${pet.saude}`;
+          modalOutros.textContent = `Características: ${pet.caracteristicas}`;
+          modalDesc.textContent = `Descrição: ${pet.descricao}`;
+          modalVac.textContent = `Vacinas: ${pet.vacinas}`;
+          modal.classList.remove('hidden');
+
+          modalActions.innerHTML = '';
+
+          const token = localStorage.getItem('token');
+          if (token) {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            if (payload.isAdmin) {
+              const editarBtn = document.createElement('button');
+              editarBtn.textContent = 'Editar';
+              editarBtn.classList.add('btn-editar');
+              editarBtn.addEventListener('click', () => abrirEdicaoPet(pet));
+              modalActions.appendChild(editarBtn);
+            }
+          }
+        });
+
+        container.appendChild(card);
+      });
+    })
+    .catch(err => {
+      console.error('Erro ao carregar pets:', err);
     });
 
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.classList.add('hidden');
+  function abrirEdicaoPet(pet) {
+    modalNome.innerHTML = `<input type="text" id="edit-nome" value="${pet.nome}">`;
+    modalGenero.textContent = pet.genero;
+    modalSaude.innerHTML = `<input type="text" id="edit-saude" value="${pet.saude}">`;
+    modalVac.innerHTML = `<input type="text" id="edit-vacinas" value="${pet.vacinas}">`;
+    modalOutros.innerHTML = `<textarea id="edit-caracteristicas">${pet.caracteristicas || ''}</textarea>`;
+    modalDesc.innerHTML = `<textarea id="edit-descricao">${pet.descricao || ''}</textarea>`;
+
+    const idadePartes = pet.idade.split(',')[0] || pet.idade;
+    modalNome.innerHTML += `<br><input type="text" id="edit-idade" value="${idadePartes.trim()}">`;
+
+    const salvarBtn = document.createElement('button');
+    salvarBtn.textContent = 'Salvar';
+    salvarBtn.classList.add('btn-salvar');
+
+    salvarBtn.addEventListener('click', () => {
+      const dadosEditados = {
+        nome: document.getElementById('edit-nome').value.trim(),
+        idade: document.getElementById('edit-idade').value.trim(),
+        saude: document.getElementById('edit-saude').value.trim(),
+        vacinas: document.getElementById('edit-vacinas').value.trim(),
+        caracteristicas: document.getElementById('edit-caracteristicas').value.trim(),
+        descricao: document.getElementById('edit-descricao').value.trim()
+      };
+
+      const camposVazios = Object.values(dadosEditados).some(v => v === '');
+      if (camposVazios) {
+        alert("Preencha todos os campos.");
+        return;
       }
+
+      fetch(`http://localhost:3001/pets/editar/${pet.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(dadosEditados)
+      })
+        .then(res => res.json())
+        .then(response => {
+          if (response.message) {
+            alert(response.message);
+            modal.classList.add('hidden');
+            location.reload();
+          } else {
+            alert('Erro ao editar pet.');
+          }
+        })
+        .catch(err => {
+          console.error('Erro ao editar pet:', err);
+          alert('Erro ao conectar com o servidor.');
+        });
     });
+
+    modalActions.innerHTML = '';
+    modalActions.appendChild(salvarBtn);
   }
+}
+
+
 
   // ==== TELA DE ADMIN ====
   // ==== Função para carregar usuários ====

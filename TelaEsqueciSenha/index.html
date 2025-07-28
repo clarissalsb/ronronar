@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
-    <title>Pets apadrinhados</title>
+    <title>Esqueci minha senha</title>
     <link rel="stylesheet" href="../css/styles.css" />
 </head>
 <body>
@@ -24,13 +24,20 @@
             </nav>
         </header>
 
-        <!-- Área principal -->
-         <main class="apadrinhamento-container" id="tela-apadrinhado">
-            <!-- inserido via js -->
-        </main>
+    <!-- Área principal -->
+    <main class="login-container">
+        <form class="login-form">
+            <h1>Login</h1>
 
-        <!-- Rodapé -->
-        <footer class="footer">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" placeholder="Insira seu email aqui"/>
+
+            <button type="submit">Entrar</button>
+        </form>
+    </main>
+    
+    <!-- Rodapé -->
+    <footer class="footer">
             <div class="footer-content">
                 <a href="https://www.instagram.com/projeto.ronronar" target="_blank" class="insta-link">
                     <img src="../Imagens/Logo Instagram.jpg" alt="Instagram" />
@@ -42,6 +49,7 @@
             </div>
             <img src="../Imagens/gato-rodape.png" alt="Gatinho no rodapé" class="gato-rodape">
         </footer>
+
     <script src="../js/script.js"></script>
 </body>
 </html>

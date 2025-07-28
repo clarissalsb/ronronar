@@ -13,6 +13,18 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+}
+
+html {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 main {
@@ -401,21 +413,30 @@ header.menu {
 }
 
 /* ==================== GRID DOS CARDS ==================== */
+.cards-gatos-header {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
 .titulo-cards {
   background-color: white;
-  padding: 8px 16px;
+  padding: 6px 14px;
   display: inline-block;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  margin-bottom: 32px;
-  margin-left: 16px;
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
+  margin-bottom: 24px;
+  padding-left: 8px;
+  width: fit-content;
+  vertical-align: middle;
 }
 
 .titulo-cards h2 {
   font-family: 'Baloo', cursive;
   color: #9B2AA6;
-  font-size: 2rem;
+  font-size: 1.6rem;
+  line-height: 1.2;
   white-space: nowrap;
+  vertical-align: middle;
 }
 
 .cards-gatos {
@@ -704,6 +725,15 @@ footer.footer {
   background: white;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
   font-size: 0.9rem;
+  position: relative;
+  overflow: visible;
+}
+
+footer.footer::after {
+  content: '';
+  display: block;
+  height: 0;
+  clear: both;
 }
 
 footer.footer p {
@@ -723,6 +753,17 @@ footer.footer .insta-link img {
 
 footer.footer .insta-link img:hover {
   opacity: 0.7;
+}
+
+.gato-rodape {
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+  width: 150px;
+  height: auto;
+  z-index: 5;
+  transform: rotate(5deg);
+  margin: 0 !important;
 }
 
 /* ==================== MODAL DO PET ==================== */

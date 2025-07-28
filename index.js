@@ -295,6 +295,9 @@ app.get('/api/:type',checkAdmin, (req, res) => {
           nome: row.user_nome,
           email: row.user_email,
           telefone: row.user_telefone,
+          genero: row.user_genero,
+          nascimento: row.user_nascimento,
+          endereco: row.user_endereco,
           isAdmin: row.is_admin === 1
 
         });
@@ -370,7 +373,7 @@ app.post('/register/:type', (req, res) => {
     return res.status(400).json({ message: "Tipo inválido de registro" });
   }
 
-  const { nome, email, telefone, senha } = req.body;
+  const { nome, email, telefone, senha, genero, nascimento, endereco } = req.body;
   console.log("Dados recebidos:", req.body);
 
   if (!nome || !email || !telefone || !senha) {
@@ -390,8 +393,11 @@ app.post('/register/:type', (req, res) => {
       return res.status(409).json({ message: "E-mail já cadastrado" });
     }
 
-    const insertSql = 'INSERT INTO users(user_nome, user_email, user_telefone, user_senha, is_admin) VALUES (?, ?, ?, ?, ?)';
-    DB.run(insertSql, [nome, email, telefone, senha, 0], function (err) {
+    const insertSql = `
+      INSERT INTO users(user_nome, user_email, user_telefone, user_senha, is_admin, user_genero, user_nascimento, user_endereco)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+      DB.run(insertSql, [nome, email, telefone, senha, 0, genero, nascimento, endereco], function (err) {
       if (err) {
         console.error("Erro ao inserir usuário:", err.message);
         return res.status(500).json({ message: "Erro ao salvar usuário" });
@@ -590,7 +596,7 @@ app.patch('/promoveradmin/:id', checkAdmin, (req, res) => {
 app.put('/editarUsuario/:id',(req,res)=>{
   res.set('content-type','application/json');
   const userId=req.params.id;
-  const{nome,email,telefone,senha}= req.body;
+  const{nome,email,telefone,senha, genero, nascimento, endereco}= req.body;
   console.log("Dados recebidos:",req.body);
 
   if(!nome || !email|| !telefone || !senha){
@@ -608,8 +614,14 @@ app.put('/editarUsuario/:id',(req,res)=>{
       return res.status(404).json({message:'Email já em uso por outro usuário'})
 
     }
-    const editSql= 'UPDATE users SET user_nome = ?, user_email = ?, user_telefone = ?, user_senha = ? WHERE user_id=? '
-    DB.run(editSql, [nome,email,telefone,senha,userId],function(err){
+    const editSql = `
+      UPDATE users
+      SET user_nome = ?, user_email = ?, user_telefone = ?, user_senha = ?,
+          user_genero = ?, user_nascimento = ?, user_endereco = ?
+      WHERE user_id = ?
+    `;
+    DB.run(editSql, [nome, email, telefone, senha, genero, nascimento, endereco, userId], function (err) {
+
       if(err){
         console.error(err);
         return res.status(500).json({message:'Erro ao editar usuario'})

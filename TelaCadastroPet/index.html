@@ -24,43 +24,76 @@
   </header>
 
   <!-- Área principal -->
-  <main class="cadastro-container">
-    <form class="cadastro-form" id="formCadastroPet">
-      <h1>Cadastro de Pet</h1>
+  <main class="editar-perfil">
+  <section class="card-editar">
+    <div class="topo-edicao">
+      <h2>Adicionar Pet</h2>
+    </div>
 
-     <label for="nome">Nome:</label>
-  <input type="text" id="nome" name="nome" required>
+    <div class="container-perfil-grid">
+      <div class="foto-perfil">
+        <div class="circulo-foto">fotos<br>do<br>gato</div>
+        <button class="btn-alterar-foto" onclick="document.getElementById('input-foto-pet').click()">Adicionar Fotos</button>
+        <input type="file" id="input-foto-pet" style="display: none;" />
+      </div>
 
-  <label for="idade">Idade:</label>
-  <input type="text" id="idade" name="idade" required>
+      <form class="form-perfil-grid" id="formCadastroPet">
+        <!-- Nome -->
+        <div class="grupo-campo linha-inteira">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" name="nome" required />
+        </div>
 
-  <label for="saude">Gênero:</label>
-  <input type="text" id="saude" name="saude" required>
+        <!-- Idade + Adversidades -->
+        <div class="grupo-campo">
+          <label for="idade">Idade</label>
+          <input type="text" id="idade" name="idade" required />
+        </div>
+        <div class="grupo-campo">
+          <label for="caracteristicas">Adversidades</label>
+          <input type="text" id="caracteristicas" name="caracteristicas" required />
+        </div>
 
-  <label for="vacinas">Doenças:</label>
-  <input type="text" id="vacinas" name="vacinas" required>
+        <!-- Descrição -->
+        <div class="grupo-campo linha-inteira">
+          <label for="descricao">Descrição</label>
+          <input type="text" id="descricao" name="descricao" required />
+        </div>
 
-  <label for="caracteristicas">Adversidades:</label>
-  <input type="text" id="caracteristicas" name="caracteristicas" required>
+        <!-- Gênero + Doenças -->
+        <div class="grupo-campo">
+          <label for="saude">Gênero</label>
+          <input type="text" id="saude" name="saude" required />
+        </div>
+        <div class="grupo-campo">
+          <label for="vacinas">Doenças</label>
+          <input type="text" id="vacinas" name="vacinas" required />
+        </div>
 
-  <label for="descricao">Descrição:</label>
-  <textarea id="descricao" name="descricao" rows="4" required></textarea>
+        <!-- Botão -->
+        <div class="grupo-campo linha-inteira">
+          <button type="submit" class="btn-cadastro-pet">Cadastrar Pet</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
 
 
-  <button type="submit">Cadastrar Pet</button>
-    </form>
-  </main>
-    <div id="error-message" class="error-message" style="display:none;"></div>
   <!-- Rodapé -->
   <footer class="footer">
-    <p>
-      <a href="https://www.instagram.com/projeto.ronronar" target="_blank" class="insta-link">
-        <img src="../Imagens/Logo Instagram.jpg" alt="Instagram" />
-      </a>
-      Cada clique aqui aproxima um gatinho do lar que ele merece. <br>
-      Obrigado por fazer parte dessa rede de amor. 🐾
-    </p>
-  </footer>
+            <div class="footer-content">
+                <a href="https://www.instagram.com/projeto.ronronar" target="_blank" class="insta-link">
+                    <img src="../Imagens/Logo Instagram.jpg" alt="Instagram" />
+                </a>
+            <p>
+                Cada clique aqui aproxima um gatinho do lar que ele merece. <br>
+                Obrigado por fazer parte dessa rede de amor. 🐾
+            </p>
+            </div>
+            <img src="../Imagens/gato-rodape.png" alt="Gatinho no rodapé" class="gato-rodape">
+        </footer>
+
 
   <script src="../js/script.js"></script>
 </body>

@@ -26,11 +26,9 @@
 
     <!-- Área principal -->
     <main class="admin-container">
-        <h1>Painel de Administração</h1>
         <!-- Conteúdo do painel de administração -->
-         <h2> Usuários Cadastrados</h2>
          <table class="user-table">
-            <thead>
+            <thead class="admin-topo">
                 <tr>
                     <th>Nome</th>
                     <th>Email</th>
@@ -43,21 +41,24 @@
               
             </tbody>
             <tbody id="user-table-body">
-
+                <!-- Preenchido via js -->
             </tbody>
         </table>
     </main>
 
     <!-- Rodapé -->
     <footer class="footer">
-       <p>
-        <a href="https://www.instagram.com/projeto.ronronar?utm_source=ig_web_button_share_sheet&igsh=MXdlcnhvOTMyODU1YQ==" target="_blank" class="insta-link">
-            <img src="../Imagens/Logo Instagram.jpg" alt="Instagram" />
-        </a>
-        Cada clique aqui aproxima um gatinho do lar que ele merece. <br>
-        Obrigado por fazer parte dessa rede de amor. 🐾
-    </p>
-    </footer>
+            <div class="footer-content">
+                <a href="https://www.instagram.com/projeto.ronronar" target="_blank" class="insta-link">
+                    <img src="../Imagens/Logo Instagram.jpg" alt="Instagram" />
+                </a>
+            <p>
+                Cada clique aqui aproxima um gatinho do lar que ele merece. <br>
+                Obrigado por fazer parte dessa rede de amor. 🐾
+            </p>
+            </div>
+            <img src="../Imagens/gato-rodape.png" alt="Gatinho no rodapé" class="gato-rodape">
+        </footer>
     <script src="../js/script.js"></script>
 </body>
 </html>

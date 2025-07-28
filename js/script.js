@@ -326,6 +326,19 @@ if (formCadastroPet) {
     });
   }
 
+  // ==== TELA DE PERFIL ====
+  const perfilUsuario = document.getElementById('editar-perfil');
+  if (perfilUsuario) {
+    const btnEditar = document.getElementById('btn-editar');
+    const inputs = document.querySelectorAll('.form-perfil input');
+
+    btnEditar.addEventListener('click', () => {
+      inputs.forEach(input => {
+        input.disabled = !input.disabled;
+      });
+    });
+  }
+
  // ==== CARDS E MODAL DOS PETS ====
 if (document.getElementById('tela-inicial') || document.getElementById('tela-apadrinhamento')) {
   const container = document.querySelector('.cards-container');

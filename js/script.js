@@ -274,37 +274,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalVac = document.getElementById('modal-vac');
 
     fetch('http://localhost:3001/pets/listagem')
-    .then(res => res.json())
-    .then(data => {
-  data.pets.forEach(pet => {
-    // aqui continua normal
-  
-        const card = document.createElement('div');
-        card.classList.add('card');
+.then(res => res.json())
+.then(data => {
+  let petsParaExibir = data.pets;
 
-        card.innerHTML = `
-         <img src="http://localhost:3001/pets/imagem/${pet.id}" alt="${pet.nome}">
-          <p class="nome-gato">${pet.nome}</p>
-        `;
+  // Se estiver na tela inicial, limitar a 4
+  if (document.getElementById('tela-inicial')) {
+    petsParaExibir = petsParaExibir.slice(0, 4);
+  }
 
-       // Evento para abrir o modal
-        card.addEventListener('click', () => {
-         modalImg.src = `http://localhost:3001/pets/imagem/${pet.id}`;
-          modalNome.textContent = `${pet.nome}, ${pet.idade}`;
-          modalGenero.textContent = pet.genero;
-          modalSaude.textContent = pet.saude;
-          modalOutros.textContent = pet.caracteristicas || '';
-          modalVac.textContent = pet.vacinas || '';
-          modalDesc.textContent = pet.descricao || '';
-          modal.classList.remove('hidden');
-        });
+  petsParaExibir.forEach(pet => {
+    const card = document.createElement('div');
+    card.classList.add('card');
 
-        container.appendChild(card);
-      });
-    })
-    .catch(err => {
-      console.error('Erro ao carregar pets:', err);
+    card.innerHTML = `
+      <img src="http://localhost:3001/pets/imagem/${pet.id}" alt="${pet.nome}">
+      <p class="nome-gato">${pet.nome}</p>
+    `;
+
+    // Evento para abrir o modal
+    card.addEventListener('click', () => {
+      modalImg.src = `http://localhost:3001/pets/imagem/${pet.id}`;
+      modalNome.textContent = `${pet.nome}, ${pet.idade}`;
+      modalGenero.textContent = pet.genero;
+      modalSaude.textContent = pet.saude;
+      modalOutros.textContent = pet.caracteristicas || '';
+      modalVac.textContent = pet.vacinas || '';
+      modalDesc.textContent = pet.descricao || '';
+      modal.classList.remove('hidden');
     });
+
+    container.appendChild(card);
+  });
+})
 
     // Fecha o modal
     closeBtn.addEventListener('click', () => {

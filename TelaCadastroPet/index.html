@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cadastro de Pet</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <!-- Cabeçalho -->
+  <header class="menu">
+    <div class="menu-left">
+      <a href="../TelaInicial/index.html">
+        <img src="../Imagens/Logo Projeto Ronronar.jpg" alt="Logo do projeto" class="logo">
+      </a>
+      <nav class="nav-left">
+        <a href="../TelaInicial/index.html">Início</a>
+        <a href="../TelaApadrinhamento/index.html">Apadrinhamento</a>
+        <a href="#">Doações</a>
+      </nav>
+    </div>
+    <nav class="nav-right" id="areaUsuario">
+      <!-- preenchido no JS -->
+    </nav>
+  </header>
+
+  <!-- Área principal -->
+  <main class="cadastro-container">
+    <form class="cadastro-form" id="formCadastroPet">
+      <h1>Cadastro de Pet</h1>
+
+      <label for="nome">Nome</label>
+      <input type="text" id="nome" name="nome" placeholder="Nome do pet" maxlength="50" required />
+
+      <label for="idade">Idade</label>
+      <input type="text" id="idade" name="idade" placeholder="Ex: 2 anos" maxlength="20" required />
+
+      <label for="saude">Saúde</label>
+      <input type="text" id="saude" name="saude" placeholder="Condições de saúde" maxlength="100" required />
+
+      <label for="vacinas">Vacinas</label>
+      <input type="text" id="vacinas" name="vacinas" placeholder="Vacinas tomadas" maxlength="100" required />
+
+      <label for="caracteristicas">Características</label>
+      <textarea id="caracteristicas" name="caracteristicas" placeholder="Comportamento, hábitos etc." maxlength="255" required></textarea>
+
+      <label for="descricao">Descrição</label>
+      <textarea id="descricao" name="descricao" placeholder="Descrição geral do pet" maxlength="255" required></textarea>
+
+      <div class="error-message" id="error-message"></div>
+
+      <button type="submit">Cadastrar Pet</button>
+    </form>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="footer">
+    <p>
+      <a href="https://www.instagram.com/projeto.ronronar" target="_blank" class="insta-link">
+        <img src="../Imagens/Logo Instagram.jpg" alt="Instagram" />
+      </a>
+      Cada clique aqui aproxima um gatinho do lar que ele merece. <br>
+      Obrigado por fazer parte dessa rede de amor. 🐾
+    </p>
+  </footer>
+
+  <script src="../js/script.js"></script>
+</body>
+</html>

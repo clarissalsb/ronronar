@@ -89,118 +89,186 @@ const linksDoMenu = `
   }
 
   // ==== TELA DE CADASTRO ====
-  const formCadastro = document.querySelector('.cadastro-form');
-  if (formCadastro) {
-    const errorDiv = document.getElementById('error-message');
-    const inputTelefone = document.getElementById('telefone');
+const formCadastro = document.querySelector('.cadastro-form');
+if (formCadastro) {
+  const errorDiv = document.getElementById('error-message');
 
-    if (inputTelefone) {
+  // Só pega inputTelefone se existir
+  const inputTelefone = document.getElementById('telefone');
+  if (inputTelefone) {
+    // Função para formatar telefone (mesmo seu código)
+    function formatarTelefoneComCursor(input) {
+      let posicao = input.selectionStart;
+      let valorOriginal = input.value;
+      let numeros = valorOriginal.replace(/\D/g, '');
 
-      // Função que formata e mantém o cursor no lugar certo
-      function formatarTelefoneComCursor(input) {
-        let posicao = input.selectionStart;
-        let valorOriginal = input.value;
-        let numeros = valorOriginal.replace(/\D/g, '');
+      numeros = numeros.slice(0, 11);
 
-        // Limita a 11 dígitos
-        numeros = numeros.slice(0, 11);
+      let novoValor = '';
+      if (numeros.length > 0) novoValor = '(' + numeros.slice(0, 2);
+      if (numeros.length >= 3) novoValor += ') ' + numeros.slice(2, 7);
+      if (numeros.length >= 8) novoValor += '-' + numeros.slice(7);
+      else if (numeros.length > 2 && numeros.length <= 7) novoValor += numeros.slice(7);
 
-        // Formata
-        let novoValor = '';
-        if (numeros.length > 0) novoValor = '(' + numeros.slice(0, 2);
-        if (numeros.length >= 3) novoValor += ') ' + numeros.slice(2, 7);
-        if (numeros.length >= 8) novoValor += '-' + numeros.slice(7);
-        else if (numeros.length > 2 && numeros.length <= 7) novoValor += numeros.slice(7);
-
-        // Define nova posição do cursor
-        let deslocamento = 0;
-        if (valorOriginal.length < novoValor.length) {
-          deslocamento = novoValor.length - valorOriginal.length;
-        }
-
-        input.value = novoValor;
-
-        // Só reposiciona se o cursor não estiver no final
-        if (posicao < novoValor.length) {
-          input.setSelectionRange(posicao + deslocamento, posicao + deslocamento);
-        }
+      let deslocamento = 0;
+      if (valorOriginal.length < novoValor.length) {
+        deslocamento = novoValor.length - valorOriginal.length;
       }
 
-      // Listener que chama a função ao digitar
-      inputTelefone.addEventListener('input', () => {
-        formatarTelefoneComCursor(inputTelefone);
-      });
+      input.value = novoValor;
+
+      if (posicao < novoValor.length) {
+        input.setSelectionRange(posicao + deslocamento, posicao + deslocamento);
+      }
     }
 
-    formCadastro.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const nome = document.getElementById('nome').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const telefone = document.getElementById('telefone').value.trim();
-      const senha = document.getElementById('senha').value;
-      const confirmarSenha = document.getElementById('confirmar-senha').value;
-
-      errorDiv.style.display = 'none';
-      errorDiv.innerHTML = '';
-
-      let erros = [];
-
-      if (!nome || !email || !telefone || !senha) {
-        erros.push('Preencha todos os campos! ⚠️');
-      }
-
-      if (senha !== confirmarSenha) {
-        erros.push('As senhas não coincidem! ❌');
-      }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        erros.push('Email inválido! ❌');
-      }
-
-      const senhaRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[$*&@#!])(?!.*(.)\1)[A-Za-z\d$*&@#!]{8,}$/;
-      if (!senhaRegex.test(senha)) {
-        erros.push(`
-          <strong>A senha precisa ter:</strong> <br>
-          - Pelo menos 8 caracteres<br>
-          - Pelo menos uma letra maiúscula<br>
-          - Pelo menos um número<br>
-          - Pelo menos um caractere especial ($*&@#!)<br>
-          - Não pode ter caracteres repetidos consecutivos<br>
-        `);
-      }
-
-      if (erros.length > 0) {
-        errorDiv.innerHTML = erros.join('<br><br>');
-        errorDiv.style.display = 'block';
-        return;
-      }
-
-      const dadosUsuario = { nome, email, telefone, senha };
-
-      fetch('http://localhost:3001/register/user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dadosUsuario),
-      })
-        .then(res => res.json())
-        .then(response => {
-          if (response.success) {
-            localStorage.setItem("usuarioLogado", nome);
-            window.location.href = "../TelaInicial/index.html";
-          } else {
-            errorDiv.innerHTML = response.message || 'Erro ao cadastrar.';
-            errorDiv.style.display = 'block';
-          }
-        })
-        .catch(error => {
-          errorDiv.innerHTML = 'Erro ao enviar dados.';
-          errorDiv.style.display = 'block';
-          console.error('Erro ao enviar dados:', error);
-        });
+    inputTelefone.addEventListener('input', () => {
+      formatarTelefoneComCursor(inputTelefone);
     });
   }
+
+  formCadastro.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Pega cada input com verificação para evitar erro
+    const nomeInput = document.getElementById('nome');
+    const emailInput = document.getElementById('email');
+    const telefoneInput = document.getElementById('telefone');
+    const senhaInput = document.getElementById('senha');
+    const confirmarSenhaInput = document.getElementById('confirmar-senha');
+
+    if (!nomeInput || !emailInput || !telefoneInput || !senhaInput || !confirmarSenhaInput) {
+      errorDiv.innerHTML = 'Formulário incompleto ou campos faltando.';
+      errorDiv.style.display = 'block';
+      return;
+    }
+
+    const nome = nomeInput.value.trim();
+    const email = emailInput.value.trim();
+    const telefone = telefoneInput.value.trim();
+    const senha = senhaInput.value;
+    const confirmarSenha = confirmarSenhaInput.value;
+
+    errorDiv.style.display = 'none';
+    errorDiv.innerHTML = '';
+
+    let erros = [];
+
+    if (!nome || !email || !telefone || !senha) {
+      erros.push('Preencha todos os campos! ⚠️');
+    }
+
+    if (senha !== confirmarSenha) {
+      erros.push('As senhas não coincidem! ❌');
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      erros.push('Email inválido! ❌');
+    }
+
+    const senhaRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[$*&@#!])(?!.*(.)\1)[A-Za-z\d$*&@#!]{8,}$/;
+    if (!senhaRegex.test(senha)) {
+      erros.push(`
+        <strong>A senha precisa ter:</strong> <br>
+        - Pelo menos 8 caracteres<br>
+        - Pelo menos uma letra maiúscula<br>
+        - Pelo menos um número<br>
+        - Pelo menos um caractere especial ($*&@#!)<br>
+        - Não pode ter caracteres repetidos consecutivos<br>
+      `);
+    }
+
+    if (erros.length > 0) {
+      errorDiv.innerHTML = erros.join('<br><br>');
+      errorDiv.style.display = 'block';
+      return;
+    }
+
+    const dadosUsuario = { nome, email, telefone, senha };
+
+    fetch('http://localhost:3001/register/user', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dadosUsuario),
+    })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          localStorage.setItem("usuarioLogado", nome);
+          window.location.href = "../TelaInicial/index.html";
+        } else {
+          errorDiv.innerHTML = response.message || 'Erro ao cadastrar.';
+          errorDiv.style.display = 'block';
+        }
+      })
+      .catch(error => {
+        errorDiv.innerHTML = 'Erro ao enviar dados.';
+        errorDiv.style.display = 'block';
+        console.error('Erro ao enviar dados:', error);
+      });
+  });
+}
+  // ==== CADASTRO DE PETS ====
+const formCadastroPet = document.getElementById('formCadastroPet');
+if (formCadastroPet) {
+  const errorDiv = document.getElementById('error-message');
+
+  formCadastroPet.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const nome = document.getElementById('nome').value.trim();
+    const idade = document.getElementById('idade').value.trim();
+    const saude = document.getElementById('saude').value.trim();
+    const vacinas = document.getElementById('vacinas').value.trim();
+    const caracteristicas = document.getElementById('caracteristicas').value.trim();
+    const descricao = document.getElementById('descricao').value.trim();
+
+    errorDiv.style.display = 'none';
+    errorDiv.innerHTML = '';
+
+    const camposObrigatorios = [nome, idade, saude, vacinas, caracteristicas, descricao];
+    const vazio = camposObrigatorios.some(campo => campo === '');
+    if (vazio) {
+      errorDiv.innerHTML = 'Preencha todos os campos! ⚠️';
+      errorDiv.style.display = 'block';
+      return;
+    }
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      errorDiv.innerHTML = 'Você precisa estar logado como administrador para cadastrar um pet.';
+      errorDiv.style.display = 'block';
+      return;
+    }
+
+    const dadosPet = { nome, idade, saude, vacinas, caracteristicas, descricao };
+
+    fetch('http://localhost:3001/pets/registrar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify(dadosPet),
+    })
+      .then(res => res.json())
+      .then(response => {
+        if (response.sucess) {
+          alert(response.message);
+          formCadastroPet.reset();
+        } else {
+          errorDiv.innerHTML = response.message || 'Erro ao cadastrar pet.';
+          errorDiv.style.display = 'block';
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao enviar dados:', error);
+        errorDiv.innerHTML = 'Erro ao conectar com o servidor.';
+        errorDiv.style.display = 'block';
+      });
+  });
+}
 
   // ==== TELA DE LOGIN ====
   const formLogin = document.querySelector('.login-form');

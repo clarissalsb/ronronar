@@ -76,7 +76,7 @@ npm start
  ## Tecnologias utilizadas
 
  * **Node.js** + **Express**
- * **Sequelize(ORM)** (SQLite)
+ * **SQLite3 (driver nativo)**
  * **Multer** (Upload)
  * **Nodemailer** (Envio de Emails)
  * **JSON Web Token** (Token de autenticação)
